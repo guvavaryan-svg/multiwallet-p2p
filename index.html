@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiwallet P2P</title>
+  
+  <!-- Favicon nechiratidzo cheapp paBrowser tab -->
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
+  
+  <!-- FontAwesome yekuti tiwane ma-icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 24px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00d2ff;
+    }
+    h2 i {
+      margin-right: 8px;
+    }
+    .input-group {
+      position: relative;
+      margin: 10px 0;
+    }
+    .input-group i {
+      position: absolute;
+      left: 14px;
+      top: 15px;
+      color: #888;
+    }
+    input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      border: 1px solid #333;
+      border-radius: 6px;
+      background: #2b2b2b;
+      color: white;
+      box-sizing: border-box;
+      outline: none;
+    }
+    input:focus {
+      border-color: #00d2ff;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #00d2ff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+    button:hover {
+      background: #00a8cc;
+    }
+    .btn-login {
+      background: #333;
+      color: white;
+      margin-top: 8px;
+    }
+    .btn-login:hover {
+      background: #444;
+    }
+    #msg {
+      margin-top: 12px;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2><i class="fa-solid fa-wallet"></i>Multiwallet P2P</h2>
+    
+    <div class="input-group">
+      <i class="fa-solid fa-envelope"></i>
+      <input type="email" id="email" placeholder="Email address" required />
+    </div>
+    
+    <div class="input-group">
+      <i class="fa-solid fa-lock"></i>
+      <input type="password" id="password" placeholder="Password" required />
+    </div>
+
+    <button id="btnSignUp">
+      <i class="fa-solid fa-user-plus"></i> Create Account
+    </button>
+    
+    <button id="btnLogIn" class="btn-login">
+      <i class="fa-solid fa-right-to-bracket"></i> Log In
+    </button>
+    
+    <div id="msg"></div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // Firebase Config yako chaiyo
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJQzI4bXDEMYlr2B3Q5Yq3xNZ84iNQEqk",
+      authDomain: "multiwalletp2p.firebaseapp.com",
+      projectId: "multiwalletp2p",
+      storageBucket: "multiwalletp2p.firebasestorage.app",
+      messagingSenderId: "63209264976",
+      appId: "1:63209264976:web:15b6c1f0f8c03ca69f3e55",
+      measurementId: "G-CPMVBW9J9R"
+    };
+
+    // Initialize Firebase ne Auth
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const msgDiv = document.getElementById('msg');
+
+    // Register / Create Account
+    document.getElementById('btnSignUp').addEventListener('click', () => {
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          msgDiv.style.color = "lightgreen";
+          msgDiv.innerText = "Account created successfully!";
+        })
+        .catch((error) => {
+          msgDiv.style.color = "red";
+          msgDiv.innerText = error.message;
+        });
+    });
+
+    // Log In
+    document.getElementById('btnLogIn').addEventListener('click', () => {
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          msgDiv.style.color = "lightgreen";
+          msgDiv.innerText = "Logged in successfully!";
+        })
+        .catch^{
+          // handled error block below
+        }
+        .catch((error) => {
+          msgDiv.style.color = "red";
+          msgDiv.innerText = error.message;
+        });
+    });
+  </script>
+</body>
+</html>
