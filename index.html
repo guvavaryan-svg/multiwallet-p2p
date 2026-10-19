@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multiwallet P2P</title>
+  <title>Multiwallet P2P - Login</title>
   
-  <!-- Favicon nechiratidzo cheapp paBrowser tab -->
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
-  
-  <!-- FontAwesome yekuti tiwane ma-icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -19,7 +16,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
     }
     .card {
@@ -34,9 +31,6 @@
       text-align: center;
       margin-bottom: 20px;
       color: #00d2ff;
-    }
-    h2 i {
-      margin-right: 8px;
     }
     .input-group {
       position: relative;
@@ -89,15 +83,16 @@
     }
     #msg {
       margin-top: 12px;
-      font-size: 14px;
+      font-size: 13px;
       text-align: center;
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <h2><i class="fa-solid fa-wallet"></i>Multiwallet P2P</h2>
+    <h2><i class="fa-solid fa-wallet"></i> Multiwallet P2P</h2>
     
     <div class="input-group">
       <i class="fa-solid fa-envelope"></i>
@@ -120,16 +115,15 @@
     <div id="msg"></div>
   </div>
 
-  <!-- Firebase Scripts -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { 
       getAuth, 
       createUserWithEmailAndPassword, 
-      signInWithEmailAndPassword 
+      signInWithEmailAndPassword,
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // Firebase Config yako chaiyo
     const firebaseConfig = {
       apiKey: "AIzaSyAJQzI4bXDEMYlr2B3Q5Yq3xNZ84iNQEqk",
       authDomain: "multiwalletp2p.firebaseapp.com",
@@ -140,7 +134,6 @@
       measurementId: "G-CPMVBW9J9R"
     };
 
-    // Initialize Firebase ne Auth
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
@@ -148,37 +141,75 @@
     const passwordInput = document.getElementById('password');
     const msgDiv = document.getElementById('msg');
 
-    // Register / Create Account
+    // OnAuthStateChanged inobva yangotumira munhu ku dashboard zvazvirevo ikanoona akatopinda (Logged in)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "dashboard.html";
+      }
+    });
+
+    function validatePassword(password) {
+      const minLength = 8;
+      const hasLetter = /[a-zA-Z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSymbol = /[!@#$%^&*(),.?":{}|<>_\-\=\+]/.test(password);
+
+      if (password.length < minLength) {
+        return "Password inofanira kuva kureba 8+ characters.";
+      }
+      if (!hasLetter) {
+        return "Password inofanira kuva nemavara (letters).";
+      }
+      if (!hasNumber) {
+        return "Password inofanira kuva nenhamba (numbers).";
+      }
+      if (!hasSymbol) {
+        return "Password inofanira kuva nechiratidzo (symbol: @,#,$,!).";
+      }
+      return null;
+    }
+
     document.getElementById('btnSignUp').addEventListener('click', () => {
       const email = emailInput.value;
       const password = passwordInput.value;
-      
+
+      const passError = validatePassword(password);
+      if (passError) {
+        msgDiv.style.color = "#ff4d4d";
+        msgDiv.innerText = passError;
+        return;
+      }
+
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(() => {
           msgDiv.style.color = "lightgreen";
-          msgDiv.innerText = "Account created successfully!";
+          msgDiv.innerText = "Account created! Redirecting...";
+          window.location.href = "dashboard.html";
         })
         .catch((error) => {
-          msgDiv.style.color = "red";
+          msgDiv.style.color = "#ff4d4d";
           msgDiv.innerText = error.message;
         });
     });
 
-    // Log In
     document.getElementById('btnLogIn').addEventListener('click', () => {
       const email = emailInput.value;
       const password = passwordInput.value;
-      
+
+      if (!email || !password) {
+        msgDiv.style.color = "#ff4d4d";
+        msgDiv.innerText = "Isa Email ne Password.";
+        return;
+      }
+
       signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(() => {
           msgDiv.style.color = "lightgreen";
-          msgDiv.innerText = "Logged in successfully!";
+          msgDiv.innerText = "Logged in! Redirecting...";
+          window.location.href = "dashboard.html";
         })
-        .catch^{
-          // handled error block below
-        }
         .catch((error) => {
-          msgDiv.style.color = "red";
+          msgDiv.style.color = "#ff4d4d";
           msgDiv.innerText = error.message;
         });
     });
