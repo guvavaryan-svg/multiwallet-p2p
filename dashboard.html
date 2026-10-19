@@ -395,7 +395,6 @@
     const auth = getAuth(app);
     let currentAction = "";
 
-    // Kutarisa kana munhu apinda zvakanaka kuburikidza ne sessionStorage
     if (!sessionStorage.getItem("isLoggedIn")) {
       window.location.href = "index.html";
     }
@@ -420,7 +419,7 @@
     }
 
     window.verifyPin = function() {
-      const pin = document.getElementById('pinInput5') || document.getElementById('pinInput').value;
+      const pin = document.getElementById('pinInput').value;
       if(pin.length < 4) {
         alert("Please enter a valid 4-digit PIN.");
         return;
