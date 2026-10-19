@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2P Escrow Trade Room</title>
+  
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      margin: 0;
+      padding: 15px;
+      padding-bottom: 40px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e1e1e;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .timer-box {
+      text-align: center;
+      background: rgba(255, 77, 77, 0.15);
+      border: 1px solid #ff4d4d;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .timer {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff4d4d;
+      margin-top: 5px;
+    }
+    .details-box {
+      background: #2b2b2b;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .btn-pay {
+      width: 100%;
+      background: #00ff88;
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .btn-report {
+      width: 100%;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: none; /* Inoza kuoneka kana 20 mins yapfura */
+    }
+    .chat-box {
+      height: 150px;
+      background: #2b2b2b;
+      border-radius: 8px;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .chat-input {
+      display: flex;
+      gap: 8px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      background: #2b2b2b;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 6px;
+    }
+    .chat-input button {
+      background: #00d2ff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h3 style="margin:0; color:#00d2ff;"><i class="fa-solid fa-shield-halved"></i> Escrow Trade Room</h3>
+    <button onclick="window.location.href='dashboard.html'" style="background:#333; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">Back</button>
+  </div>
+
+  <!-- 20 Mins Timer -->
+  <div class="timer-box">
+    <small style="color:#aaa;">Payment Window Remaining</small>
+    <div class="timer" id="countdown">20:00</div>
+  </div>
+
+  <!-- Payment Details -->
+  <div class="card">
+    <h4 style="margin-top:0;">Trade Details</h4>
+    <div class="details-box">
+      <p><strong>Pair:</strong> <span id="pairTitle">USDT / ZiG</span></p>
+      <p><strong>Amount to Pay:</strong> $50.00</p>
+      <p><strong>Seller EcoCash/Bank:</strong> 0771234567 (EcoCash USD)</p>
+      <p><strong>Status:</strong> <span style="color:#ffb300;" id="statusText">Pending Payment</span></p>
+    </div>
+
+    <button class="btn-pay" id="btnPaid" onclick="confirmPayment()"><i class="fa-solid fa-circle-check"></i> I Have Paid Seller</button>
+    <button class="btn-report" id="btnReport" onclick="reportDispute()"><i class="fa-solid fa-bell"></i> Report / Trigger Dispute (20 Mins Passed)</button>
+  </div>
+
+  <!-- Chat Room -->
+  <div class="card">
+    <h4 style="margin-top:0;"><i class="fa-solid fa-comments"></i> Trade Chat</h4>
+    <div class="chat-box" id="chatBox">
+      <p style="color:#888;"><i>System: Trade started. Escrow holds seller's funds safely until payment is confirmed.</i></p>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="msgInput" placeholder="Type message to trader...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Pair details from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const pair = urlParams.get('pair') || 'USDT / ZiG';
+    document.getElementById('pairTitle').innerText = pair;
+
+    // 20 Minute Countdown Logic
+    let timeLeft = 20 * 60; // 20 minutes in seconds
+    const countdownEl = document.getElementById('countdown');
+    const reportBtn = document.getElementById('btnReport');
+
+    const timerInterval = setInterval(() => {
+      let minutes = Math.floor(timeLeft / 60);
+      let seconds = timeLeft % 60;
+
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+
+      countdownEl.innerText = `${minutes}:${seconds}`;
+
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        countdownEl.innerText = "EXPIRED";
+        document.getElementById('statusText').innerText = "Time Expired (Unpaid)";
+        document.getElementById('statusText').style.color = "#ff4d4d";
+        reportBtn.style.display = "block"; // Show Report Bell Button
+      }
+      timeLeft--;
+    }, 1000);
+
+    function confirmPayment() {
+      document.getElementById('statusText').innerText = "Payment Sent - Waiting Seller Release";
+      document.getElementById('statusText').style.color = "#00ff88";
+      addChatMessage("Buyer: I have completed the payment, please check and release.");
+    }
+
+    function reportDispute() {
+      alert("Dispute Triggered! Admin has been notified via Report Bell to review transactions.");
+      addChatMessage("System: Dispute opened due to 20-minute timeout. Admin reviewing proof of payment.");
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('msgInput');
+      if (input.value.trim() !== "") {
+        addChatMessage("You: " + input.value);
+        input.value = "";
+      }
+    }
+
+    function addChatMessage(msg) {
+      const chatBox = document.getElementById('chatBox');
+      const p = document.createElement('p');
+      p.innerText = msg;
+      p.style.margin = "5px 0";
+      chatBox.appendChild(p);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
