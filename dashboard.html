@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MultiwalletP2P</title>
+  <title>MultiwalletP2P - Dashboard</title>
   
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#00d2ff">
@@ -224,16 +224,16 @@
     </div>
   </div>
 
-  <!-- Agent Payment Setup -->
+  <!-- Seller Payment Setup -->
   <div class="card">
-    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-id-card"></i> Seller Payment Setup (Deriv Agent Style)</h3>
-    <p style="font-size:12px; color:#aaa; margin-bottom:10px;">Isa ma details ako aunoonekwa nevamwe ma-customers paanoita trade kwauri:</p>
+    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-id-card"></i> Seller Payment Setup</h3>
+    <p style="font-size:12px; color:#aaa; margin-bottom:10px;">Configure your receiving account details below. These details will be securely displayed to verified buyers during active trades:</p>
     
-    <label style="font-size:12px; color:#ccc;">EcoCash / Bank Name:</label>
-    <input type="text" id="agentName" class="input-field" placeholder="e.g. John Doe">
+    <label style="font-size:12px; color:#ccc;">Payment Method / Bank Name:</label>
+    <input type="text" id="agentName" class="input-field" placeholder="e.g. EcoCash USD / Bank Transfer">
 
-    <label style="font-size:12px; color:#ccc;">EcoCash Number / Account No:</label>
-    <input type="text" id="agentNumber" class="input-field" placeholder="e.g. 0771234567">
+    <label style="font-size:12px; color:#ccc;">Account Number & Holder Name:</label>
+    <input type="text" id="agentNumber" class="input-field" placeholder="e.g. 0771234567 - John Doe">
 
     <button class="btn-save" onclick="saveAgentDetails()"><i class="fa-solid fa-floppy-disk"></i> Save Payment Details</button>
   </div>
@@ -333,12 +333,12 @@
       const name = document.getElementById('agentName').value;
       const num = document.getElementById('agentNumber').value;
       if (!name || !num) {
-        alert("Please fill both Agent Name and Account Number.");
+        alert("Please fill in both Payment Method and Account Details.");
         return;
       }
       localStorage.setItem('agentName', name);
       localStorage.setItem('agentNumber', num);
-      alert("Payment Details Saved Successfully! Customers will see these details during trade.");
+      alert("Payment Details Saved Successfully! These details will be displayed to buyers during trades.");
     }
 
     window.startEscrow = function(pair) {
