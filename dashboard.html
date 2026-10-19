@@ -3,9 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multiwallet P2P - Pro Dashboard</title>
+  <title>Multiwallet P2P</title>
   
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00d2ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Multiwallet">
+
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -25,11 +32,7 @@
       padding: 15px 20px;
       border-radius: 12px;
       margin-bottom: 20px;
-    }
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+      border: 1px solid #333;
     }
     .header h2 {
       margin: 0;
@@ -44,7 +47,7 @@
     .bell-icon {
       background: #2b2b2b;
       color: #ff4d4d;
-      border: none;
+      border: 1px solid #ff4d4d;
       padding: 10px;
       border-radius: 50%;
       cursor: pointer;
@@ -75,6 +78,7 @@
       padding: 20px;
       border-radius: 12px;
       margin-bottom: 20px;
+      border: 1px solid #2a2a2a;
     }
     .profile-row {
       display: flex;
@@ -82,8 +86,9 @@
       align-items: center;
     }
     .kyc-badge {
-      background: rgba(0, 255, 136, 0.15);
+      background: rgba(0, 255, 136, 0.2);
       color: #00ff88;
+      border: 1px solid #00ff88;
       padding: 4px 10px;
       border-radius: 20px;
       font-size: 12px;
@@ -100,7 +105,7 @@
     }
     .btn-action {
       background: #00d2ff;
-      color: #000;
+      color: #000000;
       border: none;
       padding: 12px;
       border-radius: 8px;
@@ -110,10 +115,7 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
-    }
-    .btn-action:hover {
-      background: #00a8cc;
+      font-size: 13px;
     }
     .wallet-box {
       display: flex;
@@ -123,6 +125,7 @@
       padding: 14px;
       border-radius: 8px;
       margin-top: 10px;
+      border: 1px solid #3d3d3d;
     }
     .wallet-info {
       display: flex;
@@ -147,12 +150,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border: 1px solid #3d3d3d;
     }
     .btn-trade {
       background: #00ff88;
-      color: #000;
+      color: #000000;
       border: none;
-      padding: 8px 14px;
+      padding: 8px 16px;
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
@@ -178,12 +182,11 @@
       font-weight: bold;
       cursor: pointer;
     }
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -195,18 +198,19 @@
       width: 85%;
       max-width: 320px;
       text-align: center;
+      border: 1px solid #00d2ff;
     }
     .modal-content input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 15px 0;
       background: #2b2b2b;
-      border: 1px solid #444;
-      color: white;
+      border: 1px solid #00d2ff;
+      color: #ffffff;
       border-radius: 6px;
       box-sizing: border-box;
       text-align: center;
-      font-size: 18px;
+      font-size: 20px;
       letter-spacing: 5px;
     }
     .modal-btns {
@@ -227,24 +231,22 @@
 
   <!-- Header -->
   <div class="header">
-    <div class="header-left">
-      <h2><i class="fa-solid fa-wallet"></i> Multiwallet</h2>
-    </div>
+    <h2><i class="fa-solid fa-wallet"></i> Multiwallet</h2>
     <div class="header-icons">
       <button class="bell-icon" onclick="openReportModal()">
         <i class="fa-solid fa-bell"></i>
-        <span class="bell-badge" id="alertCount">1</span>
+        <span class="bell-badge">1</span>
       </button>
       <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </div>
   </div>
 
-  <!-- Profile & Quick Actions -->
+  <!-- Profile & Actions -->
   <div class="card">
     <div class="profile-row">
       <div>
-        <h3 style="margin:0 0 5px 0;">My Account</h3>
-        <p id="userEmail" style="color:#aaa; font-size:13px; margin:0;">Loading user details...</p>
+        <h3 style="margin:0 0 5px 0; color:#ffffff;">My Account</h3>
+        <p id="userEmail" style="color:#d1d1d1; font-size:13px; margin:0;">Loading...</p>
       </div>
       <div class="kyc-badge">
         <i class="fa-solid fa-circle-check"></i> KYC Verified
@@ -264,28 +266,28 @@
     </div>
   </div>
 
-  <!-- Active 20 Mins Timeout Alert -->
+  <!-- Timeout Alert -->
   <div class="card" style="border: 1px solid #ff4d4d;">
     <h3 style="margin-top:0; color:#ff4d4d;"><i class="fa-solid fa-triangle-exclamation"></i> Active Order Alert</h3>
-    <p style="font-size:13px; color:#ccc; margin-bottom:10px;">User entered order but failed to send payment within 20 minutes:</p>
+    <p style="font-size:13px; color:#e0e0e0; margin-bottom:10px;">User entered order but failed to send payment within 20 minutes:</p>
     
     <div class="timer-alert">
       <div>
-        <strong>Order #P2P-8842</strong><br>
-        <small style="color:#ff4d4d;">Time Elapsed: 20+ Mins (Unpaid)</small>
+        <strong style="color:#ffffff;">Order #P2P-8842</strong><br>
+        <small style="color:#ff6b6b; font-weight:bold;">Time Elapsed: 20+ Mins (Unpaid)</small>
       </div>
       <button class="btn-report" onclick="reportUnpaidUser()">Report / Check</button>
     </div>
   </div>
 
-  <!-- Wallets & Balances -->
+  <!-- Wallets -->
   <div class="card">
-    <h3 style="margin-top:0;"><i class="fa-solid fa-coins"></i> Wallets & Balances</h3>
+    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-coins"></i> Wallets & Balances</h3>
     
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i>
-        <div><strong>USD Wallet</strong><br><small style="color:#aaa;">United States Dollar</small></div>
+        <div><strong style="color:#ffffff;">USD Wallet</strong><br><small style="color:#b0b0b0;">United States Dollar</small></div>
       </div>
       <div class="balance">$0.00</div>
     </div>
@@ -293,7 +295,7 @@
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-solid fa-circle-dollar-to-slot" style="color:#26a69a;"></i>
-        <div><strong>USDT Wallet</strong><br><small style="color:#aaa;">Tether (TRC20 / BEP20)</small></div>
+        <div><strong style="color:#ffffff;">USDT Wallet</strong><br><small style="color:#b0b0b0;">Tether (TRC20 / BEP20)</small></div>
       </div>
       <div class="balance">0.00 USDT</div>
     </div>
@@ -301,7 +303,7 @@
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-solid fa-mobile-screen-button" style="color:#00e676;"></i>
-        <div><strong>EcoCash Wallet</strong><br><small style="color:#aaa;">EcoCash USD / ZiG</small></div>
+        <div><strong style="color:#ffffff;">EcoCash Wallet</strong><br><small style="color:#b0b0b0;">EcoCash USD / ZiG</small></div>
       </div>
       <div class="balance">$0.00</div>
     </div>
@@ -309,7 +311,7 @@
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-solid fa-building-columns" style="color:#ffb300;"></i>
-        <div><strong>ZiG Wallet</strong><br><small style="color:#aaa;">Zimbabwe Gold</small></div>
+        <div><strong style="color:#ffffff;">ZiG Wallet</strong><br><small style="color:#b0b0b0;">Zimbabwe Gold</small></div>
       </div>
       <div class="balance">ZiG 0.00</div>
     </div>
@@ -317,7 +319,7 @@
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-solid fa-money-bill-wave" style="color:#29b6f6;"></i>
-        <div><strong>Rand (ZAR)</strong><br><small style="color:#aaa;">South African Rand</small></div>
+        <div><strong style="color:#ffffff;">Rand (ZAR)</strong><br><small style="color:#b0b0b0;">South African Rand</small></div>
       </div>
       <div class="balance">R0.00</div>
     </div>
@@ -325,37 +327,37 @@
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-brands fa-bitcoin" style="color:#f7931a;"></i>
-        <div><strong>Bitcoin (BTC)</strong><br><small style="color:#aaa;">Crypto Wallet</small></div>
+        <div><strong style="color:#ffffff;">Bitcoin (BTC)</strong><br><small style="color:#b0b0b0;">Crypto Wallet</small></div>
       </div>
       <div class="balance">0.0000 BTC</div>
     </div>
   </div>
 
-  <!-- P2P Marketplace & Escrow -->
+  <!-- P2P Escrow Market -->
   <div class="card">
-    <h3 style="margin-top:0;"><i class="fa-solid fa-right-left"></i> P2P Escrow Market</h3>
-    <small style="color:#aaa;">Secure peer-to-peer trading pairs</small>
+    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-right-left"></i> P2P Escrow Market</h3>
+    <small style="color:#b0b0b0;">Secure peer-to-peer trading pairs</small>
 
     <div class="p2p-order">
       <div>
-        <strong>Buy USDT via EcoCash</strong><br>
-        <small style="color:#aaa;">Escrow Protected • Rate: 1:1</small>
+        <strong style="color:#ffffff;">Buy USDT via EcoCash</strong><br>
+        <small style="color:#b0b0b0;">Escrow Protected • Rate: 1:1</small>
       </div>
       <button class="btn-trade" onclick="startEscrow('USDT / EcoCash')">Trade</button>
     </div>
 
     <div class="p2p-order">
       <div>
-        <strong>Buy USDT via ZiG</strong><br>
-        <small style="color:#aaa;">Escrow Protected • Market Rate</small>
+        <strong style="color:#ffffff;">Buy USDT via ZiG</strong><br>
+        <small style="color:#b0b0b0;">Escrow Protected • Market Rate</small>
       </div>
       <button class="btn-trade" onclick="startEscrow('USDT / ZiG')">Trade</button>
     </div>
 
     <div class="p2p-order">
       <div>
-        <strong>Sell USDT for Rand (ZAR)</strong><br>
-        <small style="color:#aaa;">Escrow Protected</small>
+        <strong style="color:#ffffff;">Sell USDT for Rand (ZAR)</strong><br>
+        <small style="color:#b0b0b0;">Escrow Protected</small>
       </div>
       <button class="btn-trade" onclick="startEscrow('USDT / ZAR')">Trade</button>
     </div>
@@ -365,11 +367,11 @@
   <div class="modal" id="pinModal">
     <div class="modal-content">
       <h3 id="modalTitle" style="margin-top:0; color:#00d2ff;">Enter PIN</h3>
-      <p style="font-size:13px; color:#aaa;">Please enter your 4-digit Transaction PIN to proceed.</p>
+      <p style="font-size:13px; color:#d1d1d1;">Please enter your 4-digit Transaction PIN to proceed.</p>
       <input type="password" id="pinInput" maxlength="4" placeholder="****">
       <div class="modal-btns">
         <button style="background:#444; color:white;" onclick="closePinModal()">Cancel</button>
-        <button style="background:#00d2ff; color:#000;" onclick="verifyPin()">Confirm</button>
+        <button style="background:#00d2ff; color:#000; font-weight:bold;" onclick="verifyPin()">Confirm</button>
       </div>
     </div>
   </div>
@@ -393,6 +395,11 @@
     const auth = getAuth(app);
     let currentAction = "";
 
+    // Kutarisa kana munhu apinda zvakanaka kuburikidza ne sessionStorage
+    if (!sessionStorage.getItem("isLoggedIn")) {
+      window.location.href = "index.html";
+    }
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('userEmail').innerText = user.email;
@@ -413,7 +420,7 @@
     }
 
     window.verifyPin = function() {
-      const pin = document.getElementById('pinInput').value;
+      const pin = document.getElementById('pinInput5') || document.getElementById('pinInput').value;
       if(pin.length < 4) {
         alert("Please enter a valid 4-digit PIN.");
         return;
@@ -435,6 +442,7 @@
     }
 
     document.getElementById('btnLogout').addEventListener('click', () => {
+      sessionStorage.removeItem("isLoggedIn");
       signOut(auth).then(() => {
         window.location.href = "index.html";
       });
