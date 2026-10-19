@@ -76,7 +76,7 @@
       font-size: 15px;
       cursor: pointer;
       margin-top: 10px;
-      display: none; /* Inoza kuoneka kana 20 mins yapfura */
+      display: none;
     }
     .chat-box {
       height: 150px;
@@ -138,7 +138,7 @@
 
   <!-- Chat Room -->
   <div class="card">
-    <h4 style="margin-top:0;"><i class="fa-solid fa-comments"></i> Trade Chat</h4>
+    <h4 style="margin-top:0;"><i class="fa-solid fa-comments"></i> Trade Chat Room</h4>
     <div class="chat-box" id="chatBox">
       <p style="color:#888;"><i>System: Trade started. Escrow holds seller's funds safely until payment is confirmed.</i></p>
     </div>
@@ -149,13 +149,11 @@
   </div>
 
   <script>
-    // Pair details from URL
     const urlParams = new URLSearchParams(window.location.search);
     const pair = urlParams.get('pair') || 'USDT / ZiG';
     document.getElementById('pairTitle').innerText = pair;
 
-    // 20 Minute Countdown Logic
-    let timeLeft = 20 * 60; // 20 minutes in seconds
+    let timeLeft = 20 * 60; // 20 minutes
     const countdownEl = document.getElementById('countdown');
     const reportBtn = document.getElementById('btnReport');
 
@@ -173,7 +171,7 @@
         countdownEl.innerText = "EXPIRED";
         document.getElementById('statusText').innerText = "Time Expired (Unpaid)";
         document.getElementById('statusText').style.color = "#ff4d4d";
-        reportBtn.style.display = "block"; // Show Report Bell Button
+        reportBtn.style.display = "block";
       }
       timeLeft--;
     }, 1000);
