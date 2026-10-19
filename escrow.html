@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>P2P Escrow Trade Room</title>
   
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00d2ff">
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -25,12 +28,14 @@
       padding: 15px;
       border-radius: 12px;
       margin-bottom: 15px;
+      border: 1px solid #333;
     }
     .card {
       background: #1e1e1e;
       padding: 18px;
       border-radius: 12px;
       margin-bottom: 15px;
+      border: 1px solid #2a2a2a;
     }
     .timer-box {
       text-align: center;
@@ -52,11 +57,22 @@
       border-radius: 8px;
       margin-top: 10px;
       font-size: 14px;
+      border: 1px solid #3d3d3d;
+    }
+    .fee-badge {
+      background: rgba(0, 210, 255, 0.15);
+      color: #00d2ff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 5px;
     }
     .btn-pay {
       width: 100%;
       background: #00ff88;
-      color: #000;
+      color: #000000;
       border: none;
       padding: 12px;
       border-radius: 8px;
@@ -64,6 +80,19 @@
       font-size: 15px;
       cursor: pointer;
       margin-top: 15px;
+    }
+    .btn-release {
+      width: 100%;
+      background: #00d2ff;
+      color: #000000;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: none;
     }
     .btn-report {
       width: 100%;
@@ -86,6 +115,7 @@
       overflow-y: auto;
       font-size: 13px;
       margin-bottom: 10px;
+      border: 1px solid #3d3d3d;
     }
     .chat-input {
       display: flex;
@@ -101,6 +131,7 @@
     }
     .chat-input button {
       background: #00d2ff;
+      color: #000;
       border: none;
       padding: 10px 15px;
       border-radius: 6px;
@@ -122,17 +153,21 @@
     <div class="timer" id="countdown">20:00</div>
   </div>
 
-  <!-- Payment Details -->
+  <!-- Details -->
   <div class="card">
     <h4 style="margin-top:0;">Trade Details</h4>
     <div class="details-box">
       <p><strong>Pair:</strong> <span id="pairTitle">USDT / ZiG</span></p>
-      <p><strong>Amount to Pay:</strong> $50.00</p>
-      <p><strong>Seller EcoCash/Bank:</strong> 0771234567 (EcoCash USD)</p>
+      <p><strong>Trade Amount:</strong> $<span id="tradeAmount">50.00</span> USDT</p>
+      <p><strong>Platform Fee (1%):</strong> $<span id="feeAmount">0.50</span> USDT</p>
+      <p><strong>Net Amount to Receive:</strong> $<span id="netAmount">49.50</span> USDT</p>
+      <p><strong>Seller Account:</strong> 0771234567 (EcoCash USD)</p>
       <p><strong>Status:</strong> <span style="color:#ffb300;" id="statusText">Pending Payment</span></p>
+      <span class="fee-badge"><i class="fa-solid fa-percent"></i> 1% Commission auto-collected by Escrow Master Wallet</span>
     </div>
 
     <button class="btn-pay" id="btnPaid" onclick="confirmPayment()"><i class="fa-solid fa-circle-check"></i> I Have Paid Seller</button>
+    <button class="btn-release" id="btnRelease" onclick="releaseEscrow()"><i class="fa-solid fa-lock-open"></i> Confirm Payment & Release Funds</button>
     <button class="btn-report" id="btnReport" onclick="reportDispute()"><i class="fa-solid fa-bell"></i> Report / Trigger Dispute (20 Mins Passed)</button>
   </div>
 
@@ -140,7 +175,7 @@
   <div class="card">
     <h4 style="margin-top:0;"><i class="fa-solid fa-comments"></i> Trade Chat Room</h4>
     <div class="chat-box" id="chatBox">
-      <p style="color:#888;"><i>System: Trade started. Escrow holds seller's funds safely until payment is confirmed.</i></p>
+      <p style="color:#888;"><i>System: Trade started. Escrow holds seller's $50.00 USDT safely. 1% platform fee ($0.50) will be routed to Admin Master Wallet upon completion.</i></p>
     </div>
     <div class="chat-input">
       <input type="text" id="msgInput" placeholder="Type message to trader...">
@@ -153,7 +188,16 @@
     const pair = urlParams.get('pair') || 'USDT / ZiG';
     document.getElementById('pairTitle').innerText = pair;
 
-    let timeLeft = 20 * 60; // 20 minutes
+    const rawAmount = 50.00;
+    const feeRate = 0.01; // 1% Commission
+    const fee = rawAmount * feeRate;
+    const net = rawAmount - fee;
+
+    document.getElementById('tradeAmount').innerText = rawAmount.toFixed(2);
+    document.getElementById('feeAmount').innerText = fee.toFixed(2);
+    document.getElementById('netAmount').innerText = net.toFixed(2);
+
+    let timeLeft = 20 * 60;
     const countdownEl = document.getElementById('countdown');
     const reportBtn = document.getElementById('btnReport');
 
@@ -179,12 +223,22 @@
     function confirmPayment() {
       document.getElementById('statusText').innerText = "Payment Sent - Waiting Seller Release";
       document.getElementById('statusText').style.color = "#00ff88";
-      addChatMessage("Buyer: I have completed the payment, please check and release.");
+      document.getElementById('btnPaid').style.display = "none";
+      document.getElementById('btnRelease').style.display = "block";
+      addChatMessage("Buyer: Payment completed. Please check and release escrow.");
+    }
+
+    function releaseEscrow() {
+      document.getElementById('statusText').innerText = "Completed (Escrow Released)";
+      document.getElementById('statusText').style.color = "#00d2ff";
+      document.getElementById('btnRelease').style.display = "none";
+      addChatMessage("System: Trade completed! $49.50 USDT credited to buyer. $0.50 USDT (1% fee) added to Admin Master Reserve Wallet.");
+      alert("Trade Completed! $0.50 USDT Commission successfully credited to Admin Master Wallet.");
     }
 
     function reportDispute() {
-      alert("Dispute Triggered! Admin has been notified via Report Bell to review transactions.");
-      addChatMessage("System: Dispute opened due to 20-minute timeout. Admin reviewing proof of payment.");
+      alert("Dispute Triggered! Admin notified via Report Bell.");
+      addChatMessage("System: Dispute opened due to 20-minute timeout.");
     }
 
     function sendMessage() {
