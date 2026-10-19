@@ -244,7 +244,7 @@
     <div class="profile-row">
       <div>
         <h3 style="margin:0 0 5px 0;">My Account</h3>
-        <p id="userEmail" style="color:#aaa; font-size:13px; margin:0;">Loading...</p>
+        <p id="userEmail" style="color:#aaa; font-size:13px; margin:0;">Loading user details...</p>
       </div>
       <div class="kyc-badge">
         <i class="fa-solid fa-circle-check"></i> KYC Verified
@@ -264,10 +264,10 @@
     </div>
   </div>
 
-  <!-- Active 20 Mins Timeout / Dispute Alert -->
+  <!-- Active 20 Mins Timeout Alert -->
   <div class="card" style="border: 1px solid #ff4d4d;">
-    <h3 style="margin-top:0; color:#ff4d4d;"><i class="fa-solid fa-triangle-exclamation"></i> P2P Active Order Alert</h3>
-    <p style="font-size:13px; color:#ccc; margin-bottom:10px;">Munhu akapinda mu order asi asati akanda mari kwapfuura maminitsi 20:</p>
+    <h3 style="margin-top:0; color:#ff4d4d;"><i class="fa-solid fa-triangle-exclamation"></i> Active Order Alert</h3>
+    <p style="font-size:13px; color:#ccc; margin-bottom:10px;">User entered order but failed to send payment within 20 minutes:</p>
     
     <div class="timer-alert">
       <div>
@@ -278,7 +278,7 @@
     </div>
   </div>
 
-  <!-- Wallets (USD, USDT, EcoCash, ZiG, Rand, BTC) -->
+  <!-- Wallets & Balances -->
   <div class="card">
     <h3 style="margin-top:0;"><i class="fa-solid fa-coins"></i> Wallets & Balances</h3>
     
@@ -290,7 +290,6 @@
       <div class="balance">$0.00</div>
     </div>
 
-    <!-- USDT Wallet Yakawedzerwa Pano -->
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-solid fa-circle-dollar-to-slot" style="color:#26a69a;"></i>
@@ -302,7 +301,7 @@
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-solid fa-mobile-screen-button" style="color:#00e676;"></i>
-        <div><strong>EcoCash Wallet</strong><br><small style="color:#aaa;">EcoCash USD / ZIG</small></div>
+        <div><strong>EcoCash Wallet</strong><br><small style="color:#aaa;">EcoCash USD / ZiG</small></div>
       </div>
       <div class="balance">$0.00</div>
     </div>
@@ -362,11 +361,11 @@
     </div>
   </div>
 
-  <!-- PIN Security Modal -->
+  <!-- PIN Modal -->
   <div class="modal" id="pinModal">
     <div class="modal-content">
       <h3 id="modalTitle" style="margin-top:0; color:#00d2ff;">Enter PIN</h3>
-      <p style="font-size:13px; color:#aaa;">Isa 4-digit Transaction PIN yako kuti uenderere mberi.</p>
+      <p style="font-size:13px; color:#aaa;">Please enter your 4-digit Transaction PIN to proceed.</p>
       <input type="password" id="pinInput" maxlength="4" placeholder="****">
       <div class="modal-btns">
         <button style="background:#444; color:white;" onclick="closePinModal()">Cancel</button>
@@ -416,7 +415,7 @@
     window.verifyPin = function() {
       const pin = document.getElementById('pinInput').value;
       if(pin.length < 4) {
-        alert("Ndokumbira uise 4-digit PIN yakakwana.");
+        alert("Please enter a valid 4-digit PIN.");
         return;
       }
       closePinModal();
@@ -424,15 +423,15 @@
     }
 
     window.startEscrow = function(pair) {
-      alert("Opening P2P Escrow Room for: " + pair + ". Connecting buyer and seller...");
+      window.location.href = "escrow.html?pair=" + encodeURIComponent(pair);
     }
 
     window.openReportModal = function() {
-      alert("Notification Center: 1 Unpaid Order exceeded 20 minutes limit. Please review transaction details.");
+      window.location.href = "escrow.html?pair=Dispute%20Order%20%23P2P-8842";
     }
 
     window.reportUnpaidUser = function() {
-      alert("Dispute Triggered: User reported for failing to pay within 20 minutes. Escrow frozen for review.");
+      window.location.href = "escrow.html?pair=Dispute%20Order%20%23P2P-8842";
     }
 
     document.getElementById('btnLogout').addEventListener('click', () => {
