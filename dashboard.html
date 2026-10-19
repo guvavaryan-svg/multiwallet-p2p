@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multiwallet P2P - Dashboard</title>
+  <title>Multiwallet P2P - Pro Dashboard</title>
   
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,7 +14,8 @@
       background-color: #121212;
       color: #ffffff;
       margin: 0;
-      padding: 20px;
+      padding: 15px;
+      padding-bottom: 50px;
     }
     .header {
       display: flex;
@@ -25,80 +26,352 @@
       border-radius: 12px;
       margin-bottom: 20px;
     }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
     .header h2 {
       margin: 0;
       color: #00d2ff;
-      font-size: 20px;
+      font-size: 18px;
+    }
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .bell-icon {
+      background: #2b2b2b;
+      color: #ff4d4d;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+    }
+    .bell-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: #ff4d4d;
+      color: white;
+      font-size: 10px;
+      padding: 2px 5px;
+      border-radius: 50%;
     }
     .btn-logout {
       background: #ff4d4d;
       color: white;
       border: none;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 13px;
     }
     .card {
       background: #1e1e1e;
       padding: 20px;
       border-radius: 12px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .kyc-badge {
+      background: rgba(0, 255, 136, 0.15);
+      color: #00ff88;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .btn-action {
+      background: #00d2ff;
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .btn-action:hover {
+      background: #00a8cc;
     }
     .wallet-box {
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: #2b2b2b;
-      padding: 15px;
+      padding: 14px;
       border-radius: 8px;
       margin-top: 10px;
     }
+    .wallet-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
     .wallet-info i {
-      font-size: 24px;
-      color: #00d2ff;
-      margin-right: 12px;
+      font-size: 22px;
+      width: 25px;
+      text-align: center;
     }
     .balance {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: bold;
       color: #00ff88;
+    }
+    .p2p-order {
+      background: #2b2b2b;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-trade {
+      background: #00ff88;
+      color: #000;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .timer-alert {
+      background: rgba(255, 77, 77, 0.15);
+      border: 1px solid #ff4d4d;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+    .btn-report {
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #1e1e1e;
+      padding: 24px;
+      border-radius: 12px;
+      width: 85%;
+      max-width: 320px;
+      text-align: center;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      background: #2b2b2b;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 6px;
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 18px;
+      letter-spacing: 5px;
+    }
+    .modal-btns {
+      display: flex;
+      gap: 10px;
+    }
+    .modal-btns button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <div class="header">
-    <h2><i class="fa-solid fa-wallet"></i> Multiwallet P2P</h2>
-    <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+    <div class="header-left">
+      <h2><i class="fa-solid fa-wallet"></i> Multiwallet</h2>
+    </div>
+    <div class="header-icons">
+      <button class="bell-icon" onclick="openReportModal()">
+        <i class="fa-solid fa-bell"></i>
+        <span class="bell-badge" id="alertCount">1</span>
+      </button>
+      <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
   </div>
 
+  <!-- Profile & Quick Actions -->
   <div class="card">
-    <h3>Welcome to your Wallet</h3>
-    <p id="userEmail">Loading user details...</p>
+    <div class="profile-row">
+      <div>
+        <h3 style="margin:0 0 5px 0;">My Account</h3>
+        <p id="userEmail" style="color:#aaa; font-size:13px; margin:0;">Loading...</p>
+      </div>
+      <div class="kyc-badge">
+        <i class="fa-solid fa-circle-check"></i> KYC Verified
+      </div>
+    </div>
 
-    <h4>My Balances</h4>
+    <div class="actions-grid">
+      <button class="btn-action" onclick="openPinModal('Deposit')">
+        <i class="fa-solid fa-arrow-down"></i> Deposit
+      </button>
+      <button class="btn-action" onclick="openPinModal('Withdraw')">
+        <i class="fa-solid fa-arrow-up"></i> Withdraw
+      </button>
+      <button class="btn-action" onclick="openPinModal('Transfer')">
+        <i class="fa-solid fa-paper-plane"></i> Transfer
+      </button>
+    </div>
+  </div>
+
+  <!-- Active 20 Mins Timeout / Dispute Alert -->
+  <div class="card" style="border: 1px solid #ff4d4d;">
+    <h3 style="margin-top:0; color:#ff4d4d;"><i class="fa-solid fa-triangle-exclamation"></i> P2P Active Order Alert</h3>
+    <p style="font-size:13px; color:#ccc; margin-bottom:10px;">Munhu akapinda mu order asi asati akanda mari kwapfuura maminitsi 20:</p>
+    
+    <div class="timer-alert">
+      <div>
+        <strong>Order #P2P-8842</strong><br>
+        <small style="color:#ff4d4d;">Time Elapsed: 20+ Mins (Unpaid)</small>
+      </div>
+      <button class="btn-report" onclick="reportUnpaidUser()">Report / Check</button>
+    </div>
+  </div>
+
+  <!-- Wallets (USD, USDT, EcoCash, ZiG, Rand, BTC) -->
+  <div class="card">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-coins"></i> Wallets & Balances</h3>
     
     <div class="wallet-box">
-      <div class="wallet-info" style="display:flex; align-items:center;">
-        <i class="fa-solid fa-dollar-sign"></i>
-        <div>
-          <strong>USD Balance</strong><br>
-          <small>United States Dollar</small>
-        </div>
+      <div class="wallet-info">
+        <i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i>
+        <div><strong>USD Wallet</strong><br><small style="color:#aaa;">United States Dollar</small></div>
+      </div>
+      <div class="balance">$0.00</div>
+    </div>
+
+    <!-- USDT Wallet Yakawedzerwa Pano -->
+    <div class="wallet-box">
+      <div class="wallet-info">
+        <i class="fa-solid fa-circle-dollar-to-slot" style="color:#26a69a;"></i>
+        <div><strong>USDT Wallet</strong><br><small style="color:#aaa;">Tether (TRC20 / BEP20)</small></div>
+      </div>
+      <div class="balance">0.00 USDT</div>
+    </div>
+
+    <div class="wallet-box">
+      <div class="wallet-info">
+        <i class="fa-solid fa-mobile-screen-button" style="color:#00e676;"></i>
+        <div><strong>EcoCash Wallet</strong><br><small style="color:#aaa;">EcoCash USD / ZIG</small></div>
       </div>
       <div class="balance">$0.00</div>
     </div>
 
     <div class="wallet-box">
-      <div class="wallet-info" style="display:flex; align-items:center;">
-        <i class="fa-brands fa-bitcoin" style="color: #f7931a;"></i>
-        <div>
-          <strong>Bitcoin (BTC)</strong><br>
-          <small>Crypto Wallet</small>
-        </div>
+      <div class="wallet-info">
+        <i class="fa-solid fa-building-columns" style="color:#ffb300;"></i>
+        <div><strong>ZiG Wallet</strong><br><small style="color:#aaa;">Zimbabwe Gold</small></div>
+      </div>
+      <div class="balance">ZiG 0.00</div>
+    </div>
+
+    <div class="wallet-box">
+      <div class="wallet-info">
+        <i class="fa-solid fa-money-bill-wave" style="color:#29b6f6;"></i>
+        <div><strong>Rand (ZAR)</strong><br><small style="color:#aaa;">South African Rand</small></div>
+      </div>
+      <div class="balance">R0.00</div>
+    </div>
+
+    <div class="wallet-box">
+      <div class="wallet-info">
+        <i class="fa-brands fa-bitcoin" style="color:#f7931a;"></i>
+        <div><strong>Bitcoin (BTC)</strong><br><small style="color:#aaa;">Crypto Wallet</small></div>
       </div>
       <div class="balance">0.0000 BTC</div>
+    </div>
+  </div>
+
+  <!-- P2P Marketplace & Escrow -->
+  <div class="card">
+    <h3 style="margin-top:0;"><i class="fa-solid fa-right-left"></i> P2P Escrow Market</h3>
+    <small style="color:#aaa;">Secure peer-to-peer trading pairs</small>
+
+    <div class="p2p-order">
+      <div>
+        <strong>Buy USDT via EcoCash</strong><br>
+        <small style="color:#aaa;">Escrow Protected • Rate: 1:1</small>
+      </div>
+      <button class="btn-trade" onclick="startEscrow('USDT / EcoCash')">Trade</button>
+    </div>
+
+    <div class="p2p-order">
+      <div>
+        <strong>Buy USDT via ZiG</strong><br>
+        <small style="color:#aaa;">Escrow Protected • Market Rate</small>
+      </div>
+      <button class="btn-trade" onclick="startEscrow('USDT / ZiG')">Trade</button>
+    </div>
+
+    <div class="p2p-order">
+      <div>
+        <strong>Sell USDT for Rand (ZAR)</strong><br>
+        <small style="color:#aaa;">Escrow Protected</small>
+      </div>
+      <button class="btn-trade" onclick="startEscrow('USDT / ZAR')">Trade</button>
+    </div>
+  </div>
+
+  <!-- PIN Security Modal -->
+  <div class="modal" id="pinModal">
+    <div class="modal-content">
+      <h3 id="modalTitle" style="margin-top:0; color:#00d2ff;">Enter PIN</h3>
+      <p style="font-size:13px; color:#aaa;">Isa 4-digit Transaction PIN yako kuti uenderere mberi.</p>
+      <input type="password" id="pinInput" maxlength="4" placeholder="****">
+      <div class="modal-btns">
+        <button style="background:#444; color:white;" onclick="closePinModal()">Cancel</button>
+        <button style="background:#00d2ff; color:#000;" onclick="verifyPin()">Confirm</button>
+      </div>
     </div>
   </div>
 
@@ -119,18 +392,49 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    let currentAction = "";
 
-    // Kutarisa kana munhu akapinda (Logged in)
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        document.getElementById('userEmail').innerText = "Logged in as: " + user.email;
+        document.getElementById('userEmail').innerText = user.email;
       } else {
-        // Kana asina kupinda, mudzore pa index.html
         window.location.href = "index.html";
       }
     });
 
-    // Log Out Button
+    window.openPinModal = function(action) {
+      currentAction = action;
+      document.getElementById('modalTitle').innerText = action + " PIN";
+      document.getElementById('pinInput').value = "";
+      document.getElementById('pinModal').style.display = 'flex';
+    }
+
+    window.closePinModal = function() {
+      document.getElementById('pinModal').style.display = 'none';
+    }
+
+    window.verifyPin = function() {
+      const pin = document.getElementById('pinInput').value;
+      if(pin.length < 4) {
+        alert("Ndokumbira uise 4-digit PIN yakakwana.");
+        return;
+      }
+      closePinModal();
+      alert(currentAction + " request initiated securely via Escrow PIN.");
+    }
+
+    window.startEscrow = function(pair) {
+      alert("Opening P2P Escrow Room for: " + pair + ". Connecting buyer and seller...");
+    }
+
+    window.openReportModal = function() {
+      alert("Notification Center: 1 Unpaid Order exceeded 20 minutes limit. Please review transaction details.");
+    }
+
+    window.reportUnpaidUser = function() {
+      alert("Dispute Triggered: User reported for failing to pay within 20 minutes. Escrow frozen for review.");
+    }
+
     document.getElementById('btnLogout').addEventListener('click', () => {
       signOut(auth).then(() => {
         window.location.href = "index.html";
