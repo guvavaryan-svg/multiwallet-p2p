@@ -1,6 +1,6 @@
 {
-  "name": "Multiwallet P2P",
-  "short_name": "Multiwallet",
+  "name": "MultiwalletP2P",
+  "short_name": "MultiwalletP2P",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#121212",
