@@ -293,8 +293,9 @@
         <strong id="cardCommissionBalance" style="color:#00ff88; font-size:20px;">$3.50 USD</strong>
       </div>
       <div>
-        <small style="color:#aaa;" id="walletTypeLabel">Demo Wallet Balance</small><br>
-        <strong id="demoUsdDisplay" style="color:#ffffff; font-size:18px;">$500.00 USD</strong>
+        <!-- Zvakangwarirwa Pano: Zvinochinja zvichienderana ne Mode -->
+        <small style="color:#aaa;" id="walletTypeLabel">Wallet Balance</small><br>
+        <strong id="demoUsdDisplay" style="color:#ffffff; font-size:18px;">$0.00 USD</strong>
       </div>
     </div>
   </div>
@@ -306,8 +307,8 @@
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> <span id="usdWalletTitle">USD Wallet (Demo)</span> <br><small style="color:#888;">United States Dollar</small></div>
-      <div class="wallet-amount" id="usdWalletBalance">$500.00 USD</div>
+      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> <span id="usdWalletTitle">USD Wallet</span> <br><small style="color:#888;">United States Dollar</small></div>
+      <div class="wallet-amount" id="usdWalletBalance">$0.00 USD</div>
     </div>
 
     <div class="wallet-item">
@@ -349,7 +350,7 @@
 
     <div class="agent-item">
       <div>
-        <strong style="color:#fff;">John Doe (Demo Agent)</strong><br>
+        <strong style="color:#fff;">John Doe (Agent)</strong><br>
         <small style="color:#aaa;">USDT / ZiG | Rate: Market</small>
       </div>
       <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
@@ -497,7 +498,8 @@
 
       const phone = prompt("Enter EcoCash Phone Number (e.g., 0771234567):", localStorage.getItem('ecocash_phone') || "");
       if (phone !== null && phone.trim() !== "") {
-        const usdVal = prompt("Enter USD Balance ($):", currentMode === 'demo' ? (localStorage.getItem('demo_usd_balance') || "500.00") : (localStorage.getItem('real_usd_balance') || "0.00"));
+        const modeLabelText = currentMode === 'demo' ? "Demo USD Balance ($)" : "Real USD Balance ($)";
+        const usdVal = prompt("Enter " + modeLabelText + ":", currentMode === 'demo' ? (localStorage.getItem('demo_usd_balance') || "500.00") : (localStorage.getItem('real_usd_balance') || "0.00"));
         const zigVal = prompt("Enter ZiG Balance (ZiG):", localStorage.getItem('ecocash_zig_balance') || "0.00");
 
         if (currentMode === 'demo') {
@@ -510,7 +512,7 @@
         localStorage.setItem('ecocash_zig_balance', parseFloat(zigVal || '0.00').toFixed(2));
 
         renderWalletData();
-        alert("VERIFIED: Account details updated successfully!");
+        alert("VERIFIED: Account balances updated successfully for " + currentMode.toUpperCase() + " mode!");
       }
     }
 
