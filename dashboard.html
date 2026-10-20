@@ -388,14 +388,6 @@
   </div>
 
   <script>
-    // --- BACKGROUND-SWITCH AUTO-LOCK SECURITY (Hachivhare kana munhu ari muapp) ---
-    document.addEventListener("visibilitychange", function() {
-      if (document.hidden) {
-        // Kana munhu abva paapp kana kuisa app mubackground, inokiwa
-        sessionStorage.removeItem("isLoggedIn");
-      }
-    });
-
     let currentMode = localStorage.getItem('account_mode') || 'demo';
 
     function updateModeUI() {
@@ -595,7 +587,7 @@
 
         if (currentMode === 'demo') {
           localStorage.setItem('demo_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
-          localStorage.setItem('demo_usdt_balance', parseFloat(usdtVal || '0.00').deflated ? parseFloat(usdtVal || '0.00').toFixed(2) : parseFloat(usdtVal || '0.00').toFixed(2));
+          localStorage.setItem('demo_usdt_balance', parseFloat(usdtVal || '0.00').toFixed(2));
         } else {
           localStorage.setItem('real_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
           localStorage.setItem('real_usdt_balance', parseFloat(usdtVal || '0.00').toFixed(2));
