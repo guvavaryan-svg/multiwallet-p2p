@@ -79,6 +79,34 @@
       align-items: center;
       justify-content: space-between;
     }
+    
+    /* DERIV PARTNER CARD STYLES */
+    .deriv-card {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      border: 1px solid #6366f1;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+    .btn-deriv-partner {
+      background: #ff444f;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      box-shadow: 0 4px 10px rgba(255, 68, 79, 0.3);
+      transition: background 0.2s;
+    }
+    .btn-deriv-partner:hover {
+      background: #d9363e;
+    }
+
     .action-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -203,6 +231,23 @@
     </div>
   </div>
 
+  <!-- DERIV PARTNER TRADING INTEGRATION CARD -->
+  <div class="deriv-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <strong style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-chart-line"></i> Official Trading Partner</strong>
+      <span style="background: rgba(255,68,79,0.2); color: #ff444f; border: 1px solid #ff444f; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold;">LIVE INTEGRATION</span>
+    </div>
+    <h3 style="margin: 0 0 6px 0; color: #ffffff; font-size: 16px;">Deriv Trading & Fast Account Top-Up</h3>
+    <p style="font-size: 12px; color: #cbd5e1; margin: 0; line-height: 1.4;">
+      Connect or register your Deriv trading account to trade Synthetic Indices (Crash/Boom), Options, and Forex markets directly.
+    </p>
+    
+    <!-- DERIV AFFILIATE LINK YAKO -->
+    <a href="https://t.deriv.link?t=WWGEGKRGK5" target="_blank" class="btn-deriv-partner">
+      <i class="fa-solid fa-arrow-up-right-from-square"></i> Open / Connect Deriv Account
+    </a>
+  </div>
+
   <!-- Active Order Alert -->
   <div class="alert-card">
     <div style="color:#ff3b30; font-weight:bold; font-size:14px; margin-bottom:8px;">
@@ -261,4 +306,125 @@
       <div class="wallet-amount" id="ecoCashWalletDisplay">$0.00 USD</div>
     </div>
 
-    <div class="wallet
+    <div class="wallet-item">
+      <div><i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Wallet <br><small style="color:#888;">Zimbabwe Gold</small></div>
+      <div class="wallet-amount" style="color:#ffcc00;" id="zigWalletDisplay">ZiG 0.00</div>
+    </div>
+
+    <div class="wallet-item">
+      <div><i class="fa-solid fa-money-bill-wave" style="color:#00d2ff;"></i> Rand (ZAR) <br><small style="color:#888;">South African Rand</small></div>
+      <div class="wallet-amount">R0.00</div>
+    </div>
+
+    <div class="wallet-item">
+      <div><i class="fa-brands fa-bitcoin" style="color:#ff9900;"></i> Bitcoin (BTC) <br><small style="color:#888;">Crypto Wallet</small></div>
+      <div class="wallet-amount" style="color:#ff9900;">0.0000 BTC</div>
+    </div>
+  </div>
+
+  <!-- Active P2P Trading Markets -->
+  <div class="card">
+    <div class="card-title"><span><i class="fa-solid fa-store"></i> Active P2P Trading Markets</span></div>
+
+    <div class="agent-item">
+      <div>
+        <strong style="color:#fff;">Buy USDT via EcoCash</strong><br>
+        <small style="color:#aaa;">Escrow Protected • Rate: 1:1</small>
+      </div>
+      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade</a>
+    </div>
+
+    <div class="agent-item">
+      <div>
+        <strong style="color:#fff;">Buy USDT via ZiG</strong><br>
+        <small style="color:#aaa;">Escrow Protected • Market Rate</small>
+      </div>
+      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
+    </div>
+
+    <div class="agent-item">
+      <div>
+        <strong style="color:#fff;">John Doe (Demo Agent)</strong><br>
+        <small style="color:#aaa;">USDT / ZiG | Rate: Market</small>
+      </div>
+      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "index.html";
+        return;
+      }
+
+      if (!localStorage.getItem('masterCardNumber')) {
+        localStorage.setItem('masterCardNumber', '5321622512326754');
+      }
+      if (!localStorage.getItem('masterCommissionLocked')) {
+        localStorage.setItem('masterCommissionLocked', '3.50');
+      }
+      if (!localStorage.getItem('demo_usd_balance')) {
+        localStorage.setItem('demo_usd_balance', '500.00');
+      }
+
+      renderWalletData();
+    });
+
+    function renderWalletData() {
+      const cardComm = parseFloat(localStorage.getItem('masterCommissionLocked') || '3.50');
+      const demoBal = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
+      const ecoBal = parseFloat(localStorage.getItem('ecocash_usd_balance') || '0.00');
+      const zigBal = parseFloat(localStorage.getItem('ecocash_zig_balance') || '0.00');
+      const phone = localStorage.getItem('ecocash_phone') || 'Not Linked';
+
+      document.getElementById('cardCommissionBalance').innerText = '$' + cardComm.toFixed(2) + ' USD';
+      document.getElementById('demoUsdDisplay').innerText = '$' + demoBal.toFixed(2) + ' USD';
+      document.getElementById('usdWalletBalance').innerText = '$' + demoBal.toFixed(2) + ' USD';
+      document.getElementById('ecoCashWalletDisplay').innerText = '$' + ecoBal.toFixed(2) + ' USD';
+      document.getElementById('zigWalletDisplay').innerText = 'ZiG ' + zigBal.toFixed(2);
+      document.getElementById('userEcoPhone').innerText = 'EcoCash: ' + phone;
+    }
+
+    function promptEcoCashLink() {
+      let savedPin = localStorage.getItem('user_security_pin');
+
+      if (!savedPin) {
+        const newPin = prompt("SECURITY SETUP: Create a new 4-digit Security PIN to protect your account:");
+        if (newPin && newPin.length === 4 && !isNaN(newPin)) {
+          localStorage.setItem('user_security_pin', newPin);
+          alert("Security PIN successfully created!");
+          savedPin = newPin;
+        } else {
+          alert("Invalid PIN format. Must be 4 numeric digits.");
+          return;
+        }
+      }
+
+      const enteredPin = prompt("SECURITY VERIFICATION: Enter your 4-digit Security PIN to continue:");
+      if (enteredPin !== savedPin) {
+        alert("ACCESS DENIED: Incorrect Security PIN! Transaction aborted for safety.");
+        return;
+      }
+
+      const phone = prompt("Enter EcoCash Phone Number (e.g., 0771234567):", localStorage.getItem('ecocash_phone') || "");
+      if (phone !== null && phone.trim() !== "") {
+        const usdVal = prompt("Enter EcoCash USD Balance ($):", localStorage.getItem('ecocash_usd_balance') || "0.00");
+        const zigVal = prompt("Enter ZiG Balance (ZiG):", localStorage.getItem('ecocash_zig_balance') || "0.00");
+
+        localStorage.setItem('ecocash_phone', phone.trim());
+        localStorage.setItem('ecocash_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
+        localStorage.setItem('ecocash_zig_balance', parseFloat(zigVal || '0.00').toFixed(2));
+
+        renderWalletData();
+        alert("VERIFIED: Account details updated securely!");
+      }
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem("isLoggedIn");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
