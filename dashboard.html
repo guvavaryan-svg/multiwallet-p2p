@@ -231,21 +231,26 @@
     </div>
   </div>
 
-  <!-- DERIV PARTNER TRADING INTEGRATION CARD -->
+  <!-- DERIV PARTNER TRADING INTEGRATION CARD WITH CLICK TRACKER -->
   <div class="deriv-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
       <strong style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-chart-line"></i> Official Trading Partner</strong>
-      <span style="background: rgba(255,68,79,0.2); color: #ff444f; border: 1px solid #ff444f; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold;">LIVE INTEGRATION</span>
+      <span style="background: rgba(255,68,79,0.2); color: #ff444f; border: 1px solid #ff444f; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold;">LIVE TRACKING</span>
     </div>
     <h3 style="margin: 0 0 6px 0; color: #ffffff; font-size: 16px;">Deriv Trading & Fast Account Top-Up</h3>
-    <p style="font-size: 12px; color: #cbd5e1; margin: 0; line-height: 1.4;">
+    <p style="font-size: 12px; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
       Connect or register your Deriv trading account to trade Synthetic Indices (Crash/Boom), Options, and Forex markets directly.
     </p>
     
-    <!-- DERIV AFFILIATE LINK YAKO -->
-    <a href="https://t.deriv.link?t=WWGEGKRGK5" target="_blank" class="btn-deriv-partner">
+    <!-- DERIV AFFILIATE LINK WITH TRACKING -->
+    <a href="https://t.deriv.link?t=WWGEGKRGK5" target="_blank" class="btn-deriv-partner" onclick="trackDerivClick()">
       <i class="fa-solid fa-arrow-up-right-from-square"></i> Open / Connect Deriv Account
     </a>
+
+    <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8;">
+      <span>Referral Code: <strong style="color: #fff;">FCPW2BYUVPV</strong></span>
+      <span>App Clicks: <strong id="derivClickCount" style="color: #00ff88;">0</strong></span>
+    </div>
   </div>
 
   <!-- Active Order Alert -->
@@ -369,6 +374,7 @@
       }
 
       renderWalletData();
+      updateDerivClickDisplay();
     });
 
     function renderWalletData() {
@@ -384,6 +390,20 @@
       document.getElementById('ecoCashWalletDisplay').innerText = '$' + ecoBal.toFixed(2) + ' USD';
       document.getElementById('zigWalletDisplay').innerText = 'ZiG ' + zigBal.toFixed(2);
       document.getElementById('userEcoPhone').innerText = 'EcoCash: ' + phone;
+    }
+
+    // TRACK DERIV CLICKS FROM APP
+    function trackDerivClick() {
+      let clicks = parseInt(localStorage.getItem('deriv_clicks') || '0') + 1;
+      localStorage.setItem('deriv_clicks', clicks.toString());
+      updateDerivClickDisplay();
+    }
+
+    function updateDerivClickDisplay() {
+      const countElem = document.getElementById('derivClickCount');
+      if (countElem) {
+        countElem.innerText = localStorage.getItem('deriv_clicks') || '0';
+      }
     }
 
     function promptEcoCashLink() {
