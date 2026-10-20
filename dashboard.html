@@ -9,7 +9,6 @@
   <meta name="theme-color" content="#00d2ff">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="MultiwalletP2P">
 
   <!-- Custom MW Icon -->
   <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -53,7 +52,6 @@
       font-weight: bold;
       color: #00d2ff;
     }
-    /* Red Logout Button */
     .btn-logout {
       background: #ff3b30;
       color: #ffffff;
@@ -73,17 +71,44 @@
       border: 1px solid #2a2a2a;
     }
     .card-title {
-      font-size: 14px;
-      color: #aaa;
-      margin-bottom: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #00d2ff;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .balance-amount {
-      font-size: 26px;
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .btn-action-tile {
+      background: #00d2ff;
+      color: #000;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
       font-weight: bold;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+    }
+    .wallet-item {
+      background: #252525;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #333;
+    }
+    .wallet-amount {
       color: #00ff88;
+      font-weight: bold;
     }
     .masked-card {
       background: #2b2b2b;
@@ -110,22 +135,13 @@
       align-items: center;
     }
     .btn-trade {
-      background: #00d2ff;
+      background: #00ff88;
       color: #000;
       text-decoration: none;
       padding: 8px 14px;
       border-radius: 6px;
       font-weight: bold;
       font-size: 13px;
-    }
-    .about-box {
-      font-size: 13px;
-      color: #bbb;
-      line-height: 1.5;
-    }
-    .about-box h4 {
-      color: #00d2ff;
-      margin-top: 0;
     }
   </style>
 </head>
@@ -140,46 +156,80 @@
     <button class="btn-logout" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
-  <!-- Master Virtual Card Commission Display (Securely Masked) -->
+  <!-- Account Header Section -->
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <h3 style="margin:0; color:#fff;">My Account</h3>
+        <small style="color:#aaa;">user@multiwallet.com</small>
+      </div>
+      <span style="background:rgba(0,255,136,0.15); color:#00ff88; border:1px solid #00ff88; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;">
+        <i class="fa-solid fa-circle-check"></i> KYC Verified
+      </span>
+    </div>
+
+    <!-- Deposit / Withdraw / Transfer Buttons -->
+    <div class="action-grid">
+      <button class="btn-action-tile" onclick="alert('Deposit system active via P2P Escrow')"><i class="fa-solid fa-arrow-down"></i><br>Deposit</button>
+      <button class="btn-action-tile" onclick="alert('Withdraw system active via P2P Escrow')"><i class="fa-solid fa-arrow-up"></i><br>Withdraw</button>
+      <button class="btn-action-tile" onclick="alert('Internal Transfer active')"><i class="fa-solid fa-paper-plane"></i><br>Transfer</button>
+    </div>
+  </div>
+
+  <!-- Master Virtual Card (1% Commission Collector) -->
   <div class="card" style="border-left: 4px solid #00d2ff;">
-    <div class="card-title"><i class="fa-solid fa-shield-halved" style="color:#00d2ff;"></i> Master Virtual Card (1% Commission Collector)</div>
+    <div class="card-title"><i class="fa-solid fa-shield-halved"></i> Master Virtual Card (1% Commission)</div>
     <div class="masked-card">
       <span>•••• •••• •••• 6754</span>
       <span style="font-size:11px; background:#00ff88; color:#000; padding:2px 6px; border-radius:4px; font-weight:bold;">SECURE</span>
     </div>
-    <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+    <div style="margin-top:12px; display:flex; justify-content:space-between;">
       <div>
         <small style="color:#aaa;">Accumulated Commission</small><br>
-        <span class="balance-amount" id="cardCommissionBalance">$0.00 USD</span>
+        <strong id="cardCommissionBalance" style="color:#00ff88; font-size:20px;">$0.00 USD</strong>
       </div>
       <div>
-        <small style="color:#aaa;">Demo Wallet</small><br>
-        <span style="color:#ffffff; font-weight:bold;" id="demoUsdDisplay">$500.00 USD</span>
+        <small style="color:#aaa;">Demo Wallet Balance</small><br>
+        <strong id="demoUsdDisplay" style="color:#ffffff; font-size:18px;">$500.00 USD</strong>
       </div>
     </div>
   </div>
 
-  <!-- App Purpose & Benefits Section -->
-  <div class="card about-box">
-    <h4><i class="fa-solid fa-circle-info"></i> About MultiwalletP2P</h4>
-    <p>MultiwalletP2P is a secure peer-to-peer exchange platform designed for fast and safe forex deposits and withdrawals. All trades are protected by an automated Escrow protection system.</p>
-    <ul style="padding-left:18px; margin:5px 0;">
-      <li><strong>Escrow Guarantee:</strong> Seller funds are locked before buyer payment is sent.</li>
-      <li><strong>Automated Routing:</strong> 1% platform commission is automatically processed to the Master Card.</li>
-      <li><strong>Zero Third-Party Fraud:</strong> Verified trading room with live transaction logs.</li>
-    </ul>
+  <!-- Wallets & Balances Section -->
+  <div class="card">
+    <div class="card-title"><i class="fa-solid fa-wallet"></i> Wallets & Balances</div>
+
+    <div class="wallet-item">
+      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> USD Wallet</div>
+      <div class="wallet-amount" id="usdWalletBalance">$500.00</div>
+    </div>
+
+    <div class="wallet-item">
+      <div><i class="fa-solid fa-coins" style="color:#00ff88;"></i> USDT Wallet</div>
+      <div class="wallet-amount">1,000.00 USDT</div>
+    </div>
+
+    <div class="wallet-item">
+      <div><i class="fa-solid fa-mobile-screen-button" style="color:#00d2ff;"></i> EcoCash Wallet</div>
+      <div class="wallet-amount">$0.00 USD</div>
+    </div>
+
+    <div class="wallet-item">
+      <div><i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Wallet</div>
+      <div class="wallet-amount" style="color:#ffcc00;">ZiG 0.00</div>
+    </div>
   </div>
 
-  <!-- Available P2P Agents Market -->
+  <!-- Active P2P Trading Markets -->
   <div class="card">
-    <div class="card-title"><i class="fa-solid fa-store" style="color:#00d2ff;"></i> Active P2P Trading Markets</div>
+    <div class="card-title"><i class="fa-solid fa-store"></i> Active P2P Trading Markets</div>
 
     <div class="agent-item">
       <div>
         <strong style="color:#fff;">John Doe (Demo Agent)</strong><br>
         <small style="color:#aaa;">USDT / ZiG | Rate: Market</small>
       </div>
-      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade Now</a>
+      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
     </div>
 
     <div class="agent-item">
@@ -187,20 +237,17 @@
         <strong style="color:#fff;">FastEx (Demo Agent)</strong><br>
         <small style="color:#aaa;">USDT / EcoCash | Rate: 1:1</small>
       </div>
-      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade Now</a>
+      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade</a>
     </div>
   </div>
 
   <script>
-    // Initialize Master Virtual Card Data (Securely Stored in LocalStorage)
     window.addEventListener('DOMContentLoaded', () => {
-      // Check login status
       if (sessionStorage.getItem("isLoggedIn") !== "true") {
         window.location.href = "index.html";
         return;
       }
 
-      // Store actual card number in system memory
       if (!localStorage.getItem('masterCardNumber')) {
         localStorage.setItem('masterCardNumber', '5321622512326754');
       }
@@ -211,12 +258,12 @@
         localStorage.setItem('demo_usd_balance', '500.00');
       }
 
-      // Render Display Values
       const cardComm = parseFloat(localStorage.getItem('masterCommissionLocked') || '0.00');
       const demoBal = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
 
       document.getElementById('cardCommissionBalance').innerText = '$' + cardComm.toFixed(2) + ' USD';
       document.getElementById('demoUsdDisplay').innerText = '$' + demoBal.toFixed(2) + ' USD';
+      document.getElementById('usdWalletBalance').innerText = '$' + demoBal.toFixed(2) + ' USD';
     });
 
     function handleLogout() {
