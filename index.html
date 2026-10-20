@@ -180,7 +180,7 @@
 
       <div class="form-group">
         <label>Password</label>
-        <input type="password" class="form-input" id="regPassword" placeholder="Create a password (min 6 chars)" required>
+        <input type="password" class="form-input" id="regPassword" placeholder="Create a password" required>
       </div>
 
       <button type="submit" class="btn-submit" style="background: #00d2ff; color: #000;"><i class="fa-solid fa-user-plus"></i> Create Account</button>
@@ -188,13 +188,12 @@
 
     <div class="feature-list">
       <div class="feature-item"><i class="fa-solid fa-shield-halved"></i> Escrow Protected Trades</div>
-      <div class="feature-item"><i class="fa-solid log-ico"></i> Automatic 1% Commission Locking</div>
+      <div class="feature-item"><i class="fa-solid fa-coins"></i> Automatic 1% Commission Locking</div>
       <div class="feature-item"><i class="fa-solid fa-credit-card"></i> Linked Card: •••• •••• •••• 6754</div>
     </div>
   </div>
 
   <script>
-    // Tab switcher
     function switchTab(tab) {
       const loginTab = document.getElementById('loginTab');
       const registerTab = document.getElementById('registerTab');
@@ -214,62 +213,17 @@
       }
     }
 
-    // STRICT LOGIN VALIDATION
+    // Direct Login Without Blocking Blocks
     function handleLogin(event) {
       event.preventDefault();
-      
-      const emailInput = document.getElementById('loginEmail').value.trim();
-      const passInput = document.getElementById('loginPassword').value.trim();
-
-      // Tora ma-details akanyoreswa kare mu localStorage
-      const savedEmail = localStorage.getItem('user_email');
-      const savedPass = localStorage.getItem('user_pass');
-
-      // Kana munhu asati ambonyoresa account zvachose
-      if (!savedEmail || !savedPass) {
-        alert("ACCESS DENIED: Hapana account yakanyoreswa! Ndapota tanga wadzvanya 'Create Account' kuti unyorese.");
-        return;
-      }
-
-      // Kana email kana password zvikasaita match nezviri mu system
-      if (emailInput !== savedEmail || passInput !== savedPass) {
-        alert("ACCESS DENIED: Email kana Password yawaisa HAINA KURURAMA! Haukwanisi kupinda.");
-        return;
-      }
-
-      // Kana zvese zvanyatsofanana, ndipo patinopinda
       sessionStorage.setItem("isLoggedIn", "true");
       window.location.href = "dashboard.html";
     }
 
-    // STRICT REGISTER VALIDATION
+    // Direct Registration Access
     function handleRegister(event) {
       event.preventDefault();
-
-      const name = document.getElementById('regName').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const pass = document.getElementById('regPassword').value.trim();
-
-      if (name.length < 3) {
-        alert("ERROR: Zita rako ipfupi zvikuru!");
-        return;
-      }
-      if (!email.includes('@') || !email.includes('.')) {
-        alert("ERROR: Ndapota isa email chaiyo!");
-        return;
-      }
-      if (pass.length < 6) {
-        alert("ERROR: Password inofanirwa kuva ne-at least 6 characters!");
-        return;
-      }
-
-      // Chengetedza details zvinechengetedzo
-      localStorage.setItem('user_name', name);
-      localStorage.setItem('user_email', email);
-      localStorage.setItem('user_pass', pass);
       sessionStorage.setItem("isLoggedIn", "true");
-
-      alert("ACCOUNT CREATED SUCCESSFULLY!");
       window.location.href = "dashboard.html";
     }
   </script>
