@@ -143,14 +143,22 @@
       font-weight: bold;
       font-size: 13px;
     }
-    .about-box {
-      font-size: 13px;
-      color: #bbb;
-      line-height: 1.5;
+    .alert-card {
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid #ff3b30;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
     }
-    .about-box h4 {
-      color: #00d2ff;
-      margin-top: 0;
+    .btn-report {
+      background: #ff3b30;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -185,6 +193,21 @@
     </div>
   </div>
 
+  <!-- Active Order Alert -->
+  <div class="alert-card">
+    <div style="color:#ff3b30; font-weight:bold; font-size:14px; margin-bottom:8px;">
+      <i class="fa-solid fa-triangle-exclamation"></i> Active Order Alert
+    </div>
+    <p style="font-size:12px; color:#ccc; margin:0 0 10px 0;">User entered order but failed to send payment within 20 minutes:</p>
+    <div style="background:#1e1e1e; padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff3b30;">
+      <div>
+        <strong style="font-size:13px; color:#fff;">Order #P2P-8842</strong><br>
+        <small style="color:#ff3b30;">Time Elapsed: 20+ Mins (Unpaid)</small>
+      </div>
+      <button class="btn-report" onclick="alert('Checking order status...')">Report / Check</button>
+    </div>
+  </div>
+
   <!-- Master Virtual Card (1% Commission Collector) -->
   <div class="card" style="border-left: 4px solid #00d2ff;">
     <div class="card-title"><i class="fa-solid fa-shield-halved"></i> Master Virtual Card (1% Commission Collector)</div>
@@ -195,7 +218,7 @@
     <div style="margin-top:12px; display:flex; justify-content:space-between;">
       <div>
         <small style="color:#aaa;">Accumulated Commission</small><br>
-        <strong id="cardCommissionBalance" style="color:#00ff88; font-size:20px;">$0.00 USD</strong>
+        <strong id="cardCommissionBalance" style="color:#00ff88; font-size:20px;">$3.50 USD</strong>
       </div>
       <div>
         <small style="color:#aaa;">Demo Wallet Balance</small><br>
@@ -204,39 +227,38 @@
     </div>
   </div>
 
-  <!-- About MultiwalletP2P -->
-  <div class="card about-box">
-    <h4><i class="fa-solid fa-circle-info"></i> About MultiwalletP2P</h4>
-    <p>MultiwalletP2P is a secure peer-to-peer exchange platform designed for fast and safe forex deposits and withdrawals. All trades are protected by an automated Escrow protection system.</p>
-    <ul style="padding-left:18px; margin:5px 0;">
-      <li><strong>Escrow Guarantee:</strong> Seller funds are locked before buyer payment is sent.</li>
-      <li><strong>Automated Routing:</strong> 1% platform commission is automatically processed to the Master Card.</li>
-      <li><strong>Zero Third-Party Fraud:</strong> Verified trading room with live transaction logs.</li>
-    </ul>
-  </div>
-
   <!-- Wallets & Balances Section -->
   <div class="card">
     <div class="card-title"><i class="fa-solid fa-wallet"></i> Wallets & Balances</div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> USD Wallet</div>
+      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> USD Wallet <br><small style="color:#888;">United States Dollar</small></div>
       <div class="wallet-amount" id="usdWalletBalance">$500.00</div>
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-coins" style="color:#00ff88;"></i> USDT Wallet</div>
+      <div><i class="fa-solid fa-coins" style="color:#00ff88;"></i> USDT Wallet <br><small style="color:#888;">Tether (TRC20 / BEP20)</small></div>
       <div class="wallet-amount">1,000.00 USDT</div>
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-mobile-screen-button" style="color:#00d2ff;"></i> EcoCash Wallet</div>
-      <div class="wallet-amount">$0.00 USD</div>
+      <div><i class="fa-solid fa-mobile-screen-button" style="color:#00d2ff;"></i> EcoCash Wallet <br><small style="color:#888;">EcoCash USD / ZiG</small></div>
+      <div class="wallet-amount">$0.00</div>
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Wallet</div>
+      <div><i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Wallet <br><small style="color:#888;">Zimbabwe Gold</small></div>
       <div class="wallet-amount" style="color:#ffcc00;">ZiG 0.00</div>
+    </div>
+
+    <div class="wallet-item">
+      <div><i class="fa-solid fa-money-bill-wave" style="color:#00d2ff;"></i> Rand (ZAR) <br><small style="color:#888;">South African Rand</small></div>
+      <div class="wallet-amount">R0.00</div>
+    </div>
+
+    <div class="wallet-item">
+      <div><i class="fa-brands fa-bitcoin" style="color:#ff9900;"></i> Bitcoin (BTC) <br><small style="color:#888;">Crypto Wallet</small></div>
+      <div class="wallet-amount" style="color:#ff9900;">0.0000 BTC</div>
     </div>
   </div>
 
@@ -246,18 +268,26 @@
 
     <div class="agent-item">
       <div>
-        <strong style="color:#fff;">John Doe (Demo Agent)</strong><br>
-        <small style="color:#aaa;">USDT / ZiG | Rate: Market</small>
+        <strong style="color:#fff;">Buy USDT via EcoCash</strong><br>
+        <small style="color:#aaa;">Escrow Protected • Rate: 1:1</small>
       </div>
-      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade Now</a>
+      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade</a>
     </div>
 
     <div class="agent-item">
       <div>
-        <strong style="color:#fff;">FastEx (Demo Agent)</strong><br>
-        <small style="color:#aaa;">USDT / EcoCash | Rate: 1:1</small>
+        <strong style="color:#fff;">Buy USDT via ZiG</strong><br>
+        <small style="color:#aaa;">Escrow Protected • Market Rate</small>
       </div>
-      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade Now</a>
+      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
+    </div>
+
+    <div class="agent-item">
+      <div>
+        <strong style="color:#fff;">John Doe (Demo Agent)</strong><br>
+        <small style="color:#aaa;">USDT / ZiG | Rate: Market</small>
+      </div>
+      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
     </div>
   </div>
 
@@ -272,13 +302,13 @@
         localStorage.setItem('masterCardNumber', '5321622512326754');
       }
       if (!localStorage.getItem('masterCommissionLocked')) {
-        localStorage.setItem('masterCommissionLocked', '0.00');
+        localStorage.setItem('masterCommissionLocked', '3.50');
       }
       if (!localStorage.getItem('demo_usd_balance')) {
         localStorage.setItem('demo_usd_balance', '500.00');
       }
 
-      const cardComm = parseFloat(localStorage.getItem('masterCommissionLocked') || '0.00');
+      const cardComm = parseFloat(localStorage.getItem('masterCommissionLocked') || '3.50');
       const demoBal = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
 
       document.getElementById('cardCommissionBalance').innerText = '$' + cardComm.toFixed(2) + ' USD';
