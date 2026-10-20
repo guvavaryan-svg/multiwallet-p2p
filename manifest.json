@@ -1,20 +1,22 @@
 {
-  "name": "MultiwalletP2P",
   "short_name": "MultiwalletP2P",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#00d2ff",
+  "name": "MultiwalletP2P App",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/888/888870.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512 192x192 128x128 64x64",
+      "purpose": "any maskable"
     },
     {
       "src": "https://cdn-icons-png.flaticon.com/512/888/888870.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "sizes": "512x512"
     }
-  ]
+  ],
+  "start_url": "./index.html",
+  "background_color": "#121212",
+  "theme_color": "#00d2ff",
+  "display": "standalone",
+  "orientation": "portrait"
 }
