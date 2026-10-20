@@ -231,7 +231,7 @@
       }
     }
 
-    // STRICT VALIDATION FOR LOGIN: Blocks incorrect or fake details completely
+    // STRICT AUTHENTICATION VERIFICATION
     function handleLogin(event) {
       event.preventDefault();
       
@@ -241,24 +241,23 @@
       const savedEmail = localStorage.getItem('user_email');
       const savedPass = localStorage.getItem('user_pass');
 
-      // Check if any account has been registered on this device
+      // Check if an account is registered
       if (!savedEmail || !savedPass) {
-        alert("ACCESS DENIED: No account found on this device! Please click 'Create Account' to register first.");
+        alert("ACCESS DENIED: No account found on this device. Please register first.");
         return;
       }
 
-      // Strict check: if email or password do not match what was registered, block access completely
+      // Strict matching check: Both email and password MUST match exactly
       if (emailInput !== savedEmail || passInput !== savedPass) {
-        alert("ACCESS DENIED: Incorrect email or password! Login failed.");
+        alert("ACCESS DENIED: Incorrect email or password! Please check your credentials and try again.");
         return;
       }
 
-      // Only allow entry if details match 100%
+      // Grant access only when correct
       sessionStorage.setItem("isLoggedIn", "true");
       window.location.href = "dashboard.html";
     }
 
-    // REGISTRATION HANDLER
     function handleRegister(event) {
       event.preventDefault();
 
@@ -266,16 +265,8 @@
       const email = document.getElementById('regEmail').value.trim();
       const pass = document.getElementById('regPassword').value.trim();
 
-      if (name.length < 3) {
-        alert("ERROR: Name is too short.");
-        return;
-      }
-      if (!email.includes('@') || !email.includes('.')) {
-        alert("ERROR: Please enter a valid email address.");
-        return;
-      }
-      if (pass.length < 6) {
-        alert("ERROR: Password must be at least 6 characters long.");
+      if (name.length < 3 || !email.includes('@') || pass.length < 6) {
+        alert("ERROR: Please provide valid details (Password must be at least 6 characters).");
         return;
       }
 
@@ -288,7 +279,6 @@
       window.location.href = "dashboard.html";
     }
 
-    // FORGOT PASSWORD HANDLER
     function handleForgotPassword() {
       const userEmail = prompt("PASSWORD RESET:\nPlease enter your registered Email Address:");
       if (userEmail && userEmail.trim() !== "") {
@@ -297,7 +287,7 @@
           const newPass = prompt("IDENTITY VERIFIED!\nEnter your new password:");
           if (newPass && newPass.length >= 6) {
             localStorage.setItem('user_pass', newPass);
-            alert("SUCCESS: Your password has been updated successfully! You can now log in.");
+            alert("SUCCESS: Password updated successfully! You can now log in.");
           } else {
             alert("ERROR: Password must be at least 6 characters long.");
           }
