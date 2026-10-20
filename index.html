@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MultiwalletP2P - Login</title>
+  <title>MultiwalletP2P - Login & Register</title>
   
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#00d2ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="MultiwalletP2P">
+
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -16,116 +19,178 @@
       font-family: Arial, sans-serif;
       background-color: #121212;
       color: #ffffff;
+      margin: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 420px;
+    }
+    .brand-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .brand-header h1 {
+      color: #00d2ff;
+      margin: 0 0 8px 0;
+      font-size: 24px;
+    }
+    .brand-header p {
+      color: #a0a0a0;
+      font-size: 13px;
       margin: 0;
+      line-height: 1.4;
     }
     .card {
       background: #1e1e1e;
-      padding: 24px;
+      padding: 25px;
       border-radius: 12px;
-      width: 90%;
-      max-width: 360px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      border: 1px solid #333;
+      border: 1px solid #2a2a2a;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
-    h2 {
-      text-align: center;
+    .tabs {
+      display: flex;
       margin-bottom: 20px;
-      color: #00d2ff;
+      border-bottom: 1px solid #333;
     }
-    .input-group {
-      position: relative;
-      margin: 10px 0;
-    }
-    .input-group i {
-      position: absolute;
-      left: 14px;
-      top: 15px;
-      color: #888;
-    }
-    input {
-      width: 100%;
-      padding: 12px 12px 12px 40px;
-      border: 1px solid #333;
-      border-radius: 6px;
-      background: #2b2b2b;
-      color: white;
-      box-sizing: border-box;
-      outline: none;
-    }
-    input:focus {
-      border-color: #00d2ff;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 12px;
+    .tab-btn {
+      flex: 1;
+      background: none;
       border: none;
-      border-radius: 6px;
-      background: #00d2ff;
-      color: #000;
+      padding: 10px;
+      color: #888;
       font-weight: bold;
       cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
+      font-size: 15px;
     }
-    button:hover {
-      background: #00a8cc;
+    .tab-btn.active {
+      color: #00d2ff;
+      border-bottom: 2px solid #00d2ff;
     }
-    .btn-login {
-      background: #333;
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      color: #ccc;
+      margin-bottom: 6px;
+    }
+    .input-field {
+      width: 100%;
+      padding: 12px;
+      background: #2b2b2b;
+      border: 1px solid #444;
       color: white;
-      margin-top: 8px;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
     }
-    .btn-login:hover {
-      background: #444;
+    /* Login button is Red as requested */
+    .btn-login {
+      background: #ff3b30;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      font-size: 15px;
+      margin-top: 10px;
+      box-shadow: 0 2px 6px rgba(255, 59, 48, 0.4);
     }
-    #msg {
-      margin-top: 12px;
-      font-size: 13px;
-      text-align: center;
-      line-height: 1.4;
+    .btn-signup {
+      background: #00d2ff;
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+    .form-section {
+      display: none;
+    }
+    .form-section.active {
+      display: block;
+    }
+    .features-list {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #888;
+      border-top: 1px solid #2a2a2a;
+      padding-top: 15px;
+    }
+    .features-list p {
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <h2><i class="fa-solid fa-wallet"></i> MultiwalletP2P</h2>
-    
-    <div class="input-group">
-      <i class="fa-solid fa-envelope"></i>
-      <input type="email" id="email" placeholder="Email address" required />
-    </div>
-    
-    <div class="input-group">
-      <i class="fa-solid fa-lock"></i>
-      <input type="password" id="password" placeholder="Password" required />
+  <div class="auth-container">
+    <div class="brand-header">
+      <h1><i class="fa-solid fa-wallet"></i> MultiwalletP2P</h1>
+      <p>Secure P2P Trading, Automatic 1% Commission Locking & Virtual Card Payouts</p>
     </div>
 
-    <button id="btnSignUp">
-      <i class="fa-solid fa-user-plus"></i> Create Account
-    </button>
-    
-    <button id="btnLogIn" class="btn-login">
-      <i class="fa-solid fa-right-to-bracket"></i> Log In
-    </button>
-    
-    <div id="msg"></div>
+    <div class="card">
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" onclick="switchTab('signup')">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="loginSection" class="form-section active">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" class="input-field" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" class="input-field" placeholder="Enter your password">
+        </div>
+        <button class="btn-login" onclick="handleLogin()"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signupSection" class="form-section">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="signupEmail" class="input-field" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signupPassword" class="input-field" placeholder="Create a password">
+        </div>
+        <button class="btn-signup" onclick="handleSignup()"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+      </div>
+
+      <!-- Virtual Card Integration Info -->
+      <div class="features-list">
+        <p><i class="fa-solid fa-shield-halved" style="color:#00ff88;"></i> Escrow Protected Trades</p>
+        <p><i class="fa-solid fa-coins" style="color:#00d2ff;"></i> Automatic 1% Commission Locking</p>
+        <p><i class="fa-solid fa-credit-card" style="color:#ffb300;"></i> Linked Card: 5321622512326754</p>
+      </div>
+    </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, 
-      createUserWithEmailAndPassword, 
-      signInWithEmailAndPassword 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAJQzI4bXDEMYlr2B3Q5Yq3xNZ84iNQEqk",
@@ -140,60 +205,66 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const msgDiv = document.getElementById('msg');
+    window.switchTab = function(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
 
-    function validatePassword(password) {
-      if (password.length < 8) return "Password must be at least 8 characters long.";
-      if (!/[a-zA-Z]/.test(password)) return "Password must contain letters.";
-      if (!/[0-9]/.test(password)) return "Password must contain numbers.";
-      if (!/[!@#$%^&*(),.?":{}|<>_\-\=\+]/.test(password)) return "Password must contain a symbol (@,#,$,!).";
-      return null;
+      if (tab === 'login') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('loginSection').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('signupSection').classList.add('active');
+      }
+    };
+
+    // Ensure Master Virtual Card is locked upon app loading or account actions
+    function setMasterCardDefault() {
+      localStorage.setItem('masterCardNumber', '5321622512326754');
+      if(!localStorage.getItem('masterCommissionLocked')) {
+        localStorage.setItem('masterCommissionLocked', '0.00');
+      }
     }
 
-    document.getElementById('btnSignUp').addEventListener('click', () => {
-      const email = emailInput.value;
-      const password = passwordInput.value;
+    window.handleLogin = function() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPassword').value.trim();
 
-      const passError = validatePassword(password);
-      if (passError) {
-        msgDiv.style.color = "#ff4d4d";
-        msgDiv.innerText = passError;
+      if (!email || !pass) {
+        alert("Please enter both email and password.");
         return;
       }
 
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
+      signInWithEmailAndPassword(auth, email, pass)
+        .then((userCredential) => {
           sessionStorage.setItem("isLoggedIn", "true");
+          setMasterCardDefault();
           window.location.href = "dashboard.html";
         })
         .catch((error) => {
-          msgDiv.style.color = "#ff4d4d";
-          msgDiv.innerText = error.message;
+          alert("Login Failed: " + error.message);
         });
-    });
+    };
 
-    document.getElementById('btnLogIn').addEventListener('click', () => {
-      const email = emailInput.value;
-      const password = passwordInput.value;
+    window.handleSignup = function() {
+      const email = document.getElementById('signupEmail').value.trim();
+      const pass = document.getElementById('signupPassword').value.trim();
 
-      if (!email || !password) {
-        msgDiv.style.color = "#ff4d4d";
-        msgDiv.innerText = "Please enter Email and Password.";
+      if (!email || !pass) {
+        alert("Please enter both email and password.");
         return;
       }
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
+      createUserWithEmailAndPassword(auth, email, pass)
+        .then((userCredential) => {
           sessionStorage.setItem("isLoggedIn", "true");
+          setMasterCardDefault();
           window.location.href = "dashboard.html";
         })
         .catch((error) => {
-          msgDiv.style.color = "#ff4d4d";
-          msgDiv.innerText = error.message;
+          alert("Signup Failed: " + error.message);
         });
-    });
+    };
   </script>
 </body>
 </html>
