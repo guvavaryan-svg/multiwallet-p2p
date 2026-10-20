@@ -120,6 +120,19 @@
       margin-top: 10px;
       box-shadow: 0 4px 12px rgba(255, 68, 79, 0.3);
     }
+    .btn-forgot {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      color: #00d2ff;
+      border: 1px dashed #00d2ff;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      display: none; 
+    }
     .feature-list {
       margin-top: 20px;
       border-top: 1px solid #2a2a2a;
@@ -166,6 +179,11 @@
       </div>
 
       <button type="submit" class="btn-submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      
+      <!-- FORGOT PASSWORD BUTTON -->
+      <button type="button" class="btn-forgot" id="forgotBtn" onclick="handleForgotPassword()">
+        <i class="fa-solid fa-key"></i> Forgot Password? Click to Reset
+      </button>
     </form>
 
     <!-- REGISTER FORM -->
@@ -197,7 +215,21 @@
   </div>
 
   <script>
-    // TAB SWITCHER FUNCTION
+    let failedAttempts = parseInt(localStorage.getItem('login_fails') || '0');
+
+    window.addEventListener('DOMContentLoaded', () => {
+      checkFailedAttemptsUI();
+    });
+
+    function checkFailedAttemptsUI() {
+      const forgotBtn = document.getElementById('forgotBtn');
+      if (failedAttempts >= 3) {
+        forgotBtn.style.display = 'block';
+      } else {
+        forgotBtn.style.display = 'none';
+      }
+    }
+
     function switchTab(tab) {
       const loginTab = document.getElementById('loginTab');
       const registerTab = document.getElementById('registerTab');
@@ -217,7 +249,6 @@
       }
     }
 
-    // STRICT VALIDATION AUTH FUNCTION
     function handleAuth(event, type) {
       event.preventDefault();
 
@@ -225,15 +256,23 @@
         const email = document.getElementById('loginEmail').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
 
-        if (!email.includes('@') || !email.includes('.')) {
-          alert("ERROR: Ndapota isa email yakakwana ine '@' ne '.'!");
-          return;
-        }
-        if (pass.length < 4) {
-          alert("ERROR: Password ipfupi zvikuru!");
+        const savedEmail = localStorage.getItem('user_email');
+        const savedPass = localStorage.getItem('user_pass');
+
+        // Check kana email ne password zvakaenzana nezvakanyoreswa
+        if (!savedEmail || !savedPass) {
+          alert("ERROR: Hapana account yakanyoreswa pafoni ino! Ndapota tanga wadzvanya 'Create Account' kuti unyorese.");
           return;
         }
 
+        if (email !== savedEmail || pass !== savedPass) {
+          incrementFailure();
+          alert("ERROR: Email kana Password yawaisa haina kururama! Ndapota edza zvakare.");
+          return;
+        }
+
+        // Zvese zvakanyatrorurama
+        localStorage.setItem('login_fails', '0');
         sessionStorage.setItem("isLoggedIn", "true");
         window.location.href = "dashboard.html";
 
@@ -255,12 +294,40 @@
           return;
         }
 
+        // Save credentials zvine security
         localStorage.setItem('user_name', name);
         localStorage.setItem('user_email', email);
+        localStorage.setItem('user_pass', pass);
+        localStorage.setItem('login_fails', '0');
         sessionStorage.setItem("isLoggedIn", "true");
         
         alert("ACCOUNT CREATED SUCCESSFULLY!");
         window.location.href = "dashboard.html";
+      }
+    }
+
+    function incrementFailure() {
+      failedAttempts++;
+      localStorage.setItem('login_fails', failedAttempts.toString());
+      checkFailedAttemptsUI();
+
+      if (failedAttempts >= 3) {
+        alert("SECURITY WARNING: Wakanganisa kupinda katatu (3 times)! Bhatani re 'Forgot Password' ratanga kuoneka pazasi.");
+      }
+    }
+
+    function handleForgotPassword() {
+      const resetEmail = prompt("PASSWORD RESET: Ndapota isa email yako yawakanyoresa nayo:");
+      if (resetEmail) {
+        const savedEmail = localStorage.getItem('user_email');
+        if (resetEmail === savedEmail) {
+          alert("Reset instructions dzatumirwa ku email yako: " + resetEmail);
+          localStorage.setItem('login_fails', '0');
+          failedAttempts = 0;
+          checkFailedAttemptsUI();
+        } else {
+          alert("ERROR: Email iyoyo haina kuzivikanwa mu system yedu!");
+        }
       }
     }
   </script>
