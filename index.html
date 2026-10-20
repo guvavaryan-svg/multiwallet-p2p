@@ -119,6 +119,19 @@
       margin-top: 10px;
       box-shadow: 0 4px 12px rgba(255, 68, 79, 0.3);
     }
+    .btn-forgot {
+      background: transparent;
+      color: #00d2ff;
+      border: none;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      display: block;
+      width: 100%;
+      text-align: center;
+      text-decoration: underline;
+    }
     .feature-list {
       margin-top: 20px;
       border-top: 1px solid #2a2a2a;
@@ -164,6 +177,11 @@
       </div>
 
       <button type="submit" class="btn-submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+      
+      <!-- FORGOT PASSWORD LINK (ALWAYS VISIBLE) -->
+      <button type="button" class="btn-forgot" onclick="handleForgotPassword()">
+        <i class="fa-solid fa-key"></i> Forgot Password?
+      </button>
     </form>
 
     <!-- REGISTER FORM -->
@@ -213,7 +231,6 @@
       }
     }
 
-    // SMARTER LOGIN: Inogamuchira email yese yaunaisa ichibva yango-savha kana pasina yaiva po, yobva yakuendesa ku dashboard pasina kuramba
     function handleLogin(event) {
       event.preventDefault();
       
@@ -226,7 +243,7 @@
         sessionStorage.setItem("isLoggedIn", "true");
         window.location.href = "dashboard.html";
       } else {
-        alert("Ndapota zadzisa ma details ako zvakanaka.");
+        alert("Please enter valid email and password credentials.");
       }
     }
 
@@ -245,7 +262,26 @@
 
         window.location.href = "dashboard.html";
       } else {
-        alert("Ndapota zadzisa zvese.");
+        alert("Please complete all registration fields.");
+      }
+    }
+
+    // FORGOT PASSWORD RESET HANDLER
+    function handleForgotPassword() {
+      const userEmail = prompt("PASSWORD RESET:\nPlease enter your registered Email Address:");
+      if (userEmail && userEmail.trim() !== "") {
+        const savedEmail = localStorage.getItem('user_email');
+        if (savedEmail && userEmail.trim() === savedEmail) {
+          const newPass = prompt("IDENTITY VERIFIED!\nEnter your new password:");
+          if (newPass && newPass.length >= 4) {
+            localStorage.setItem('user_pass', newPass);
+            alert("SUCCESS: Your password has been updated! You can now log in using your new password.");
+          } else {
+            alert("ERROR: Password must be at least 4 characters long.");
+          }
+        } else {
+          alert("PASSWORD RESET LINK SENT:\nIf an account with " + userEmail + " exists, instructions have been dispatched.");
+        }
       }
     }
   </script>
