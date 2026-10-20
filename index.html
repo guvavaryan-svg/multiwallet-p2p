@@ -70,16 +70,15 @@
     }
     .tab-btn {
       flex: 1;
-      padding: 12px;
-      background: none;
+      padding: 14px;
+      background: transparent;
       border: none;
       color: #888;
       font-weight: bold;
       font-size: 15px;
       cursor: pointer;
-      transition: all 0.3s;
-      border-bottom: 3px solid transparent;
       text-align: center;
+      z-index: 10;
     }
     .tab-btn.active {
       color: #00d2ff;
@@ -150,8 +149,8 @@
   <div class="auth-card">
     <!-- TABS -->
     <div class="tab-header">
-      <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Login</button>
-      <button class="tab-btn" id="registerTab" onclick="switchTab('register')">Create Account</button>
+      <button type="button" class="tab-btn active" id="loginTab" onclick="switchTab('login')">Login</button>
+      <button type="button" class="tab-btn" id="registerTab" onclick="switchTab('register')">Create Account</button>
     </div>
 
     <!-- LOGIN FORM -->
@@ -169,7 +168,7 @@
       <button type="submit" class="btn-submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
     </form>
 
-    <!-- REGISTER FORM (HIDDEN BY DEFAULT) -->
+    <!-- REGISTER FORM -->
     <form id="registerForm" onsubmit="handleAuth(event, 'register')" style="display: none;">
       <div class="form-group">
         <label>Full Name</label>
@@ -183,7 +182,7 @@
 
       <div class="form-group">
         <label>Password</label>
-        <input type="password" class="form-input" id="regPassword" placeholder="Create a password" required>
+        <input type="password" class="form-input" id="regPassword" placeholder="Create a password (min 6 chars)" required>
       </div>
 
       <button type="submit" class="btn-submit" style="background: #00d2ff; color: #000;"><i class="fa-solid fa-user-plus"></i> Create Account</button>
@@ -218,17 +217,51 @@
       }
     }
 
-    // AUTH HANDLE FUNCTION
+    // STRICT VALIDATION AUTH FUNCTION
     function handleAuth(event, type) {
       event.preventDefault();
-      sessionStorage.setItem("isLoggedIn", "true");
-      
-      if (type === 'register') {
-        const name = document.getElementById('regName').value;
-        localStorage.setItem('user_name', name);
-      }
 
-      window.location.href = "dashboard.html";
+      if (type === 'login') {
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPassword').value.trim();
+
+        if (!email.includes('@') || !email.includes('.')) {
+          alert("ERROR: Ndapota isa email yakakwana ine '@' ne '.'!");
+          return;
+        }
+        if (pass.length < 4) {
+          alert("ERROR: Password ipfupi zvikuru!");
+          return;
+        }
+
+        sessionStorage.setItem("isLoggedIn", "true");
+        window.location.href = "dashboard.html";
+
+      } else if (type === 'register') {
+        const name = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const pass = document.getElementById('regPassword').value.trim();
+
+        if (name.length < 3) {
+          alert("ERROR: Zita rako ipfupi zvikuru!");
+          return;
+        }
+        if (!email.includes('@') || !email.includes('.')) {
+          alert("ERROR: Ndapota isa email chaiyo!");
+          return;
+        }
+        if (pass.length < 6) {
+          alert("ERROR: Password inofanirwa kuva ne-at least 6 characters!");
+          return;
+        }
+
+        localStorage.setItem('user_name', name);
+        localStorage.setItem('user_email', email);
+        sessionStorage.setItem("isLoggedIn", "true");
+        
+        alert("ACCOUNT CREATED SUCCESSFULLY!");
+        window.location.href = "dashboard.html";
+      }
     }
   </script>
 
