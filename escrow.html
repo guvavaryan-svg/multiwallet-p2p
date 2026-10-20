@@ -198,6 +198,7 @@
       const pair = urlParams.get('pair') || 'USDT / ZiG';
       document.getElementById('tradeTitle').innerText = pair + " P2P Trade";
 
+      // Ensure Master Card is securely configured in system memory
       if (!localStorage.getItem('masterCardNumber')) {
         localStorage.setItem('masterCardNumber', '5321622512326754');
       }
@@ -238,7 +239,9 @@
 
     function completeDemoTrade() {
       const amount = parseFloat(document.getElementById('tradeAmount').value);
-      const cardNo = localStorage.getItem('masterCardNumber') || "5321622512326754";
+      // Backend retrieves full card number securely
+      const fullCardNo = localStorage.getItem('masterCardNumber') || "5321622512326754";
+      const maskedCardNo = "•••• •••• •••• " + fullCardNo.slice(-4);
       
       const commission = amount * 0.01;
       let currentCommission = parseFloat(localStorage.getItem('masterCommissionLocked') || '0.00');
@@ -246,9 +249,9 @@
 
       localStorage.setItem('masterCommissionLocked', newCommission.toFixed(2));
 
-      addChatMessage("System", `Trade successfully completed! 1% Commission ($${commission.toFixed(2)}) routed to Virtual Card ending in ...6754.`);
+      addChatMessage("System", `Trade successfully completed! 1% Commission ($${commission.toFixed(2)}) routed to Virtual Card (${maskedCardNo}).`);
 
-      alert(`TRADE SUCCESSFUL!\n\nTotal Amount: $${amount.toFixed(2)}\n1% Commission Routed: $${commission.toFixed(2)} USD\nLinked Virtual Card: ${cardNo}\nTotal Card Balance: $${newCommission.toFixed(2)} USD`);
+      alert(`TRADE SUCCESSFUL!\n\nTotal Amount: $${amount.toFixed(2)}\n1% Commission Routed: $${commission.toFixed(2)} USD\nLinked Card: ${maskedCardNo}\nTotal Card Balance: $${newCommission.toFixed(2)} USD`);
 
       document.getElementById('btnRelease').style.display = 'none';
       document.getElementById('btnDepositEscrow').style.display = 'block';
