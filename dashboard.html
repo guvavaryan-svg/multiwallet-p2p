@@ -213,6 +213,68 @@
       cursor: pointer;
       font-size: 12px;
     }
+
+    /* MT5 CHART MODAL STYLES */
+    #chartModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .chart-container {
+      background: #18181b;
+      border: 1px solid #00d2ff;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 450px;
+      padding: 15px;
+      box-shadow: 0 10px 30px rgba(0,210,255,0.3);
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 8px;
+    }
+    .chart-box {
+      background: #0f172a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      height: 180px;
+      display: flex;
+      align-items: flex-end;
+      padding: 10px;
+      gap: 6px;
+      justify-content: space-around;
+      position: relative;
+    }
+    .candle {
+      width: 12px;
+      background: #10b981;
+      border-radius: 3px;
+      position: relative;
+      transition: height 0.3s;
+    }
+    .candle.down {
+      background: #ef4444;
+    }
+    .btn-close-chart {
+      background: #ff3b30;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
@@ -313,12 +375,13 @@
 
   <div class="card">
     <div class="card-title">
-      <span><i class="fa-solid fa-wallet"></i> Wallets & Live Market Trends</span>
+      <span><i class="fa-solid fa-wallet"></i> Wallets & MT5 Live Market Rates</span>
       <button class="btn-link-account" onclick="promptEcoCashLink()"><i class="fa-solid fa-key"></i> PIN & Update</button>
     </div>
+    <p style="font-size: 12px; color: #888; margin-top:0;">Tap any currency below to inspect live rates and open MT5 chart room analysis:</p>
 
     <!-- USD WALLET -->
-    <div class="wallet-item" onclick="checkCurrencyTrend('USD')">
+    <div class="wallet-item" onclick="openCurrencyChart('USD / USD', '$1.00', 'Stable (0.00% vs yesterday)')">
       <div>
         <i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> <span id="usdWalletTitle">USD Wallet</span> <br>
         <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> USD: Stable (0.00% vs yesterday)</small>
@@ -327,7 +390,7 @@
     </div>
 
     <!-- USDT WALLET -->
-    <div class="wallet-item" onclick="checkCurrencyTrend('USDT')">
+    <div class="wallet-item" onclick="openCurrencyChart('USDT / USD', '$1.00', 'Stable peg (1.00 USD)')">
       <div>
         <i class="fa-solid fa-coins" style="color:#00ff88;"></i> <span id="usdtWalletTitle">USDT Wallet</span> <br>
         <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> USDT: Stable peg (1.00 USD)</small>
@@ -336,7 +399,7 @@
     </div>
 
     <!-- ECOCASH WALLET -->
-    <div class="wallet-item" onclick="checkCurrencyTrend('EcoCash')">
+    <div class="wallet-item" onclick="openCurrencyChart('EcoCash USD / ZiG', '1:26.61', 'Stable liquidity flow')">
       <div>
         <i class="fa-solid fa-mobile-screen-button" style="color:#00d2ff;"></i> EcoCash Wallet <br>
         <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> EcoCash USD: Stable liquidity</small>
@@ -345,7 +408,7 @@
     </div>
 
     <!-- ZIG WALLET -->
-    <div class="wallet-item" onclick="checkCurrencyTrend('ZiG')">
+    <div class="wallet-item" onclick="openCurrencyChart('USD / ZiG', '26.61 ZiG', '+0.07% (Stronger vs yesterday)')">
       <div>
         <i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Wallet <br>
         <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> ZiG: +0.07% (Stronger vs yesterday)</small>
@@ -354,7 +417,7 @@
     </div>
 
     <!-- RAND (ZAR) WALLET -->
-    <div class="wallet-item" onclick="checkCurrencyTrend('ZAR')">
+    <div class="wallet-item" onclick="openCurrencyChart('USD / ZAR', 'R18.45', '-0.15% (Weaker vs yesterday)')">
       <div>
         <i class="fa-solid fa-money-bill-wave" style="color:#00d2ff;"></i> Rand (ZAR) <br>
         <small style="color:#ff3b30;"><i class="fa-solid fa-arrow-trend-down"></i> ZAR: -0.15% (Weaker vs yesterday)</small>
@@ -363,7 +426,7 @@
     </div>
 
     <!-- BITCOIN (BTC) WALLET -->
-    <div class="wallet-item" onclick="checkCurrencyTrend('BTC')">
+    <div class="wallet-item" onclick="openCurrencyChart('BTC / USD', '$65,420.00', '+1.42% (Stronger vs yesterday)')">
       <div>
         <i class="fa-brands fa-bitcoin" style="color:#ff9900;"></i> Bitcoin (BTC) <br>
         <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> BTC: +1.42% (Stronger vs yesterday)</small>
@@ -384,6 +447,37 @@
         <small style="color:#10b981;" id="agentDetailsDisplay"><i class="fa-solid fa-circle-check"></i> Anti-Scam Verified • Escrow Protected</small>
       </div>
       <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade</a>
+    </div>
+  </div>
+
+  <!-- MT5 INTERACTIVE CHART ROOM MODAL -->
+  <div id="chartModal">
+    <div class="chart-container">
+      <div class="chart-header">
+        <div>
+          <strong id="modalPairTitle" style="color:#00d2ff; font-size:15px;">USD / ZiG Chart</strong><br>
+          <small id="modalPairRate" style="color:#00ff88; font-size:12px;">Rate: 26.61</small>
+        </div>
+        <button class="btn-close-chart" onclick="closeCurrencyChart()">Close</button>
+      </div>
+      <p style="font-size:11px; color:#aaa; margin:0 0 8px 0;" id="modalPairTrend">Trend: Stronger vs Yesterday</p>
+      
+      <!-- Simulated MT5 Live Candlestick Chart -->
+      <div class="chart-box" id="mt5CandleBox">
+        <div class="candle" style="height: 40px;"></div>
+        <div class="candle down" style="height: 30px;"></div>
+        <div class="candle" style="height: 60px;"></div>
+        <div class="candle" style="height: 50px;"></div>
+        <div class="candle down" style="height: 45px;"></div>
+        <div class="candle" style="height: 80px;"></div>
+        <div class="candle" style="height: 70px;"></div>
+        <div class="candle down" style="height: 55px;"></div>
+        <div class="candle" style="height: 95px;"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:10px; color:#666; margin-top:6px;">
+        <span>M1 Live Feed</span>
+        <span>MT5 Terminal Active</span>
+      </div>
     </div>
   </div>
 
@@ -500,22 +594,16 @@
       document.getElementById('agentDetailsDisplay').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> ' + agentDetails;
     }
 
-    function checkCurrencyTrend(currency) {
-      let analysisText = "";
-      if (currency === 'ZiG') {
-        analysisText = "ZIG MARKET ANALYSIS (LIVE FEED):\n\n• Official Exchange Rate: ~26.61 ZiG per 1 USD\n• Trend vs Yesterday: STRONGER (+0.07% appreciation)\n• Status: ZiG has slightly strengthened compared to yesterday's trading session.";
-      } else if (currency === 'USDT') {
-        analysisText = "USDT MARKET ANALYSIS (LIVE FEED):\n\n• Peg Status: Stable at 1.00 USD\n• Liquidity: High volume across TRC20 and BEP20 networks.\n• Trend vs Yesterday: Stable and secure.";
-      } else if (currency === 'USD') {
-        analysisText = "USD MARKET ANALYSIS (LIVE FEED):\n\n• Status: Stable global reserve currency.\n• Trend vs Yesterday: Unchanged (Stable liquidity).";
-      } else if (currency === 'EcoCash') {
-        analysisText = "ECOCASH USD/ZIG LIQUIDITY FEED:\n\n• Liquidity Status: Normal operational flow.\n• Trend vs Yesterday: Stable mobile money processing.";
-      } else if (currency === 'ZAR') {
-        analysisText = "SOUTH AFRICAN RAND (ZAR) ANALYSIS:\n\n• Trend vs Yesterday: WEAKER (-0.15% depreciation).\n• Status: Slight downward movement against major pairs.";
-      } else if (currency === 'BTC') {
-        analysisText = "BITCOIN (BTC) MARKET ANALYSIS:\n\n• Trend vs Yesterday: STRONGER (+1.42% growth).\n• Status: Bullish momentum in crypto markets.";
-      }
-      alert(analysisText);
+    // --- OPEN MT5 CHART ROOM MODAL WHEN USER TAPS A CURRENCY ---
+    function openCurrencyChart(pairName, rateVal, trendDesc) {
+      document.getElementById('modalPairTitle').innerText = pairName + " Chart Room";
+      document.getElementById('modalPairRate').innerText = "Live Rate / Price: " + rateVal;
+      document.getElementById('modalPairTrend').innerText = "Market Analysis: " + trendDesc;
+      document.getElementById('chartModal').style.display = 'flex';
+    }
+
+    function closeCurrencyChart() {
+      document.getElementById('chartModal').style.display = 'none';
     }
 
     function applyAsAgent() {
