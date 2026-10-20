@@ -10,7 +10,6 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <!-- Custom MW Icon -->
   <link rel="icon" type="image/svg+xml" href="icon.svg">
   <link rel="apple-touch-icon" href="icon.svg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -80,7 +79,6 @@
       justify-content: space-between;
     }
     
-    /* DERIV PARTNER CARD STYLES */
     .deriv-card {
       background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
       border: 1px solid #6366f1;
@@ -202,7 +200,6 @@
 </head>
 <body>
 
-  <!-- Navigation Bar -->
   <div class="navbar">
     <div class="brand-logo">
       <div class="mw-icon-badge">MW</div>
@@ -211,7 +208,6 @@
     <button class="btn-logout" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
   </div>
 
-  <!-- Account Header Section -->
   <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
@@ -223,7 +219,6 @@
       </span>
     </div>
 
-    <!-- Deposit / Withdraw / Transfer / PIN Buttons -->
     <div class="action-grid">
       <button class="btn-action-tile" onclick="alert('Deposit system active via P2P Escrow')"><i class="fa-solid fa-arrow-down"></i><br>Deposit</button>
       <button class="btn-action-tile" onclick="alert('Withdraw system active via P2P Escrow')"><i class="fa-solid fa-arrow-up"></i><br>Withdraw</button>
@@ -231,7 +226,6 @@
     </div>
   </div>
 
-  <!-- DERIV PARTNER TRADING INTEGRATION CARD -->
   <div class="deriv-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
       <strong style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-chart-line"></i> Official Trading Partner</strong>
@@ -242,7 +236,6 @@
       Connect or register your Deriv trading account to trade Synthetic Indices (Crash/Boom), Options, and Forex markets directly.
     </p>
     
-    <!-- DIRECT DERIV REGISTRATION LINK (NO TOKEN ERROR) -->
     <a href="https://deriv.com/signup/?ref=WWGEGKRGK5S8" target="_blank" class="btn-deriv-partner" onclick="trackDerivClick()">
       <i class="fa-solid fa-arrow-up-right-from-square"></i> Open / Connect Deriv Account
     </a>
@@ -253,7 +246,6 @@
     </div>
   </div>
 
-  <!-- Active Order Alert -->
   <div class="alert-card">
     <div style="color:#ff3b30; font-weight:bold; font-size:14px; margin-bottom:8px;">
       <i class="fa-solid fa-triangle-exclamation"></i> Active Order Alert
@@ -268,7 +260,6 @@
     </div>
   </div>
 
-  <!-- Master Virtual Card (1% Commission Collector) -->
   <div class="card" style="border-left: 4px solid #00d2ff;">
     <div class="card-title">
       <span><i class="fa-solid fa-shield-halved"></i> Master Virtual Card (1% Commission Collector)</span>
@@ -289,7 +280,6 @@
     </div>
   </div>
 
-  <!-- Wallets & Balances Section -->
   <div class="card">
     <div class="card-title">
       <span><i class="fa-solid fa-wallet"></i> Wallets & Balances</span>
@@ -327,7 +317,6 @@
     </div>
   </div>
 
-  <!-- Active P2P Trading Markets -->
   <div class="card">
     <div class="card-title"><span><i class="fa-solid fa-store"></i> Active P2P Trading Markets</span></div>
 
@@ -358,6 +347,7 @@
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
+      // STRICT LOGGED IN CHECK
       if (sessionStorage.getItem("isLoggedIn") !== "true") {
         window.location.href = "index.html";
         return;
@@ -440,8 +430,10 @@
       }
     }
 
+    // STRICT LOGOUT FUNCTION
     function handleLogout() {
       sessionStorage.removeItem("isLoggedIn");
+      sessionStorage.clear();
       window.location.href = "index.html";
     }
   </script>
