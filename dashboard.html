@@ -293,7 +293,6 @@
         <strong id="cardCommissionBalance" style="color:#00ff88; font-size:20px;">$3.50 USD</strong>
       </div>
       <div>
-        <!-- Zvakangwarirwa Pano: Zvinochinja zvichienderana ne Mode -->
         <small style="color:#aaa;" id="walletTypeLabel">Wallet Balance</small><br>
         <strong id="demoUsdDisplay" style="color:#ffffff; font-size:18px;">$0.00 USD</strong>
       </div>
@@ -358,15 +357,16 @@
   </div>
 
   <script>
+    // --- 20 SECONDS INACTIVITY AUTO-LOGOUT TIMER (ENGLISH) ---
     let inactivityTimer;
 
     function resetInactivityTimer() {
       clearTimeout(inactivityTimer);
       inactivityTimer = setTimeout(() => {
         sessionStorage.removeItem("isLoggedIn");
-        alert("SECURITY TIMEOUT: App inactive for 20 seconds. Please log in again.");
+        alert("SECURITY TIMEOUT: App was inactive for 20 seconds. Please log in again.");
         window.location.href = "index.html";
-      }, 20000);
+      }, 20000); // 20 seconds
     }
 
     window.onload = resetInactivityTimer;
