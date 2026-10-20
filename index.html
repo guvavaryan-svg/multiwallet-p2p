@@ -11,7 +11,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="MultiwalletP2P">
 
-  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
+  <!-- Custom MW Icon -->
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -34,6 +36,16 @@
     .brand-header {
       text-align: center;
       margin-bottom: 25px;
+    }
+    .mw-icon-badge {
+      background: linear-gradient(135deg, #00d2ff, #0088cc);
+      color: #000000;
+      font-weight: 900;
+      font-size: 20px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-bottom: 10px;
     }
     .brand-header h1 {
       color: #00d2ff;
@@ -91,7 +103,7 @@
       box-sizing: border-box;
       font-size: 14px;
     }
-    /* Login button is Red as requested */
+    /* Red Login Button as requested */
     .btn-login {
       background: #ff3b30;
       color: white;
@@ -142,7 +154,8 @@
 
   <div class="auth-container">
     <div class="brand-header">
-      <h1><i class="fa-solid fa-wallet"></i> MultiwalletP2P</h1>
+      <div class="mw-icon-badge">MW</div>
+      <h1>MultiwalletP2P</h1>
       <p>Secure P2P Trading, Automatic 1% Commission Locking & Virtual Card Payouts</p>
     </div>
 
@@ -218,7 +231,6 @@
       }
     };
 
-    // Ensure Master Virtual Card is locked upon app loading or account actions
     function setMasterCardDefault() {
       localStorage.setItem('masterCardNumber', '5321622512326754');
       if(!localStorage.getItem('masterCommissionLocked')) {
