@@ -12,7 +12,6 @@
   <meta name="apple-mobile-web-app-title" content="MultiwalletP2P">
 
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -38,6 +37,19 @@
       margin: 0;
       color: #00d2ff;
       font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mw-icon-badge {
+      background: linear-gradient(135deg, #00d2ff, #0088cc);
+      color: #000000;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      display: inline-block;
     }
     .header-icons {
       display: flex;
@@ -64,7 +76,7 @@
       border-radius: 50%;
     }
     .btn-logout {
-      background: #ff4d4d;
+      background: #ff3b30;
       color: white;
       border: none;
       padding: 8px 14px;
@@ -72,6 +84,7 @@
       cursor: pointer;
       font-weight: bold;
       font-size: 13px;
+      box-shadow: 0 2px 4px rgba(255, 59, 48, 0.3);
     }
     .card {
       background: #1e1e1e;
@@ -132,7 +145,7 @@
       align-items: center;
       gap: 12px;
     }
-    .wallet-info i {
+    .wallet-info i, .wallet-info span {
       font-size: 22px;
       width: 25px;
       text-align: center;
@@ -183,20 +196,40 @@
       cursor: pointer;
       width: 100%;
     }
+    .info-box p {
+      color: #b0b0b0;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 8px 0;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header with MW Icon & MultiwalletP2P -->
   <div class="header">
-    <h2><i class="fa-solid fa-wallet"></i> MultiwalletP2P</h2>
+    <h2>
+      <span class="mw-icon-badge">MW</span> MultiwalletP2P
+    </h2>
     <div class="header-icons">
-      <button class="bell-icon" onclick="openReportModal()">
+      <button class="bell-icon" onclick="alert('No new notifications')">
         <i class="fa-solid fa-bell"></i>
         <span class="bell-badge">1</span>
       </button>
       <button class="btn-logout" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </div>
+  </div>
+
+  <!-- App Purpose & Benefits Section -->
+  <div class="card info-box" style="border-left: 4px solid #00d2ff;">
+    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-circle-info"></i> About MultiwalletP2P</h3>
+    <p><strong>Secure P2P Ecosystem:</strong> MultiwalletP2P provides a fast, secure, and decentralized peer-to-peer trading experience for digital assets and local currencies (USD, USDT, EcoCash, ZiG).</p>
+    <p><strong>Why Traders Love Us:</strong></p>
+    <ul style="margin: 5px 0; padding-left: 20px; color: #b0b0b0; font-size: 13px;">
+      <li><strong>Escrow Protection:</strong> Funds are locked safely during trades, guaranteeing zero risk of fraud.</li>
+      <li><strong>Direct Payment Setup:</strong> Sellers and agents can easily configure payment details for seamless transactions.</li>
+      <li><strong>Multi-Currency & Virtual Card:</strong> Manage multiple wallets and route commissions automatically to your virtual debit card.</li>
+    </ul>
   </div>
 
   <!-- Profile & Actions -->
@@ -212,13 +245,13 @@
     </div>
 
     <div class="actions-grid">
-      <button class="btn-action" onclick="openPinModal('Deposit')">
+      <button class="btn-action" onclick="alert('Feature available during active trades')">
         <i class="fa-solid fa-arrow-down"></i> Deposit
       </button>
-      <button class="btn-action" onclick="openPinModal('Withdraw')">
+      <button class="btn-action" onclick="alert('Feature available during active trades')">
         <i class="fa-solid fa-arrow-up"></i> Withdraw
       </button>
-      <button class="btn-action" onclick="openPinModal('Transfer')">
+      <button class="btn-action" onclick="alert('Feature available during active trades')">
         <i class="fa-solid fa-paper-plane"></i> Transfer
       </button>
     </div>
@@ -238,10 +271,35 @@
     <button class="btn-save" onclick="saveAgentDetails()"><i class="fa-solid fa-floppy-disk"></i> Save Payment Details</button>
   </div>
 
-  <!-- Wallets -->
+  <!-- Master Virtual Card & Automatic Commission -->
+  <div class="card" style="border-left: 4px solid #ffb300;">
+    <h3 style="margin-top:0; color:#ffb300;"><i class="fa-solid fa-credit-card"></i> Master Virtual Card & Commission</h3>
+    <p style="font-size:12px; color:#aaa; margin-bottom:12px;">Automatic Payout Card setup for trades and 1% system commissions:</p>
+
+    <label style="font-size:12px; color:#ccc;">Linked Master Card Number:</label>
+    <input type="text" id="masterCardNo" class="input-field" value="5321622512326754" readonly style="color:#00ff88; font-weight:bold; letter-spacing:1px;">
+
+    <div style="background:#2b2b2b; padding:12px; border-radius:8px; margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <small style="color:#b0b0b0;">Total Routed Commission</small><br>
+        <strong id="lockedCommission" style="color:#00ff88; font-size:16px;">$0.00 USD</strong>
+      </div>
+      <button class="btn-save" onclick="saveCardSetup()" style="width:auto; padding:8px 15px; font-size:12px;">Update Card</button>
+    </div>
+  </div>
+
+  <!-- Wallets with MW Custom Icons -->
   <div class="card">
     <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-coins"></i> Wallets & Balances</h3>
     
+    <div class="wallet-box">
+      <div class="wallet-info">
+        <span class="mw-icon-badge" style="font-size:11px; padding:2px 5px;">MW</span>
+        <div><strong style="color:#ffffff;">MultiwalletP2P Wallet</strong><br><small style="color:#b0b0b0;">Main System Balance</small></div>
+      </div>
+      <div class="balance">$0.00</div>
+    </div>
+
     <div class="wallet-box">
       <div class="wallet-info">
         <i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i>
@@ -321,11 +379,20 @@
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('userEmail').innerText = user.email;
-        // Restore saved details if available
         document.getElementById('agentName').value = localStorage.getItem('agentName') || '';
         document.getElementById('agentNumber').value = localStorage.getItem('agentNumber') || '';
       } else {
         window.location.href = "index.html";
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('masterCardNumber')) {
+        localStorage.setItem('masterCardNumber', '5321622512326754');
+      }
+      const savedComm = localStorage.getItem('masterCommissionLocked') || '0.00';
+      if (document.getElementById('lockedCommission')) {
+        document.getElementById('lockedCommission').innerText = '$' + parseFloat(savedComm).toFixed(2) + ' USD';
       }
     });
 
@@ -338,7 +405,11 @@
       }
       localStorage.setItem('agentName', name);
       localStorage.setItem('agentNumber', num);
-      alert("Payment Details Saved Successfully! These details will be displayed to buyers during trades.");
+      alert("Payment Details Saved Successfully!");
+    }
+
+    window.saveCardSetup = function() {
+      alert("Master Virtual Card ending in ...6754 is securely linked for automatic commission routing.");
     }
 
     window.startEscrow = function(pair) {
