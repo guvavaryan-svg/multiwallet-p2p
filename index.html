@@ -231,7 +231,7 @@
       }
     }
 
-    // STRICT AUTHENTICATION VERIFICATION
+    // STRICT LOGIN CHECK
     function handleLogin(event) {
       event.preventDefault();
       
@@ -241,29 +241,36 @@
       const savedEmail = localStorage.getItem('user_email');
       const savedPass = localStorage.getItem('user_pass');
 
-      // Check if an account is registered
       if (!savedEmail || !savedPass) {
-        alert("ACCESS DENIED: No account found on this device. Please register first.");
+        alert("ACCESS DENIED: No account found on this device. Please create an account first.");
         return;
       }
 
-      // Strict matching check: Both email and password MUST match exactly
       if (emailInput !== savedEmail || passInput !== savedPass) {
-        alert("ACCESS DENIED: Incorrect email or password! Please check your credentials and try again.");
+        alert("ACCESS DENIED: Incorrect email or password! Login failed.");
         return;
       }
 
-      // Grant access only when correct
       sessionStorage.setItem("isLoggedIn", "true");
       window.location.href = "dashboard.html";
     }
 
+    // STRICT REGISTRATION CHECK: BLOCKS IF ACCOUNT ALREADY EXISTS
     function handleRegister(event) {
       event.preventDefault();
 
       const name = document.getElementById('regName').value.trim();
       const email = document.getElementById('regEmail').value.trim();
       const pass = document.getElementById('regPassword').value.trim();
+
+      const savedEmail = localStorage.getItem('user_email');
+
+      // If an account is already registered, reject new registration
+      if (savedEmail) {
+        alert("REGISTRATION BLOCKED: An account is already registered on this device (" + savedEmail + "). Please log in instead.");
+        switchTab('login');
+        return;
+      }
 
       if (name.length < 3 || !email.includes('@') || pass.length < 6) {
         alert("ERROR: Please provide valid details (Password must be at least 6 characters).");
