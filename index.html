@@ -177,7 +177,7 @@
       </div>
 
       <button type="submit" class="btn-submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
-      
+
       <!-- FORGOT PASSWORD LINK (ALWAYS VISIBLE) -->
       <button type="button" class="btn-forgot" onclick="handleForgotPassword()">
         <i class="fa-solid fa-key"></i> Forgot Password?
@@ -231,22 +231,34 @@
       }
     }
 
+    // STRICT LOGIN CHECK: Blocks incorrect details
     function handleLogin(event) {
       event.preventDefault();
       
       const emailInput = document.getElementById('loginEmail').value.trim();
       const passInput = document.getElementById('loginPassword').value.trim();
 
-      if (emailInput && passInput) {
-        localStorage.setItem('user_email', emailInput);
-        localStorage.setItem('user_pass', passInput);
-        sessionStorage.setItem("isLoggedIn", "true");
-        window.location.href = "dashboard.html";
-      } else {
-        alert("Please enter valid email and password credentials.");
+      const savedEmail = localStorage.getItem('user_email');
+      const savedPass = localStorage.getItem('user_pass');
+
+      // Kana pasina account yakanyoreswa mu system
+      if (!savedEmail || !savedPass) {
+        alert("ACCESS DENIED: No account found. Please click 'Create Account' first.");
+        return;
       }
+
+      // Kana email kana password zvikasaita match nezvakachengetwa
+      if (emailInput !== savedEmail || passInput !== savedPass) {
+        alert("ACCESS DENIED: Incorrect email or password! Please check your credentials.");
+        return;
+      }
+
+      // Zvese zvakanaka: Pinda mu Dashboard
+      sessionStorage.setItem("isLoggedIn", "true");
+      window.location.href = "dashboard.html";
     }
 
+    // REGISTRATION HANDLER
     function handleRegister(event) {
       event.preventDefault();
 
@@ -260,13 +272,14 @@
         localStorage.setItem('user_pass', pass);
         sessionStorage.setItem("isLoggedIn", "true");
 
+        alert("ACCOUNT CREATED SUCCESSFULLY!");
         window.location.href = "dashboard.html";
       } else {
-        alert("Please complete all registration fields.");
+        alert("Please complete all fields.");
       }
     }
 
-    // FORGOT PASSWORD RESET HANDLER
+    // FORGOT PASSWORD HANDLER
     function handleForgotPassword() {
       const userEmail = prompt("PASSWORD RESET:\nPlease enter your registered Email Address:");
       if (userEmail && userEmail.trim() !== "") {
@@ -275,7 +288,7 @@
           const newPass = prompt("IDENTITY VERIFIED!\nEnter your new password:");
           if (newPass && newPass.length >= 4) {
             localStorage.setItem('user_pass', newPass);
-            alert("SUCCESS: Your password has been updated! You can now log in using your new password.");
+            alert("SUCCESS: Your password has been updated! You can now log in.");
           } else {
             alert("ERROR: Password must be at least 4 characters long.");
           }
