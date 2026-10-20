@@ -29,7 +29,6 @@
       font-weight: bold;
       color: #00d2ff;
     }
-    /* DEMO / REAL SWITCHER PA CORNER */
     .mode-switch-btn {
       background: linear-gradient(135deg, #f59e0b, #d97706);
       color: #000;
@@ -99,7 +98,7 @@
 </head>
 <body>
 
-  <!-- NAVBAR INE DEMO/REAL SWITCHER PA CORNER -->
+  <!-- NAVBAR -->
   <div class="navbar">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div style="background:#00d2ff; color:#000; font-weight:bold; padding:4px 8px; border-radius:6px; font-size:12px;">MW</div>
@@ -107,7 +106,6 @@
     </div>
     
     <div style="display: flex; align-items: center; gap: 8px;">
-      <!-- SWITCH BUTTON -->
       <button id="modeBtn" class="mode-switch-btn" onclick="toggleAccountMode()">Demo Mode</button>
       <a href="dashboard.html" class="btn-dashboard">Dashboard</a>
     </div>
@@ -141,27 +139,13 @@
   </div>
 
   <script>
-    // --- 20 SECONDS INACTIVITY / BACKGROUND AUTO-LOGOUT TIMER ---
-    let inactivityTimer;
-
-    function resetTimer() {
-      clearTimeout(inactivityTimer);
-      // Kana munhu abva pa-app kana kuita 20 seconds asina kubata chinhu, anoita logout otumirwa ku login
-      inactivityTimer = setTimeout(() => {
+    // --- BACKGROUND-SWITCH AUTO-LOCK SECURITY ---
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) {
         sessionStorage.removeItem("isLoggedIn");
-        alert("SECURITY: App yakamboita 20 seconds isingashandiswe. Ndapota ita Login zvakare.");
-        window.location.href = "index.html";
-      }, 20000); // 20,000 milliseconds = 20 seconds
-    }
+      }
+    });
 
-    // Monitor ma actions emunhu (kudzvanya kana kufambisa foni)
-    window.onload = resetTimer;
-    window.onmousemove = resetTimer;
-    window.onkeypress = resetTimer;
-    window.onclick = resetTimer;
-    window.onscroll = resetTimer;
-
-    // --- DEMO / REAL ACCOUNT SWITCHER LOGIC ---
     let currentMode = localStorage.getItem('account_mode') || 'demo';
 
     function updateModeUI() {
@@ -209,6 +193,25 @@
     });
 
     function handleDeposit() {
+      let savedPin = localStorage.getItem('user_security_pin');
+      if (!savedPin) {
+        const newPin = prompt("SECURITY SETUP: Create a new 4-digit Security PIN to protect your escrow transaction:");
+        if (newPin && newPin.length === 4 && !isNaN(newPin)) {
+          localStorage.setItem('user_security_pin', newPin);
+          alert("Security PIN successfully created!");
+          savedPin = newPin;
+        } else {
+          alert("Invalid PIN format. Must be 4 numeric digits.");
+          return;
+        }
+      }
+
+      const enteredPin = prompt("SECURITY VERIFICATION: Enter your 4-digit Security PIN to authorize escrow deposit:");
+      if (enteredPin !== savedPin) {
+        alert("ACCESS DENIED: Incorrect Security PIN! Transaction aborted for safety.");
+        return;
+      }
+
       const amt = document.getElementById('tradeAmount').value;
       const chat = document.getElementById('chatContainer');
       chat.innerHTML += `<div><span style="color:#00ff88;">[You]:</span> Deposited $${amt} USD to Escrow (${currentMode.toUpperCase()} mode).</div>`;
