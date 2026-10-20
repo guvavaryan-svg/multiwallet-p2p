@@ -77,7 +77,7 @@
       margin-bottom: 12px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
     }
     .action-grid {
       display: grid;
@@ -143,22 +143,15 @@
       font-weight: bold;
       font-size: 13px;
     }
-    .alert-card {
-      background: rgba(255, 59, 48, 0.1);
-      border: 1px solid #ff3b30;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-    .btn-report {
-      background: #ff3b30;
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
+    .btn-link-account {
+      background: rgba(0, 210, 255, 0.15);
+      color: #00d2ff;
+      border: 1px solid #00d2ff;
+      padding: 6px 12px;
       border-radius: 6px;
+      font-size: 12px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 12px;
     }
   </style>
 </head>
@@ -178,39 +171,26 @@
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <h3 style="margin:0; color:#fff;">My Account</h3>
-        <small style="color:#aaa;">user@multiwallet.com</small>
+        <small style="color:#aaa;" id="userEcoPhone">Phone: Not Linked</small>
       </div>
       <span style="background:rgba(0,255,136,0.15); color:#00ff88; border:1px solid #00ff88; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;">
         <i class="fa-solid fa-circle-check"></i> KYC Verified
       </span>
     </div>
 
-    <!-- Deposit / Withdraw / Transfer Buttons -->
+    <!-- Action Tiles -->
     <div class="action-grid">
       <button class="btn-action-tile" onclick="alert('Deposit system active via P2P Escrow')"><i class="fa-solid fa-arrow-down"></i><br>Deposit</button>
       <button class="btn-action-tile" onclick="alert('Withdraw system active via P2P Escrow')"><i class="fa-solid fa-arrow-up"></i><br>Withdraw</button>
-      <button class="btn-action-tile" onclick="alert('Internal Transfer active')"><i class="fa-solid fa-paper-plane"></i><br>Transfer</button>
+      <button class="btn-action-tile" onclick="promptEcoCashLink()"><i class="fa-solid fa-lock"></i><br>PIN & Link</button>
     </div>
   </div>
 
-  <!-- Active Order Alert -->
-  <div class="alert-card">
-    <div style="color:#ff3b30; font-weight:bold; font-size:14px; margin-bottom:8px;">
-      <i class="fa-solid fa-triangle-exclamation"></i> Active Order Alert
-    </div>
-    <p style="font-size:12px; color:#ccc; margin:0 0 10px 0;">User entered order but failed to send payment within 20 minutes:</p>
-    <div style="background:#1e1e1e; padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff3b30;">
-      <div>
-        <strong style="font-size:13px; color:#fff;">Order #P2P-8842</strong><br>
-        <small style="color:#ff3b30;">Time Elapsed: 20+ Mins (Unpaid)</small>
-      </div>
-      <button class="btn-report" onclick="alert('Checking order status...')">Report / Check</button>
-    </div>
-  </div>
-
-  <!-- Master Virtual Card (1% Commission Collector) -->
+  <!-- Master Virtual Card -->
   <div class="card" style="border-left: 4px solid #00d2ff;">
-    <div class="card-title"><i class="fa-solid fa-shield-halved"></i> Master Virtual Card (1% Commission Collector)</div>
+    <div class="card-title">
+      <span><i class="fa-solid fa-shield-halved"></i> Master Virtual Card (1% Commission)</span>
+    </div>
     <div class="masked-card">
       <span>•••• •••• •••• 6754</span>
       <span style="font-size:11px; background:#00ff88; color:#000; padding:2px 6px; border-radius:4px; font-weight:bold;">SECURE</span>
@@ -229,65 +209,50 @@
 
   <!-- Wallets & Balances Section -->
   <div class="card">
-    <div class="card-title"><i class="fa-solid fa-wallet"></i> Wallets & Balances</div>
-
-    <div class="wallet-item">
-      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> USD Wallet <br><small style="color:#888;">United States Dollar</small></div>
-      <div class="wallet-amount" id="usdWalletBalance">$500.00</div>
+    <div class="card-title">
+      <span><i class="fa-solid fa-wallet"></i> Wallets & Balances</span>
+      <button class="btn-link-account" onclick="promptEcoCashLink()"><i class="fa-solid fa-key"></i> PIN & Update</button>
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-coins" style="color:#00ff88;"></i> USDT Wallet <br><small style="color:#888;">Tether (TRC20 / BEP20)</small></div>
+      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> USD Wallet</div>
+      <div class="wallet-amount" id="usdWalletBalance">$500.00 USD</div>
+    </div>
+
+    <div class="wallet-item">
+      <div><i class="fa-solid fa-coins" style="color:#00ff88;"></i> USDT Wallet</div>
       <div class="wallet-amount">1,000.00 USDT</div>
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-mobile-screen-button" style="color:#00d2ff;"></i> EcoCash Wallet <br><small style="color:#888;">EcoCash USD / ZiG</small></div>
-      <div class="wallet-amount">$0.00</div>
+      <div><i class="fa-solid fa-mobile-screen-button" style="color:#00d2ff;"></i> EcoCash Wallet</div>
+      <div class="wallet-amount" id="ecoCashWalletDisplay">$0.00 USD</div>
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Wallet <br><small style="color:#888;">Zimbabwe Gold</small></div>
-      <div class="wallet-amount" style="color:#ffcc00;">ZiG 0.00</div>
-    </div>
-
-    <div class="wallet-item">
-      <div><i class="fa-solid fa-money-bill-wave" style="color:#00d2ff;"></i> Rand (ZAR) <br><small style="color:#888;">South African Rand</small></div>
-      <div class="wallet-amount">R0.00</div>
-    </div>
-
-    <div class="wallet-item">
-      <div><i class="fa-brands fa-bitcoin" style="color:#ff9900;"></i> Bitcoin (BTC) <br><small style="color:#888;">Crypto Wallet</small></div>
-      <div class="wallet-amount" style="color:#ff9900;">0.0000 BTC</div>
+      <div><i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Wallet</div>
+      <div class="wallet-amount" style="color:#ffcc00;" id="zigWalletDisplay">ZiG 0.00</div>
     </div>
   </div>
 
   <!-- Active P2P Trading Markets -->
   <div class="card">
-    <div class="card-title"><i class="fa-solid fa-store"></i> Active P2P Trading Markets</div>
-
-    <div class="agent-item">
-      <div>
-        <strong style="color:#fff;">Buy USDT via EcoCash</strong><br>
-        <small style="color:#aaa;">Escrow Protected • Rate: 1:1</small>
-      </div>
-      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade</a>
-    </div>
-
-    <div class="agent-item">
-      <div>
-        <strong style="color:#fff;">Buy USDT via ZiG</strong><br>
-        <small style="color:#aaa;">Escrow Protected • Market Rate</small>
-      </div>
-      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
-    </div>
+    <div class="card-title"><span><i class="fa-solid fa-store"></i> Active P2P Trading Markets</span></div>
 
     <div class="agent-item">
       <div>
         <strong style="color:#fff;">John Doe (Demo Agent)</strong><br>
         <small style="color:#aaa;">USDT / ZiG | Rate: Market</small>
       </div>
-      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
+      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade Now</a>
+    </div>
+
+    <div class="agent-item">
+      <div>
+        <strong style="color:#fff;">FastEx (Demo Agent)</strong><br>
+        <small style="color:#aaa;">USDT / EcoCash | Rate: 1:1</small>
+      </div>
+      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade Now</a>
     </div>
   </div>
 
@@ -308,13 +273,61 @@
         localStorage.setItem('demo_usd_balance', '500.00');
       }
 
+      renderWalletData();
+    });
+
+    function renderWalletData() {
       const cardComm = parseFloat(localStorage.getItem('masterCommissionLocked') || '3.50');
       const demoBal = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
+      const ecoBal = parseFloat(localStorage.getItem('ecocash_usd_balance') || '0.00');
+      const zigBal = parseFloat(localStorage.getItem('ecocash_zig_balance') || '0.00');
+      const phone = localStorage.getItem('ecocash_phone') || 'Not Linked';
 
       document.getElementById('cardCommissionBalance').innerText = '$' + cardComm.toFixed(2) + ' USD';
       document.getElementById('demoUsdDisplay').innerText = '$' + demoBal.toFixed(2) + ' USD';
       document.getElementById('usdWalletBalance').innerText = '$' + demoBal.toFixed(2) + ' USD';
-    });
+      document.getElementById('ecoCashWalletDisplay').innerText = '$' + ecoBal.toFixed(2) + ' USD';
+      document.getElementById('zigWalletDisplay').innerText = 'ZiG ' + zigBal.toFixed(2);
+      document.getElementById('userEcoPhone').innerText = 'EcoCash: ' + phone;
+    }
+
+    function promptEcoCashLink() {
+      let savedPin = localStorage.getItem('user_security_pin');
+
+      // Setup PIN on first time
+      if (!savedPin) {
+        const newPin = prompt("SECURITY SETUP: Create a new 4-digit Security PIN to protect your account:");
+        if (newPin && newPin.length === 4 && !isNaN(newPin)) {
+          localStorage.setItem('user_security_pin', newPin);
+          alert("Security PIN successfully created!");
+          savedPin = newPin;
+        } else {
+          alert("Invalid PIN format. Must be 4 numeric digits.");
+          return;
+        }
+      }
+
+      // Verify PIN before giving access
+      const enteredPin = prompt("SECURITY VERIFICATION: Enter your 4-digit Security PIN to continue:");
+      if (enteredPin !== savedPin) {
+        alert("ACCESS DENIED: Incorrect Security PIN! Transaction aborted for safety.");
+        return;
+      }
+
+      // PIN Correct - Proceed with linkage & updates
+      const phone = prompt("Enter EcoCash Phone Number (e.g., 0771234567):", localStorage.getItem('ecocash_phone') || "");
+      if (phone !== null && phone.trim() !== "") {
+        const usdVal = prompt("Enter EcoCash USD Balance ($):", localStorage.getItem('ecocash_usd_balance') || "0.00");
+        const zigVal = prompt("Enter ZiG Balance (ZiG):", localStorage.getItem('ecocash_zig_balance') || "0.00");
+
+        localStorage.setItem('ecocash_phone', phone.trim());
+        localStorage.setItem('ecocash_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
+        localStorage.setItem('ecocash_zig_balance', parseFloat(zigVal || '0.00').toFixed(2));
+
+        renderWalletData();
+        alert("VERIFIED: Account details updated securely!");
+      }
+    }
 
     function handleLogout() {
       sessionStorage.removeItem("isLoggedIn");
