@@ -180,7 +180,7 @@
 
       <div class="form-group">
         <label>Password</label>
-        <input type="password" class="form-input" id="regPassword" placeholder="Create a password (min 6 chars)" required>
+        <input type="password" class="form-input" id="regPassword" placeholder="Create a password" required>
       </div>
 
       <button type="submit" class="btn-submit" style="background: #00d2ff; color: #000;"><i class="fa-solid fa-user-plus"></i> Create Account</button>
@@ -213,32 +213,23 @@
       }
     }
 
-    // STRICT LOGIN CHECK: Blocks fake/incorrect details or un-registered devices
+    // SMARTER LOGIN: Inogamuchira email yese yaunaisa ichibva yango-savha kana pasina yaiva po, yobva yakuendesa ku dashboard pasina kuramba
     function handleLogin(event) {
       event.preventDefault();
       
       const emailInput = document.getElementById('loginEmail').value.trim();
       const passInput = document.getElementById('loginPassword').value.trim();
 
-      const savedEmail = localStorage.getItem('user_email');
-      const savedPass = localStorage.getItem('user_pass');
-
-      if (!savedEmail || !savedPass) {
-        alert("ACCESS DENIED: No account registered on this device. Please create an account first.");
-        return;
+      if (emailInput && passInput) {
+        localStorage.setItem('user_email', emailInput);
+        localStorage.setItem('user_pass', passInput);
+        sessionStorage.setItem("isLoggedIn", "true");
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Ndapota zadzisa ma details ako zvakanaka.");
       }
-
-      if (emailInput !== savedEmail || passInput !== savedPass) {
-        alert("ACCESS DENIED: Incorrect email or password! Login failed.");
-        return;
-      }
-
-      // Only proceeds if details match 100%
-      sessionStorage.setItem("isLoggedIn", "true");
-      window.location.href = "dashboard.html";
     }
 
-    // REGISTRATION: Saves credentials securely
     function handleRegister(event) {
       event.preventDefault();
 
@@ -246,18 +237,16 @@
       const email = document.getElementById('regEmail').value.trim();
       const pass = document.getElementById('regPassword').value.trim();
 
-      if (name.length < 3 || !email.includes('@') || pass.length < 6) {
-        alert("ERROR: Please fill in valid details (Password must be at least 6 characters).");
-        return;
+      if (name && email && pass) {
+        localStorage.setItem('user_name', name);
+        localStorage.setItem('user_email', email);
+        localStorage.setItem('user_pass', pass);
+        sessionStorage.setItem("isLoggedIn", "true");
+
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Ndapota zadzisa zvese.");
       }
-
-      localStorage.setItem('user_name', name);
-      localStorage.setItem('user_email', email);
-      localStorage.setItem('user_pass', pass);
-      sessionStorage.setItem("isLoggedIn", "true");
-
-      alert("ACCOUNT CREATED SUCCESSFULLY!");
-      window.location.href = "dashboard.html";
     }
   </script>
 
