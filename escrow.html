@@ -139,13 +139,6 @@
   </div>
 
   <script>
-    // --- BACKGROUND-SWITCH AUTO-LOCK SECURITY ---
-    document.addEventListener("visibilitychange", function() {
-      if (document.hidden) {
-        sessionStorage.removeItem("isLoggedIn");
-      }
-    });
-
     let currentMode = localStorage.getItem('account_mode') || 'demo';
 
     function updateModeUI() {
@@ -175,11 +168,7 @@
     }
 
     function toggleAccountMode() {
-      if (currentMode === 'demo') {
-        currentMode = 'real';
-      } else {
-        currentMode = 'demo';
-      }
+      currentMode = (currentMode === 'demo') ? 'real' : 'demo';
       localStorage.setItem('account_mode', currentMode);
       updateModeUI();
     }
