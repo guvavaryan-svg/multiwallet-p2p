@@ -337,22 +337,17 @@
   </div>
 
   <div class="card">
-    <div class="card-title"><span><i class="fa-solid fa-store"></i> Active P2P Trading Markets</span></div>
-
-    <div class="agent-item">
-      <div>
-        <strong style="color:#fff;">Buy USDT via EcoCash</strong><br>
-        <small style="color:#aaa;">Escrow Protected • Rate: 1:1</small>
-      </div>
-      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade</a>
+    <div class="card-title">
+      <span><i class="fa-solid fa-store"></i> Active P2P Trading Markets</span>
+      <button class="btn-link-account" onclick="promptAgentSetup()"><i class="fa-solid fa-user-gear"></i> Agent Setup</button>
     </div>
 
     <div class="agent-item">
       <div>
-        <strong style="color:#fff;">John Doe (Agent)</strong><br>
-        <small style="color:#aaa;">USDT / ZiG | Rate: Market</small>
+        <strong style="color:#fff;" id="agentNameDisplay">John Doe (Agent)</strong><br>
+        <small style="color:#aaa;" id="agentDetailsDisplay">EcoCash: 0771234567 • Escrow Protected</small>
       </div>
-      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
+      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade</a>
     </div>
   </div>
 
@@ -438,6 +433,12 @@
       if (!localStorage.getItem('real_usdt_balance')) {
         localStorage.setItem('real_usdt_balance', '0.00');
       }
+      if (!localStorage.getItem('p2p_agent_name')) {
+        localStorage.setItem('p2p_agent_name', 'John Doe (Agent)');
+      }
+      if (!localStorage.getItem('p2p_agent_details')) {
+        localStorage.setItem('p2p_agent_details', 'EcoCash: 0771234567 • Escrow Protected');
+      }
 
       updateModeUI();
     });
@@ -465,6 +466,9 @@
       const ecoBal = parseFloat(localStorage.getItem('ecocash_usd_balance') || '0.00');
       const zigBal = parseFloat(localStorage.getItem('ecocash_zig_balance') || '0.00');
       const phone = localStorage.getItem('ecocash_phone') || 'Not Linked';
+      
+      const agentName = localStorage.getItem('p2p_agent_name') || 'John Doe (Agent)';
+      const agentDetails = localStorage.getItem('p2p_agent_details') || 'EcoCash: 0771234567';
 
       document.getElementById('cardCommissionBalance').innerText = '$' + cardComm.toFixed(2) + ' USD';
       document.getElementById('demoUsdDisplay').innerText = '$' + activeBal.toFixed(2) + ' USD';
@@ -473,6 +477,22 @@
       document.getElementById('ecoCashWalletDisplay').innerText = '$' + ecoBal.toFixed(2) + ' USD';
       document.getElementById('zigWalletDisplay').innerText = 'ZiG ' + zigBal.toFixed(2);
       document.getElementById('userEcoPhone').innerText = 'EcoCash: ' + phone;
+
+      document.getElementById('agentNameDisplay').innerText = agentName;
+      document.getElementById('agentDetailsDisplay').innerText = agentDetails;
+    }
+
+    function promptAgentSetup() {
+      const name = prompt("P2P AGENT SETUP: Enter Agent Name / Title (e.g., Ruhaan FX Agent):", localStorage.getItem('p2p_agent_name') || "");
+      if (name !== null && name.trim() !== "") {
+        const details = prompt("Enter Agent Payment Details (e.g., EcoCash: 0771234567 / Bank / USDT TRC20):", localStorage.getItem('p2p_agent_details') || "");
+        if (details !== null && details.trim() !== "") {
+          localStorage.setItem('p2p_agent_name', name.trim());
+          localStorage.setItem('p2p_agent_details', details.trim());
+          renderWalletData();
+          alert("SUCCESS: P2P Agent details updated successfully!");
+        }
+      }
     }
 
     function trackDerivClick() {
