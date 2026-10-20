@@ -6,7 +6,7 @@
   <title>MultiwalletP2P - Dashboard</title>
 
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#00d2ff">
+  <meta name="theme-color" content="#121212">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
@@ -21,8 +21,35 @@
       color: #ffffff;
       margin: 0;
       padding: 15px;
-      padding-bottom: 50px;
+      padding-bottom: 80px;
     }
+
+    /* LOADER OVERLAY */
+    #appLoader {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #121212;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.4s ease;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid #2a2a2a;
+      border-top: 4px solid #ff444f;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 15px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -30,7 +57,7 @@
       background: #1e1e1e;
       padding: 12px 15px;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       border: 1px solid #333;
     }
     .brand-logo {
@@ -77,9 +104,9 @@
     }
     .card {
       background: #1e1e1e;
-      padding: 20px;
+      padding: 18px;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       border: 1px solid #2a2a2a;
     }
     .card-title {
@@ -91,130 +118,103 @@
       align-items: center;
       justify-content: space-between;
     }
-    .deriv-card {
-      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
-      border: 1px solid #6366f1;
-      padding: 18px;
-      border-radius: 12px;
-      margin-bottom: 20px;
+    
+    .wallet-hero {
+      background: #18181b;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 25px 15px;
+      text-align: center;
+      margin-bottom: 15px;
     }
-    .btn-deriv-partner {
+    .p2p-logo-badge {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ff444f, #cc1122);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px auto;
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(255,68,79,0.3);
+    }
+    .transfer-btn {
       background: #ff444f;
-      color: #ffffff;
-      text-decoration: none;
-      padding: 12px 18px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 14px;
-      display: block;
-      text-align: center;
-      margin-top: 12px;
-    }
-    .action-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .btn-action-tile {
-      background: #00d2ff;
-      color: #000;
-      padding: 12px;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 13px;
+      color: #fff;
       border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 15px auto 0 auto;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255,68,79,0.4);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; width: 100%;
+      background: #18181b;
+      border-top: 1px solid #2a2a2a;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 10px 0;
+      z-index: 99;
+      box-sizing: border-box;
+    }
+    .nav-item {
+      background: transparent;
+      border: none;
+      color: #888;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
       cursor: pointer;
     }
-    .wallet-item {
-      background: #252525;
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid #333;
-      cursor: pointer;
+    .nav-item.active {
+      color: #ff444f;
     }
-    .wallet-amount {
-      color: #00ff88;
-      font-weight: bold;
-      text-align: right;
+    .nav-item i {
+      font-size: 18px;
     }
-    .masked-card {
-      background: #2b2b2b;
-      padding: 12px;
-      border-radius: 8px;
-      font-family: monospace;
-      font-size: 16px;
-      letter-spacing: 2px;
-      color: #00d2ff;
-      border: 1px solid #3d3d3d;
-      margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+
+    .app-section {
+      display: none;
     }
-    .agent-item {
+    .app-section.active {
+      display: block;
+    }
+
+    .ad-item {
       background: #252525;
       padding: 14px;
-      border-radius: 8px;
+      border-radius: 10px;
       margin-bottom: 10px;
       border: 1px solid #333;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .btn-trade {
+    .btn-buy-usd {
       background: #00ff88;
       color: #000;
       text-decoration: none;
-      padding: 8px 14px;
-      border-radius: 6px;
+      padding: 8px 16px;
+      border-radius: 20px;
       font-weight: bold;
       font-size: 13px;
-    }
-    .btn-link-account {
-      background: rgba(0, 210, 255, 0.2);
-      color: #00d2ff;
-      border: 1px solid #00d2ff;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .btn-apply-agent {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #fff;
       border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 12px;
       cursor: pointer;
-    }
-    .alert-card {
-      background: rgba(255, 59, 48, 0.1);
-      border: 1px solid #ff3b30;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-    .btn-report {
-      background: #ff3b30;
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 12px;
     }
 
-    /* MODAL STYLES */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -273,28 +273,32 @@
       cursor: pointer;
       font-size: 12px;
     }
-    .chart-box {
-      background: #0f172a;
-      border: 1px solid #333;
+    .wallet-item {
+      background: #252525;
+      padding: 12px 16px;
       border-radius: 8px;
-      height: 160px;
+      margin-bottom: 10px;
       display: flex;
-      align-items: flex-end;
-      padding: 10px;
-      gap: 6px;
-      justify-content: space-around;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #333;
+      cursor: pointer;
     }
-    .candle {
-      width: 12px;
-      background: #10b981;
-      border-radius: 3px;
-    }
-    .candle.down {
-      background: #ef4444;
+    .wallet-amount {
+      color: #00ff88;
+      font-weight: bold;
+      text-align: right;
     }
   </style>
 </head>
 <body>
+
+  <!-- LOADER / SPLASH SCREEN -->
+  <div id="appLoader">
+    <div class="spinner"></div>
+    <div style="color: #ff444f; font-weight: bold; font-size: 16px; letter-spacing: 1px;">MultiwalletP2P</div>
+    <div style="color: #888; font-size: 12px; margin-top: 5px;">Loading secure P2P market...</div>
+  </div>
 
   <!-- Navbar -->
   <div class="navbar">
@@ -310,522 +314,135 @@
   </div>
 
   <!-- Mode Banner -->
-  <div class="card" id="modeBannerCard" style="border-left: 4px solid #f59e0b;">
+  <div class="card" id="modeBannerCard" style="border-left: 4px solid #f59e0b; margin-bottom: 15px;">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <strong id="modeTitle" style="color: #f59e0b; font-size: 14px;"><i class="fa-solid fa-flask"></i> DEMO / TEST MODE ACTIVE</strong>
-      <span style="font-size: 12px; color: #aaa;" id="modeBadgeDisplay">SIMULATION</span>
-    </div>
-    <p style="font-size: 12px; color: #ccc; margin: 8px 0 0 0;" id="modeDesc">You are currently operating with demo simulated funds.</p>
-  </div>
-
-  <div class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div>
-        <h3 style="margin:0; color:#fff;">My Account</h3>
-        <small style="color:#aaa;" id="userEcoPhone">EcoCash: Not Linked</small>
-      </div>
-      <span style="background:rgba(0,255,136,0.15); color:#00ff88; border:1px solid #00ff88; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;">
-        <i class="fa-solid fa-circle-check"></i> KYC Verified
-      </span>
-    </div>
-
-    <!-- ACTION TILES -->
-    <div class="action-grid">
-      <button class="btn-action-tile" onclick="openDepositModal()"><i class="fa-solid fa-arrow-down"></i><br>Deposit</button>
-      <button class="btn-action-tile" onclick="openWithdrawModal()"><i class="fa-solid fa-arrow-up"></i><br>Withdraw</button>
-      <button class="btn-action-tile" onclick="promptEcoCashLink()"><i class="fa-solid fa-key"></i><br>PIN & Link</button>
+      <strong id="modeTitle" style="color: #f59e0b; font-size: 13px;"><i class="fa-solid fa-flask"></i> DEMO / TEST MODE ACTIVE</strong>
+      <span style="font-size: 11px; color: #aaa;" id="modeBadgeDisplay">SIMULATION</span>
     </div>
   </div>
 
-  <div class="deriv-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-      <strong style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-chart-line"></i> Official Trading Partner</strong>
-      <span style="background: rgba(255,68,79,0.2); color: #ff444f; border: 1px solid #ff444f; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold;">LIVE TRACKING</span>
+  <!-- ================= PROMOTIONAL AD BANNER ================= -->
+  <div style="background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1px solid #6366f1; border-radius: 14px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <span style="background: rgba(99,102,241,0.2); color: #818cf8; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase;">Featured Ad</span>
+      <h4 style="margin: 6px 0 4px 0; color: #fff; font-size: 14px;">MultiwalletP2P Elite Trading</h4>
+      <p style="margin: 0; color: #cbd5e1; font-size: 11px; line-height: 1.3;">Trade USDT & USD securely with 0% scam risk, instant escrow release, and live MT5 market feeds.</p>
     </div>
-    <h3 style="margin: 0 0 6px 0; color: #ffffff; font-size: 16px;">Deriv Trading & Fast Account Top-Up</h3>
-    <p style="font-size: 12px; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
-      Connect or register your Deriv trading account to trade Synthetic Indices (Crash/Boom), Options, and Forex markets directly.
-    </p>
-    
-    <a href="https://deriv.com/signup/?ref=WWGEGKRGK5S8" target="_blank" class="btn-deriv-partner" onclick="trackDerivClick()">
-      <i class="fa-solid fa-arrow-up-right-from-square"></i> Open / Connect Deriv Account
-    </a>
-
-    <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8;">
-      <span>Referral Code: <strong style="color: #fff;">FCPW2BYUVPV9</strong></span>
-      <span>App Clicks: <strong id="derivClickCount" style="color: #00ff88;">0</strong></span>
+    <div style="background: #ff444f; color: #fff; font-weight: bold; padding: 8px 12px; border-radius: 8px; font-size: 12px; text-align: center; cursor: pointer; white-space: nowrap;" onclick="alert('MultiwalletP2P: Secure P2P trading platform built for fast and safe transactions.')">
+      Explore <i class="fa-solid fa-arrow-right"></i>
     </div>
   </div>
 
-  <!-- ACTIVE ORDER ALERT WITH SECURE REPORT ACTION -->
-  <div class="alert-card" id="activeOrderCard">
-    <div style="color:#ff3b30; font-weight:bold; font-size:14px; margin-bottom:8px;">
-      <i class="fa-solid fa-triangle-exclamation"></i> Active Order Alert
+  <!-- ================= SECTION 1: WALLET ================= -->
+  <div id="sectionWallet" class="app-section">
+    <div class="wallet-hero">
+      <div class="p2p-logo-badge">P2P</div>
+      <div style="color: #aaa; font-size: 13px; margin-bottom: 4px;">P2P Wallet Balance</div>
+      <div id="p2pHeroBalance" style="font-size: 26px; font-weight: bold; color: #fff;">$0.00 USD</div>
+      <button class="transfer-btn" onclick="openDepositModal()" title="Transfer / Deposit"><i class="fa-solid fa-right-left"></i></button>
+      <div style="font-size: 11px; color: #888; margin-top: 6px;">Transfer</div>
     </div>
-    <p style="font-size:12px; color:#ccc; margin:0 0 10px 0;">User entered order but failed to send payment within 20 minutes:</p>
-    <div style="background:#1e1e1e; padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff3b30;">
-      <div>
-        <strong style="font-size:13px; color:#fff;">Order #P2P-8842</strong><br>
-        <small style="color:#ff3b30;">Time Elapsed: 20+ Mins (Unpaid)</small>
+
+    <div class="card">
+      <div class="card-title">
+        <span><i class="fa-solid fa-wallet"></i> P2P Wallets & Assets</span>
+        <button class="btn-link-account" onclick="promptEcoCashLink()" style="background:rgba(0, 210, 255, 0.2); color:#00d2ff; border:1px solid #00d2ff; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;"><i class="fa-solid fa-key"></i> PIN & Link</button>
       </div>
-      <button class="btn-report" onclick="reportActiveOrder()">Report / Dispute</button>
-    </div>
-  </div>
 
-  <div class="card" style="border-left: 4px solid #00d2ff;">
-    <div class="card-title">
-      <span><i class="fa-solid fa-shield-halved"></i> Master Virtual Card (1% Commission Collector)</span>
-    </div>
-    <div class="masked-card">
-      <span>•••• •••• •••• 6754</span>
-      <span style="font-size:11px; background:#00ff88; color:#000; padding:2px 6px; border-radius:4px; font-weight:bold;">SECURE</span>
-    </div>
-    <div style="margin-top:12px; display:flex; justify-content:space-between;">
-      <div>
-        <small style="color:#aaa;">Accumulated Commission</small><br>
-        <strong id="cardCommissionBalance" style="color:#00ff88; font-size:20px;">$3.50 USD</strong>
-      </div>
-      <div>
-        <small style="color:#aaa;" id="walletTypeLabel">Wallet Balance</small><br>
-        <strong id="demoUsdDisplay" style="color:#ffffff; font-size:18px;">$0.00 USD</strong>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">
-      <span><i class="fa-solid fa-wallet"></i> Wallets & MT5 Live Market Rates</span>
-      <button class="btn-link-account" onclick="promptEcoCashLink()"><i class="fa-solid fa-key"></i> PIN & Update</button>
-    </div>
-    <p style="font-size: 12px; color: #888; margin-top:0;">Tap any currency below to inspect live rates and open MT5 chart room analysis:</p>
-
-    <!-- USD WALLET -->
-    <div class="wallet-item" onclick="openCurrencyChart('USD / USD', '$1.00', 'Stable (0.00% vs yesterday)')">
-      <div>
-        <i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> <span id="usdWalletTitle">USD Wallet</span> <br>
-        <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> USD: Stable (0.00% vs yesterday)</small>
-      </div>
-      <div class="wallet-amount" id="usdWalletBalance">$0.00 USD</div>
-    </div>
-
-    <!-- USDT WALLET -->
-    <div class="wallet-item" onclick="openCurrencyChart('USDT / USD', '$1.00', 'Stable peg (1.00 USD)')">
-      <div>
-        <i class="fa-solid fa-coins" style="color:#00ff88;"></i> <span id="usdtWalletTitle">USDT Wallet</span> <br>
-        <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> USDT: Stable peg (1.00 USD)</small>
-      </div>
-      <div class="wallet-amount" id="usdtWalletBalance">0.00 USDT</div>
-    </div>
-
-    <!-- ECOCASH WALLET -->
-    <div class="wallet-item" onclick="openCurrencyChart('EcoCash USD / ZiG', '1:26.61', 'Stable liquidity flow')">
-      <div>
-        <i class="fa-solid fa-mobile-screen-button" style="color:#00d2ff;"></i> EcoCash Wallet <br>
-        <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> EcoCash USD: Stable liquidity</small>
-      </div>
-      <div class="wallet-amount" id="ecoCashWalletDisplay">$0.00 USD</div>
-    </div>
-
-    <!-- ZIG WALLET -->
-    <div class="wallet-item" onclick="openCurrencyChart('USD / ZiG', '26.61 ZiG', '+0.07% (Stronger vs yesterday)')">
-      <div>
-        <i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Wallet <br>
-        <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> ZiG: +0.07% (Stronger vs yesterday)</small>
-      </div>
-      <div class="wallet-amount" style="color:#ffcc00;" id="zigWalletDisplay">ZiG 0.00</div>
-    </div>
-
-    <!-- RAND (ZAR) WALLET -->
-    <div class="wallet-item" onclick="openCurrencyChart('USD / ZAR', 'R18.45', '-0.15% (Weaker vs yesterday)')">
-      <div>
-        <i class="fa-solid fa-money-bill-wave" style="color:#00d2ff;"></i> Rand (ZAR) <br>
-        <small style="color:#ff3b30;"><i class="fa-solid fa-arrow-trend-down"></i> ZAR: -0.15% (Weaker vs yesterday)</small>
-      </div>
-      <div class="wallet-amount">R0.00</div>
-    </div>
-
-    <!-- BITCOIN (BTC) WALLET -->
-    <div class="wallet-item" onclick="openCurrencyChart('BTC / USD', '$65,420.00', '+1.42% (Stronger vs yesterday)')">
-      <div>
-        <i class="fa-brands fa-bitcoin" style="color:#ff9900;"></i> Bitcoin (BTC) <br>
-        <small style="color:#10b981;"><i class="fa-solid fa-arrow-trend-up"></i> BTC: +1.42% (Stronger vs yesterday)</small>
-      </div>
-      <div class="wallet-amount" style="color:#ff9900;">0.0000 BTC</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">
-      <span><i class="fa-solid fa-store"></i> Verified P2P Trading Markets (Anti-Scam)</span>
-      <button class="btn-apply-agent" onclick="applyAsAgent()"><i class="fa-solid fa-user-shield"></i> Apply as Agent</button>
-    </div>
-
-    <div class="agent-item">
-      <div>
-        <strong style="color:#fff;" id="agentNameDisplay">John Doe (Verified Agent)</strong><br>
-        <small style="color:#10b981;" id="agentDetailsDisplay"><i class="fa-solid fa-circle-check"></i> Anti-Scam Verified • Escrow Protected</small>
-      </div>
-      <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-trade">Trade</a>
-    </div>
-  </div>
-
-  <!-- MT5 INTERACTIVE CHART ROOM MODAL -->
-  <div id="chartModal" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-header">
+      <div class="wallet-item" onclick="openCurrencyChart('USDT / USD', '$1.00', 'Stable peg')">
         <div>
-          <strong id="modalPairTitle" style="color:#00d2ff; font-size:15px;">Chart Room</strong><br>
-          <small id="modalPairRate" style="color:#00ff88; font-size:12px;">Rate: --</small>
+          <i class="fa-solid fa-coins" style="color:#00ff88;"></i> USDT Wallet <br>
+          <small style="color:#10b981;">Stable liquidity</small>
         </div>
-        <button class="btn-close-modal" onclick="closeCurrencyChart()">Close</button>
+        <div class="wallet-amount" id="usdtWalletBalance">0.00 USDT</div>
       </div>
-      <p style="font-size:11px; color:#aaa; margin:0 0 8px 0;" id="modalPairTrend">Trend: --</p>
-      
-      <div class="chart-box">
-        <div class="candle" style="height: 40px;"></div>
-        <div class="candle down" style="height: 30px;"></div>
-        <div class="candle" style="height: 60px;"></div>
-        <div class="candle" style="height: 50px;"></div>
-        <div class="candle down" style="height: 45px;"></div>
-        <div class="candle" style="height: 80px;"></div>
-        <div class="candle" style="height: 70px;"></div>
+
+      <div class="wallet-item" onclick="openCurrencyChart('USD / USD', '$1.00', 'Stable reserve')">
+        <div>
+          <i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> US Dollar <br>
+          <small style="color:#10b981;">KYC Verified</small>
+        </div>
+        <div class="wallet-amount" id="usdWalletBalance">$0.00 USD</div>
       </div>
-      <div style="display:flex; justify-content:space-between; font-size:10px; color:#666; margin-top:6px;">
-        <span>M1 Live Feed</span>
-        <span>MT5 Terminal Active</span>
+
+      <div class="wallet-item" onclick="openCurrencyChart('USD / ZiG', '26.61 ZiG', 'Official rate')">
+        <div>
+          <i class="fa-solid fa-building-columns" style="color:#ffcc00;"></i> ZiG Asset Wallet <br>
+          <small style="color:#ffcc00;">EcoCash Linked</small>
+        </div>
+        <div class="wallet-amount" style="color:#ffcc00;" id="zigWalletDisplay">ZiG 0.00</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong style="font-size:14px; color:#fff;">Quick Actions</strong><br>
+          <small style="color:#aaa;" id="userEcoPhone">EcoCash: Not Linked</small>
+        </div>
+        <span style="background:rgba(0,255,136,0.15); color:#00ff88; border:1px solid #00ff88; padding:3px 8px; border-radius:15px; font-size:11px; font-weight:bold;">
+          <i class="fa-solid fa-circle-check"></i> Secure Escrow
+        </span>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px;">
+        <button class="modal-btn" style="background:#00d2ff; color:#000;" onclick="openDepositModal()"><i class="fa-solid fa-arrow-down"></i> Deposit</button>
+        <button class="modal-btn" style="background:#ff3b30; color:#fff;" onclick="openWithdrawModal()"><i class="fa-solid fa-arrow-up"></i> Withdraw</button>
       </div>
     </div>
   </div>
 
-  <!-- DEPOSIT MODAL -->
-  <div id="depositModal" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-header">
-        <strong style="color:#00d2ff; font-size:15px;"><i class="fa-solid fa-arrow-down"></i> P2P Escrow Deposit</strong>
-        <button class="btn-close-modal" onclick="closeDepositModal()">Close</button>
+
+  <!-- ================= SECTION 2: MARKET (DEFAULT ACTIVE) ================= -->
+  <div id="sectionMarket" class="app-section active">
+    <div class="card">
+      <div class="card-title">
+        <span><i class="fa-solid fa-store"></i> P2P Verified Trading Markets</span>
       </div>
-      <p style="font-size:12px; color:#aaa; margin-top:0;">Top up funds securely with Security PIN verification.</p>
-      <label style="font-size:11px; color:#aaa;">Select Currency / Asset:</label>
-      <select id="depositCurrency" class="modal-input">
-        <option value="USD">USD ($)</option>
-        <option value="USDT">USDT</option>
-        <option value="ZiG">ZiG</option>
-      </select>
-      <label style="font-size:11px; color:#aaa;">Enter Deposit Amount:</label>
-      <input type="number" id="depositAmount" class="modal-input" placeholder="0.00" value="50.00">
-      <button class="modal-btn" onclick="executeDeposit()">Proceed with Deposit</button>
+      <p style="font-size: 11px; color: #888; margin-top:0;">Tap Buy USD to enter the secure escrow trading room.</p>
+
+      <div class="ad-item">
+        <div>
+          <strong style="color:#fff; font-size:14px;">Tupay_Online <i class="fa-solid fa-circle-check" style="color:#00d2ff;"></i></strong><br>
+          <small style="color:#10b981;">4.95 • 19,076 orders • 99.94%</small><br>
+          <span style="color:#ffcc00; font-weight:bold; font-size:15px;">1.10 ZWL/USD</span><br>
+          <small style="color:#aaa;">Limits: $1.00 - $922.73 • 15 min</small><br>
+          <span style="font-size:11px; color:#00d2ff;">EcoCash • InnBucks</span>
+        </div>
+        <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-buy-usd">Buy USD</a>
+      </div>
+
+      <div class="ad-item">
+        <div>
+          <strong style="color:#fff; font-size:14px;">Petsaldo <i class="fa-solid fa-circle-check" style="color:#00d2ff;"></i></strong><br>
+          <small style="color:#10b981;">4.92 • 35,450 orders • 99.92%</small><br>
+          <span style="color:#ffcc00; font-weight:bold; font-size:15px;">1.10 ZWL/USD</span><br>
+          <small style="color:#aaa;">Limits: $1.00 - $800.00 • 30 min</small><br>
+          <span style="font-size:11px; color:#00d2ff;">EcoCash</span>
+        </div>
+        <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-buy-usd">Buy USD</a>
+      </div>
+
+      <div class="ad-item">
+        <div>
+          <strong style="color:#fff; font-size:14px;">GameTaker <i class="fa-solid fa-circle-check" style="color:#00d2ff;"></i></strong><br>
+          <small style="color:#10b981;">4.94 • 16,232 orders • 100%</small><br>
+          <span style="color:#ffcc00; font-weight:bold; font-size:15px;">1.10 ZWL/USD</span><br>
+          <small style="color:#aaa;">Limits: $2.00 - $1000.00 • 30 min</small><br>
+          <span style="font-size:11px; color:#00d2ff;">EcoCash • InnBucks</span>
+        </div>
+        <a href="escrow.html?pair=USDT%20%2F%20EcoCash" class="btn-buy-usd">Buy USD</a>
+      </div>
     </div>
   </div>
 
-  <!-- WITHDRAW MODAL -->
-  <div id="withdrawModal" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-header">
-        <strong style="color:#00d2ff; font-size:15px;"><i class="fa-solid fa-arrow-up"></i> P2P Escrow Withdrawal</strong>
-        <button class="btn-close-modal" onclick="closeWithdrawModal()">Close</button>
+
+  <!-- ================= SECTION 3: ORDERS ================= -->
+  <div id="sectionOrders" class="app-section">
+    <div class="card">
+      <div class="card-title">
+        <span><i class="fa-solid fa-list-check"></i> Active & Past Orders</span>
       </div>
-      <p style="font-size:12px; color:#aaa; margin-top:0;">Withdraw funds securely with Security PIN verification.</p>
-      <label style="font-size:11px; color:#aaa;">Select Currency / Asset:</label>
-      <select id="withdrawCurrency" class="modal-input">
-        <option value="USD">USD ($)</option>
-        <option value="USDT">USDT</option>
-        <option value="ZiG">ZiG</option>
-      </select>
-      <label style="font-size:11px; color:#aaa;">Enter Withdrawal Amount:</label>
-      <input type="number" id="withdrawAmount" class="modal-input" placeholder="0.00" value="20.00">
-      <button class="modal-btn" style="background:#ff3b30; color:#fff;" onclick="executeWithdraw()">Request Withdrawal</button>
-    </div>
-  </div>
-
-  <script>
-    let currentMode = localStorage.getItem('account_mode') || 'demo';
-
-    function updateModeUI() {
-      const modeBtn = document.getElementById('modeBtn');
-      const modeBannerCard = document.getElementById('modeBannerCard');
-      const modeTitle = document.getElementById('modeTitle');
-      const modeDesc = document.getElementById('modeDesc');
-      const modeBadgeDisplay = document.getElementById('modeBadgeDisplay');
-
-      if (currentMode === 'demo') {
-        modeBtn.innerText = "Demo Mode";
-        modeBtn.className = "mode-switch-btn";
-        modeBannerCard.style.borderLeft = "4px solid #f59e0b";
-        modeTitle.innerHTML = '<i class="fa-solid fa-flask"></i> DEMO / TEST MODE ACTIVE';
-        modeTitle.style.color = "#f59e0b";
-        modeDesc.innerText = "You are currently operating with demo simulated funds.";
-        modeBadgeDisplay.innerText = "SIMULATION";
-      } else {
-        modeBtn.innerText = "Real Account";
-        modeBtn.className = "mode-switch-btn real";
-        modeBannerCard.style.borderLeft = "4px solid #10b981";
-        modeTitle.innerHTML = '<i class="fa-solid fa-circle-check"></i> REAL ACCOUNT ACTIVE';
-        modeTitle.style.color = "#10b981";
-        modeDesc.innerText = "You are currently operating with real live balances and escrow execution.";
-        modeBadgeDisplay.innerText = "LIVE REAL";
-      }
-      renderWalletData();
-    }
-
-    function toggleAccountMode() {
-      if (currentMode === 'demo') {
-        currentMode = 'real';
-      } else {
-        currentMode = 'demo';
-      }
-      localStorage.setItem('account_mode', currentMode);
-      updateModeUI();
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem("isLoggedIn") !== "true") {
-        window.location.href = "index.html";
-        return;
-      }
-
-      if (!localStorage.getItem('masterCardNumber')) {
-        localStorage.setItem('masterCardNumber', '5321622512326754');
-      }
-      if (!localStorage.getItem('masterCommissionLocked')) {
-        localStorage.setItem('masterCommissionLocked', '3.50');
-      }
-      if (!localStorage.getItem('demo_usd_balance')) {
-        localStorage.setItem('demo_usd_balance', '500.00');
-      }
-      if (!localStorage.getItem('real_usd_balance')) {
-        localStorage.setItem('real_usd_balance', '0.00');
-      }
-      if (!localStorage.getItem('demo_usdt_balance')) {
-        localStorage.setItem('demo_usdt_balance', '1000.00');
-      }
-      if (!localStorage.getItem('real_usdt_balance')) {
-        localStorage.setItem('real_usdt_balance', '0.00');
-      }
-      if (!localStorage.getItem('p2p_agent_name')) {
-        localStorage.setItem('p2p_agent_name', 'John Doe (Verified Agent)');
-      }
-      if (!localStorage.getItem('p2p_agent_details')) {
-        localStorage.setItem('p2p_agent_details', 'EcoCash: 0771234567 • Anti-Scam Verified');
-      }
-
-      updateModeUI();
-    });
-
-    function renderWalletData() {
-      const cardComm = parseFloat(localStorage.getItem('masterCommissionLocked') || '3.50');
-      
-      let activeBal = 0.00;
-      let activeUsdt = 0.00;
-
-      if (currentMode === 'demo') {
-        activeBal = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
-        activeUsdt = parseFloat(localStorage.getItem('demo_usdt_balance') || '1000.00');
-        document.getElementById('walletTypeLabel').innerText = 'Demo Wallet Balance';
-        document.getElementById('usdWalletTitle').innerText = 'USD Wallet (Demo)';
-        document.getElementById('usdtWalletTitle').innerText = 'USDT Wallet (Demo)';
-      } else {
-        activeBal = parseFloat(localStorage.getItem('real_usd_balance') || '0.00');
-        activeUsdt = parseFloat(localStorage.getItem('real_usd_balance') || '0.00');
-        document.getElementById('walletTypeLabel').innerText = 'Real USD Wallet Balance';
-        document.getElementById('usdWalletTitle').innerText = 'USD Wallet (Real)';
-        document.getElementById('usdtWalletTitle').innerText = 'USDT Wallet (Real)';
-      }
-
-      const ecoBal = parseFloat(localStorage.getItem('ecocash_usd_balance') || '0.00');
-      const zigBal = parseFloat(localStorage.getItem('ecocash_zig_balance') || '0.00');
-      const phone = localStorage.getItem('ecocash_phone') || 'Not Linked';
-      
-      const agentName = localStorage.getItem('p2p_agent_name') || 'John Doe (Verified Agent)';
-      const agentDetails = localStorage.getItem('p2p_agent_details') || 'EcoCash: 0771234567';
-
-      document.getElementById('cardCommissionBalance').innerText = '$' + cardComm.toFixed(2) + ' USD';
-      document.getElementById('demoUsdDisplay').innerText = '$' + activeBal.toFixed(2) + ' USD';
-      document.getElementById('usdWalletBalance').innerText = '$' + activeBal.toFixed(2) + ' USD';
-      document.getElementById('usdtWalletBalance').innerText = activeUsdt.toFixed(2) + ' USDT';
-      document.getElementById('ecoCashWalletDisplay').innerText = '$' + ecoBal.toFixed(2) + ' USD';
-      document.getElementById('zigWalletDisplay').innerText = 'ZiG ' + zigBal.toFixed(2);
-      document.getElementById('userEcoPhone').innerText = 'EcoCash: ' + phone;
-
-      document.getElementById('agentNameDisplay').innerText = agentName;
-      document.getElementById('agentDetailsDisplay').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> ' + agentDetails;
-    }
-
-    // --- REPORT / DISPUTE ACTIVE ORDER ---
-    function reportActiveOrder() {
-      const confirmReport = confirm("ORDER DISPUTE & REPORT:\n\nDo you want to report Order #P2P-8842 for non-payment / timeout violation? This will alert Admin and freeze the escrow match.");
-      if (confirmReport) {
-        document.getElementById('activeOrderCard').style.display = 'none';
-        alert("REPORT SUCCESSFUL: Order #P2P-8842 has been flagged and reported to Admin for review. Escrow dispute protection activated.");
-      }
-    }
-
-    // --- SECURITY PIN CHECKER FOR DEPOSIT & WITHDRAW ---
-    function verifySecurityPinBeforeAction() {
-      let savedPin = localStorage.getItem('user_security_pin');
-      if (!savedPin) {
-        const newPin = prompt("SECURITY SETUP: Create a new 4-digit Security PIN to protect your transactions:");
-        if (newPin && newPin.length === 4 && !isNaN(newPin)) {
-          localStorage.setItem('user_security_pin', newPin);
-          alert("Security PIN successfully created!");
-          savedPin = newPin;
-        } else {
-          alert("Invalid PIN format. Must be 4 numeric digits.");
-          return false;
-        }
-      }
-      const enteredPin = prompt("SECURITY VERIFICATION: Enter your 4-digit Security PIN to authorize transaction:");
-      if (enteredPin !== savedPin) {
-        alert("ACCESS DENIED: Incorrect Security PIN! Transaction aborted for safety.");
-        return false;
-      }
-      return true;
-    }
-
-    // DEPOSIT & WITHDRAW MODAL CONTROLS
-    function openDepositModal() {
-      if (!verifySecurityPinBeforeAction()) return;
-      document.getElementById('depositModal').style.display = 'flex';
-    }
-    function closeDepositModal() {
-      document.getElementById('depositModal').style.display = 'none';
-    }
-    function executeDeposit() {
-      const amt = parseFloat(document.getElementById('depositAmount').value || '0');
-      const curr = document.getElementById('depositCurrency').value;
-      if (amt <= 0) {
-        alert("Please enter a valid deposit amount.");
-        return;
-      }
-      if (currentMode === 'demo') {
-        if (curr === 'USD') {
-          let b = parseFloat(localStorage.getItem('demo_usd_balance') || '500') + amt;
-          localStorage.setItem('demo_usd_balance', b.toFixed(2));
-        } else if (curr === 'USDT') {
-          let b = parseFloat(localStorage.getItem('demo_usdt_balance') || '1000') + amt;
-          localStorage.setItem('demo_usdt_balance', b.toFixed(2));
-        }
-      } else {
-        if (curr === 'USD') {
-          let b = parseFloat(localStorage.getItem('real_usd_balance') || '0') + amt;
-          localStorage.setItem('real_usd_balance', b.toFixed(2));
-        } else if (curr === 'USDT') {
-          let b = parseFloat(localStorage.getItem('real_usdt_balance') || '0') + amt;
-          localStorage.setItem('real_usdt_balance', b.toFixed(2));
-        }
-      }
-      renderWalletData();
-      closeDepositModal();
-      alert("SUCCESS: Deposit of " + amt + " " + curr + " processed successfully via P2P Escrow!");
-    }
-
-    function openWithdrawModal() {
-      if (!verifySecurityPinBeforeAction()) return;
-      document.getElementById('withdrawModal').style.display = 'flex';
-    }
-    function closeWithdrawModal() {
-      document.getElementById('withdrawModal').style.display = 'none';
-    }
-    function executeWithdraw() {
-      const amt = parseFloat(document.getElementById('withdrawAmount').value || '0');
-      const curr = document.getElementById('withdrawCurrency').value;
-      if (amt <= 0) {
-        alert("Please enter a valid withdrawal amount.");
-        return;
-      }
-      alert("WITHDRAWAL REQUEST SENT: Successfully requested withdrawal of " + amt + " " + curr + ". Awaiting escrow agent release.");
-      closeWithdrawModal();
-    }
-
-    // CHART MODAL CONTROLS
-    function openCurrencyChart(pairName, rateVal, trendDesc) {
-      document.getElementById('modalPairTitle').innerText = pairName + " Chart Room";
-      document.getElementById('modalPairRate').innerText = "Live Rate / Price: " + rateVal;
-      document.getElementById('modalPairTrend').innerText = "Market Analysis: " + trendDesc;
-      document.getElementById('chartModal').style.display = 'flex';
-    }
-    function closeCurrencyChart() {
-      document.getElementById('chartModal').style.display = 'none';
-    }
-
-    function applyAsAgent() {
-      const agentFullName = prompt("ANTI-SCAM AGENT VERIFICATION:\nEnter your Full Legal Name (Matching ID/Passport):");
-      if (!agentFullName || agentFullName.trim() === "") return;
-      const agentIdNumber = prompt("Enter your National ID or Passport Number for background check:");
-      if (!agentIdNumber || agentIdNumber.trim() === "") return;
-      const agentPhone = prompt("Enter your active mobile/EcoCash number for verification:");
-      if (!agentPhone || agentPhone.trim() === "") return;
-      const paymentMethod = prompt("Enter your payment details (e.g., EcoCash: 0771234567 / Bank Account):");
-      if (!paymentMethod || paymentMethod.trim() === "") return;
-
-      const requestData = {
-        name: agentFullName.trim(),
-        idNumber: agentIdNumber.trim(),
-        phone: agentPhone.trim(),
-        payment: paymentMethod.trim(),
-        status: "Pending Admin Approval"
-      };
-      localStorage.setItem('pending_agent_application', JSON.stringify(requestData));
-      alert("APPLICATION SUBMITTED SUCCESSFULLY!\n\nYour anti-scam verification request has been sent to the MultiwalletP2P Admin for review.");
-    }
-
-    function trackDerivClick() {
-      let clicks = parseInt(localStorage.getItem('deriv_clicks') || '0') + 1;
-      localStorage.setItem('deriv_clicks', clicks.toString());
-      updateDerivClickDisplay();
-    }
-    function updateDerivClickDisplay() {
-      const countElem = document.getElementById('derivClickCount');
-      if (countElem) {
-        countElem.innerText = localStorage.getItem('deriv_clicks') || '0';
-      }
-    }
-
-    function promptEcoCashLink() {
-      let savedPin = localStorage.getItem('user_security_pin');
-      if (!savedPin) {
-        const newPin = prompt("SECURITY SETUP: Create a new 4-digit Security PIN to protect your account:");
-        if (newPin && newPin.length === 4 && !isNaN(newPin)) {
-          localStorage.setItem('user_security_pin', newPin);
-          alert("Security PIN successfully created!");
-          savedPin = newPin;
-        } else {
-          alert("Invalid PIN format. Must be 4 numeric digits.");
-          return;
-        }
-      }
-      const enteredPin = prompt("SECURITY VERIFICATION: Enter your 4-digit Security PIN to continue:");
-      if (enteredPin !== savedPin) {
-        alert("ACCESS DENIED: Incorrect Security PIN! Transaction aborted for safety.");
-        return;
-      }
-      const phone = prompt("Enter EcoCash Phone Number (e.g., 0771234567):", localStorage.getItem('ecocash_phone') || "");
-      if (phone !== null && phone.trim() !== "") {
-        const modeLabelText = currentMode === 'demo' ? "Demo" : "Real";
-        const usdVal = prompt("Enter " + modeLabelText + " USD Balance ($):", currentMode === 'demo' ? (localStorage.getItem('demo_usd_balance') || "500.00") : (localStorage.getItem('real_usd_balance') || "0.00"));
-        const usdtVal = prompt("Enter " + modeLabelText + " USDT Balance (USDT):", currentMode === 'demo' ? (localStorage.getItem('demo_usdt_balance') || "1000.00") : (localStorage.getItem('real_usdt_balance') || "0.00"));
-        const zigVal = prompt("Enter ZiG Balance (ZiG):", localStorage.getItem('ecocash_zig_balance') || "0.00");
-
-        if (currentMode === 'demo') {
-          localStorage.setItem('demo_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
-          localStorage.setItem('demo_usdt_balance', parseFloat(usdtVal || '0.00').toFixed(2));
-        } else {
-          localStorage.setItem('real_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
-          localStorage.setItem('real_usdt_balance', parseFloat(usdtVal || '0.00').toFixed(2));
-        }
-
-        localStorage.setItem('ecocash_phone', phone.trim());
-        localStorage.setItem('ecocash_zig_balance', parseFloat(zigVal || '0.00').toFixed(2));
-
-        renderWalletData();
-        alert("VERIFIED: Account balances updated successfully for " + currentMode.toUpperCase() + " mode!");
-      }
-    }
-
-    function handleLogout() {
-      sessionStorage.removeItem("isLoggedIn");
-      sessionStorage.clear();
-      window.location.href = "index.html";
-    }
-  </script>
-</body>
-</html>
+      <div class="alert-card" id="activeOrderCard" style="background: rgba(255, 59, 48, 0.1); border: 1px solid #ff3b30; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+        <strong style="font-size:13px; color:#fff;">Order #P2P-8842 (Escrow Match)</strong><br>
+        <small style="color:#ff3b30;">Time Elapsed: 20+ Mins (Unpaid)</small>
+        
