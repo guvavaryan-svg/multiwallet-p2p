@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>P2P Escrow Trade Room</title>
-  
+  <title>MultiwalletP2P - Escrow Trading Room</title>
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#00d2ff">
-  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/888/888870.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- Custom MW Icon -->
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -18,244 +22,266 @@
       color: #ffffff;
       margin: 0;
       padding: 15px;
-      padding-bottom: 40px;
+      padding-bottom: 50px;
     }
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: #1e1e1e;
-      padding: 15px;
+      padding: 15px 20px;
       border-radius: 12px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       border: 1px solid #333;
+    }
+    .header h2 {
+      margin: 0;
+      color: #00d2ff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mw-icon-badge {
+      background: linear-gradient(135deg, #00d2ff, #0088cc);
+      color: #000000;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .btn-back {
+      background: #2b2b2b;
+      color: #00d2ff;
+      border: 1px solid #00d2ff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      text-decoration: none;
     }
     .card {
       background: #1e1e1e;
-      padding: 18px;
+      padding: 20px;
       border-radius: 12px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       border: 1px solid #2a2a2a;
     }
-    .timer-box {
-      text-align: center;
-      background: rgba(255, 77, 77, 0.15);
-      border: 1px solid #ff4d4d;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-    .timer {
-      font-size: 28px;
-      font-weight: bold;
-      color: #ff4d4d;
-      margin-top: 5px;
-    }
-    .details-box {
-      background: #2b2b2b;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 10px;
-      font-size: 14px;
-      border: 1px solid #3d3d3d;
-    }
-    .fee-badge {
+    .status-badge {
       background: rgba(0, 210, 255, 0.15);
       color: #00d2ff;
-      padding: 4px 8px;
-      border-radius: 4px;
+      border: 1px solid #00d2ff;
+      padding: 6px 12px;
+      border-radius: 20px;
       font-size: 12px;
       font-weight: bold;
       display: inline-block;
-      margin-top: 5px;
+      margin-bottom: 15px;
     }
-    .btn-pay {
+    .input-field {
       width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      background: #2b2b2b;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .btn-action {
       background: #00ff88;
       color: #000000;
       border: none;
       padding: 12px;
       border-radius: 8px;
       font-weight: bold;
-      font-size: 15px;
       cursor: pointer;
-      margin-top: 15px;
-    }
-    .btn-release {
       width: 100%;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .btn-complete {
       background: #00d2ff;
       color: #000000;
       border: none;
       padding: 12px;
       border-radius: 8px;
       font-weight: bold;
-      font-size: 15px;
       cursor: pointer;
-      margin-top: 10px;
-      display: none;
-    }
-    .btn-report {
       width: 100%;
-      background: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 15px;
-      cursor: pointer;
+      font-size: 14px;
       margin-top: 10px;
-      display: none;
     }
     .chat-box {
-      height: 150px;
       background: #2b2b2b;
-      border-radius: 8px;
-      padding: 10px;
-      overflow-y: auto;
-      font-size: 13px;
-      margin-bottom: 10px;
       border: 1px solid #3d3d3d;
+      border-radius: 8px;
+      padding: 12px;
+      height: 150px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      font-size: 13px;
     }
-    .chat-input {
-      display: flex;
-      gap: 8px;
+    .chat-msg {
+      margin-bottom: 8px;
+      line-height: 1.4;
     }
-    .chat-input input {
-      flex: 1;
-      padding: 10px;
-      background: #2b2b2b;
-      border: 1px solid #444;
-      color: white;
-      border-radius: 6px;
-    }
-    .chat-input button {
-      background: #00d2ff;
-      color: #000;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
+    .chat-msg span {
+      color: #00d2ff;
       font-weight: bold;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <div class="header">
-    <h3 style="margin:0; color:#00d2ff;"><i class="fa-solid fa-shield-halved"></i> Escrow Trade Room</h3>
-    <button onclick="window.location.href='dashboard.html'" style="background:#333; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">Back</button>
+    <h2><span class="mw-icon-badge">MW</span> Escrow Room</h2>
+    <a href="dashboard.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
   </div>
 
-  <!-- 20 Mins Timer -->
-  <div class="timer-box">
-    <small style="color:#aaa;">Payment Window Remaining</small>
-    <div class="timer" id="countdown">20:00</div>
-  </div>
-
-  <!-- Details -->
-  <div class="card">
-    <h4 style="margin-top:0;">Trade Details</h4>
-    <div class="details-box">
-      <p><strong>Pair:</strong> <span id="pairTitle">USDT / ZiG</span></p>
-      <p><strong>Trade Amount:</strong> $<span id="tradeAmount">50.00</span> USDT</p>
-      <p><strong>Platform Fee (1%):</strong> $<span id="feeAmount">0.50</span> USDT</p>
-      <p><strong>Net Amount to Receive:</strong> $<span id="netAmount">49.50</span> USDT</p>
-      <p><strong>Seller Account:</strong> 0771234567 (EcoCash USD)</p>
-      <p><strong>Status:</strong> <span style="color:#ffb300;" id="statusText">Pending Payment</span></p>
-      <span class="fee-badge"><i class="fa-solid fa-percent"></i> 1% Commission auto-collected by Escrow Master Wallet</span>
+  <!-- Demo System Status -->
+  <div class="card" style="border-left: 4px solid #00ff88;">
+    <div class="status-badge"><i class="fa-solid fa-flask"></i> DEMO / TEST MODE ACTIVE</div>
+    <h3 style="margin-top:0; color:#ffffff;" id="tradeTitle">USDT / EcoCash P2P Trade</h3>
+    <p style="font-size:12px; color:#aaa; margin:0 0 10px 0;">Agent: <strong id="agentNameDisplay" style="color:#00d2ff;">John Doe (Demo Agent)</strong></p>
+    
+    <div style="background:#2b2b2b; padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <small style="color:#b0b0b0;">Demo Test Balance</small><br>
+        <strong id="demoBalance" style="color:#00ff88; font-size:16px;">$500.00 USD</strong>
+      </div>
+      <div>
+        <small style="color:#b0b0b0;">Escrow Protection</small><br>
+        <strong style="color:#00d2ff; font-size:13px;"><i class="fa-solid fa-lock"></i> Locked</strong>
+      </div>
     </div>
-
-    <button class="btn-pay" id="btnPaid" onclick="confirmPayment()"><i class="fa-solid fa-circle-check"></i> I Have Paid Seller</button>
-    <button class="btn-release" id="btnRelease" onclick="releaseEscrow()"><i class="fa-solid fa-lock-open"></i> Confirm Payment & Release Funds</button>
-    <button class="btn-report" id="btnReport" onclick="reportDispute()"><i class="fa-solid fa-bell"></i> Report / Trigger Dispute (20 Mins Passed)</button>
   </div>
 
-  <!-- Chat Room -->
+  <!-- Trade Execution Card -->
   <div class="card">
-    <h4 style="margin-top:0;"><i class="fa-solid fa-comments"></i> Trade Chat Room</h4>
+    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-right-left"></i> Initiate Demo Trade</h3>
+    
+    <label style="font-size:12px; color:#ccc;">Trade Amount ($):</label>
+    <input type="number" id="tradeAmount" class="input-field" value="50" placeholder="Enter amount (e.g. 50)">
+
+    <label style="font-size:12px; color:#ccc;">Seller Payment Details (Demo Account):</label>
+    <input type="text" id="sellerDetails" class="input-field" value="EcoCash: 0771234567 - John Doe" readonly style="color:#00ff88;">
+
+    <button class="btn-action" id="btnDepositEscrow" onclick="lockEscrowFunds()"><i class="fa-solid fa-lock"></i> Deposit Funds to Escrow</button>
+  </div>
+
+  <!-- Live Chat Simulation -->
+  <div class="card">
+    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-comments"></i> Escrow Trade Chat</h3>
+    
     <div class="chat-box" id="chatBox">
-      <p style="color:#888;"><i>System: Trade started. Escrow holds seller's $50.00 USDT safely. 1% platform fee ($0.50) will be routed to Admin Master Wallet upon completion.</i></p>
+      <div class="chat-msg"><span>[System]:</span> Welcome to MultiwalletP2P Escrow Room.</div>
+      <div class="chat-msg"><span>[Demo Agent]:</span> Hello! Please deposit funds to escrow to begin the test trade.</div>
     </div>
-    <div class="chat-input">
-      <input type="text" id="msgInput" placeholder="Type message to trader...">
-      <button onclick="sendMessage()">Send</button>
+
+    <div style="display:flex; gap:8px;">
+      <input type="text" id="chatInput" class="input-field" placeholder="Type message..." style="margin:0;">
+      <button onclick="sendChatMessage()" style="background:#00d2ff; color:#000; border:none; padding:0 15px; border-radius:6px; font-weight:bold; cursor:pointer;">Send</button>
     </div>
+
+    <button class="btn-complete" id="btnRelease" onclick="completeDemoTrade()" style="display:none;"><i class="fa-solid fa-circle-check"></i> Complete Trade & Route 1% Commission</button>
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const pair = urlParams.get('pair') || 'USDT / ZiG';
-    document.getElementById('pairTitle').innerText = pair;
+    // 1. Initialize Demo System Variables
+    window.addEventListener('DOMContentLoaded', () => {
+      // Get URL params if available
+      const urlParams = new URLSearchParams(window.location.search);
+      const pair = urlParams.get('pair') || 'USDT / EcoCash';
+      document.getElementById('tradeTitle').innerText = pair + " P2P Trade";
 
-    const rawAmount = 50.00;
-    const feeRate = 0.01; // 1% Commission
-    const fee = rawAmount * feeRate;
-    const net = rawAmount - fee;
-
-    document.getElementById('tradeAmount').innerText = rawAmount.toFixed(2);
-    document.getElementById('feeAmount').innerText = fee.toFixed(2);
-    document.getElementById('netAmount').innerText = net.toFixed(2);
-
-    let timeLeft = 20 * 60;
-    const countdownEl = document.getElementById('countdown');
-    const reportBtn = document.getElementById('btnReport');
-
-    const timerInterval = setInterval(() => {
-      let minutes = Math.floor(timeLeft / 60);
-      let seconds = timeLeft % 60;
-
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      seconds = seconds < 10 ? '0' + seconds : seconds;
-
-      countdownEl.innerText = `${minutes}:${seconds}`;
-
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        countdownEl.innerText = "EXPIRED";
-        document.getElementById('statusText').innerText = "Time Expired (Unpaid)";
-        document.getElementById('statusText').style.color = "#ff4d4d";
-        reportBtn.style.display = "block";
+      // Initialize Master Card Number if not set
+      if (!localStorage.getItem('masterCardNumber')) {
+        localStorage.setItem('masterCardNumber', '5321622512326754');
       }
-      timeLeft--;
-    }, 1000);
-
-    function confirmPayment() {
-      document.getElementById('statusText').innerText = "Payment Sent - Waiting Seller Release";
-      document.getElementById('statusText').style.color = "#00ff88";
-      document.getElementById('btnPaid').style.display = "none";
-      document.getElementById('btnRelease').style.display = "block";
-      addChatMessage("Buyer: Payment completed. Please check and release escrow.");
-    }
-
-    function releaseEscrow() {
-      document.getElementById('statusText').innerText = "Completed (Escrow Released)";
-      document.getElementById('statusText').style.color = "#00d2ff";
-      document.getElementById('btnRelease').style.display = "none";
-      addChatMessage("System: Trade completed! $49.50 USDT credited to buyer. $0.50 USDT (1% fee) added to Admin Master Reserve Wallet.");
-      alert("Trade Completed! $0.50 USDT Commission successfully credited to Admin Master Wallet.");
-    }
-
-    function reportDispute() {
-      alert("Dispute Triggered! Admin notified via Report Bell.");
-      addChatMessage("System: Dispute opened due to 20-minute timeout.");
-    }
-
-    function sendMessage() {
-      const input = document.getElementById('msgInput');
-      if (input.value.trim() !== "") {
-        addChatMessage("You: " + input.value);
-        input.value = "";
+      if (!localStorage.getItem('masterCommissionLocked')) {
+        localStorage.setItem('masterCommissionLocked', '0.00');
       }
+      if (!localStorage.getItem('demo_usd_balance')) {
+        localStorage.setItem('demo_usd_balance', '500.00');
+      }
+
+      document.getElementById('demoBalance').innerText = '$' + parseFloat(localStorage.getItem('demo_usd_balance')).toFixed(2) + ' USD';
+    });
+
+    // 2. Lock Funds in Escrow
+    function lockEscrowFunds() {
+      const amount = parseFloat(document.getElementById('tradeAmount').value);
+      let currentBalance = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
+
+      if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid trade amount.");
+        return;
+      }
+
+      if (amount > currentBalance) {
+        alert("Insufficient demo balance for this trade.");
+        return;
+      }
+
+      // Lock funds
+      currentBalance -= amount;
+      localStorage.setItem('demo_usd_balance', currentBalance.toFixed(2));
+      document.getElementById('demoBalance').innerText = '$' + currentBalance.toFixed(2) + ' USD';
+
+      // Update Chat
+      addChatMessage("System", `$$${amount.toFixed(2)} USD locked in Escrow. Waiting for seller/agent confirmation.`);
+      addChatMessage("Demo Agent", `Payment received in escrow! Dzvanya 'Complete Trade' pazasi kuti mari ne 1% commission zvisunungurwe.`);
+
+      // Hide deposit button, show release button
+      document.getElementById('btnDepositEscrow').style.display = 'none';
+      document.getElementById('btnRelease').style.display = 'block';
     }
 
-    function addChatMessage(msg) {
+    // 3. Complete Trade & Route 1% Commission to Master Virtual Card
+    function completeDemoTrade() {
+      const amount = parseFloat(document.getElementById('tradeAmount').value);
+      const cardNo = localStorage.getItem('masterCardNumber') || "5321622512326754";
+      
+      // Calculate 1% Commission
+      const commission = amount * 0.01;
+      let currentCommission = parseFloat(localStorage.getItem('masterCommissionLocked') || '0.00');
+      let newCommission = currentCommission + commission;
+
+      // Save updated commission
+      localStorage.setItem('masterCommissionLocked', newCommission.toFixed(2));
+
+      // Update Chat
+      addChatMessage("System", `Trade successfully completed! 1% Commission ($${commission.toFixed(2)}) routed to Virtual Card ending in ...6754.`);
+
+      alert(`TRADE SUCCESSFUL!\n\nTotal Amount: $${amount.toFixed(2)}\n1% Commission Routed: $${commission.toFixed(2)} USD\nLinked Virtual Card: ${cardNo}\nTotal Card Balance: $${newCommission.toFixed(2)} USD`);
+
+      // Reset buttons
+      document.getElementById('btnRelease').style.display = 'none';
+      document.getElementById('btnDepositEscrow').style.display = 'block';
+    }
+
+    // Helper: Chat Messages
+    function addChatMessage(sender, text) {
       const chatBox = document.getElementById('chatBox');
-      const p = document.createElement('p');
-      p.innerText = msg;
-      p.style.margin = "5px 0";
-      chatBox.appendChild(p);
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'chat-msg';
+      msgDiv.innerHTML = `<span>[${sender}]:</span> ${text}`;
+      chatBox.appendChild(msgDiv);
       chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      if (input.value.trim() !== '') {
+        addChatMessage("You", input.value.trim());
+        input.value = '';
+      }
     }
   </script>
 </body>
