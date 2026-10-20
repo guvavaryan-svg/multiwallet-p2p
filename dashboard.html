@@ -10,7 +10,6 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <!-- Custom MW Icon -->
   <link rel="icon" type="image/svg+xml" href="icon.svg">
   <link rel="apple-touch-icon" href="icon.svg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -52,8 +51,6 @@
       font-weight: bold;
       color: #00d2ff;
     }
-    
-    /* DEMO / REAL SWITCHER BUTTON PA CORNER */
     .mode-switch-btn {
       background: linear-gradient(135deg, #f59e0b, #d97706);
       color: #000;
@@ -68,7 +65,6 @@
       background: linear-gradient(135deg, #10b981, #059669);
       color: #fff;
     }
-
     .btn-logout {
       background: #ff3b30;
       color: #ffffff;
@@ -78,7 +74,6 @@
       font-weight: bold;
       cursor: pointer;
       font-size: 12px;
-      box-shadow: 0 2px 6px rgba(255, 59, 48, 0.4);
     }
     .card {
       background: #1e1e1e;
@@ -96,14 +91,12 @@
       align-items: center;
       justify-content: space-between;
     }
-    
     .deriv-card {
       background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
       border: 1px solid #6366f1;
       padding: 18px;
       border-radius: 12px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
     }
     .btn-deriv-partner {
       background: #ff444f;
@@ -116,13 +109,7 @@
       display: block;
       text-align: center;
       margin-top: 12px;
-      box-shadow: 0 4px 10px rgba(255, 68, 79, 0.3);
-      transition: background 0.2s;
     }
-    .btn-deriv-partner:hover {
-      background: #d9363e;
-    }
-
     .action-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -218,7 +205,7 @@
 </head>
 <body>
 
-  <!-- Navigation Bar with Corner Switcher & Logout -->
+  <!-- Navbar -->
   <div class="navbar">
     <div class="brand-logo">
       <div class="mw-icon-badge">MW</div>
@@ -231,7 +218,7 @@
     </div>
   </div>
 
-  <!-- Mode Display Status Banner -->
+  <!-- Mode Banner -->
   <div class="card" id="modeBannerCard" style="border-left: 4px solid #f59e0b;">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <strong id="modeTitle" style="color: #f59e0b; font-size: 14px;"><i class="fa-solid fa-flask"></i> DEMO / TEST MODE ACTIVE</strong>
@@ -306,7 +293,7 @@
         <strong id="cardCommissionBalance" style="color:#00ff88; font-size:20px;">$3.50 USD</strong>
       </div>
       <div>
-        <small style="color:#aaa;">Demo Wallet Balance</small><br>
+        <small style="color:#aaa;" id="walletTypeLabel">Demo Wallet Balance</small><br>
         <strong id="demoUsdDisplay" style="color:#ffffff; font-size:18px;">$500.00 USD</strong>
       </div>
     </div>
@@ -319,7 +306,7 @@
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> USD Wallet <br><small style="color:#888;">United States Dollar</small></div>
+      <div><i class="fa-solid fa-dollar-sign" style="color:#00d2ff;"></i> <span id="usdWalletTitle">USD Wallet (Demo)</span> <br><small style="color:#888;">United States Dollar</small></div>
       <div class="wallet-amount" id="usdWalletBalance">$500.00 USD</div>
     </div>
 
@@ -362,14 +349,6 @@
 
     <div class="agent-item">
       <div>
-        <strong style="color:#fff;">Buy USDT via ZiG</strong><br>
-        <small style="color:#aaa;">Escrow Protected • Market Rate</small>
-      </div>
-      <a href="escrow.html?pair=USDT%20%2F%20ZiG" class="btn-trade">Trade</a>
-    </div>
-
-    <div class="agent-item">
-      <div>
         <strong style="color:#fff;">John Doe (Demo Agent)</strong><br>
         <small style="color:#aaa;">USDT / ZiG | Rate: Market</small>
       </div>
@@ -378,35 +357,23 @@
   </div>
 
   <script>
-    // --- 20 SECONDS INACTIVITY & BACKGROUND AUTO-LOGOUT TIMER ---
     let inactivityTimer;
 
     function resetInactivityTimer() {
       clearTimeout(inactivityTimer);
-      // Kana munhu akasabata foni kana kuenda pa background kwemasekonzi 20
       inactivityTimer = setTimeout(() => {
         sessionStorage.removeItem("isLoggedIn");
-        alert("SECURITY TIMEOUT: App yakamboita 20 seconds isingashandiswe. Ndapota ita Login zvakare!");
+        alert("SECURITY TIMEOUT: App inactive for 20 seconds. Please log in again.");
         window.location.href = "index.html";
-      }, 20000); // 20,000 ms = 20 seconds
+      }, 20000);
     }
 
-    // Monitor actions dze user
     window.onload = resetInactivityTimer;
     window.onmousemove = resetInactivityTimer;
     window.onkeypress = resetInactivityTimer;
     window.onclick = resetInactivityTimer;
     window.onscroll = resetInactivityTimer;
 
-    // Detect back/tab change (Background exit)
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        // Otomatiki reset timer
-        resetInactivityTimer();
-      }
-    });
-
-    // --- DEMO / REAL ACCOUNT SWITCHER LOGIC ---
     let currentMode = localStorage.getItem('account_mode') || 'demo';
 
     function updateModeUI() {
@@ -433,6 +400,7 @@
         modeDesc.innerText = "You are currently operating with real live balances and escrow execution.";
         modeBadgeDisplay.innerText = "LIVE REAL";
       }
+      renderWalletData();
     }
 
     function toggleAccountMode() {
@@ -446,7 +414,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // STRICT LOGGED IN CHECK
       if (sessionStorage.getItem("isLoggedIn") !== "true") {
         window.location.href = "index.html";
         return;
@@ -461,22 +428,34 @@
       if (!localStorage.getItem('demo_usd_balance')) {
         localStorage.setItem('demo_usd_balance', '500.00');
       }
+      if (!localStorage.getItem('real_usd_balance')) {
+        localStorage.setItem('real_usd_balance', '0.00');
+      }
 
       updateModeUI();
-      renderWalletData();
-      updateDerivClickDisplay();
     });
 
     function renderWalletData() {
       const cardComm = parseFloat(localStorage.getItem('masterCommissionLocked') || '3.50');
-      const demoBal = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
+      
+      let activeBal = 0.00;
+      if (currentMode === 'demo') {
+        activeBal = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
+        document.getElementById('walletTypeLabel').innerText = 'Demo Wallet Balance';
+        document.getElementById('usdWalletTitle').innerText = 'USD Wallet (Demo)';
+      } else {
+        activeBal = parseFloat(localStorage.getItem('real_usd_balance') || '0.00');
+        document.getElementById('walletTypeLabel').innerText = 'Real USD Wallet Balance';
+        document.getElementById('usdWalletTitle').innerText = 'USD Wallet (Real)';
+      }
+
       const ecoBal = parseFloat(localStorage.getItem('ecocash_usd_balance') || '0.00');
       const zigBal = parseFloat(localStorage.getItem('ecocash_zig_balance') || '0.00');
       const phone = localStorage.getItem('ecocash_phone') || 'Not Linked';
 
       document.getElementById('cardCommissionBalance').innerText = '$' + cardComm.toFixed(2) + ' USD';
-      document.getElementById('demoUsdDisplay').innerText = '$' + demoBal.toFixed(2) + ' USD';
-      document.getElementById('usdWalletBalance').innerText = '$' + demoBal.toFixed(2) + ' USD';
+      document.getElementById('demoUsdDisplay').innerText = '$' + activeBal.toFixed(2) + ' USD';
+      document.getElementById('usdWalletBalance').innerText = '$' + activeBal.toFixed(2) + ' USD';
       document.getElementById('ecoCashWalletDisplay').innerText = '$' + ecoBal.toFixed(2) + ' USD';
       document.getElementById('zigWalletDisplay').innerText = 'ZiG ' + zigBal.toFixed(2);
       document.getElementById('userEcoPhone').innerText = 'EcoCash: ' + phone;
@@ -518,19 +497,23 @@
 
       const phone = prompt("Enter EcoCash Phone Number (e.g., 0771234567):", localStorage.getItem('ecocash_phone') || "");
       if (phone !== null && phone.trim() !== "") {
-        const usdVal = prompt("Enter EcoCash USD Balance ($):", localStorage.getItem('ecocash_usd_balance') || "0.00");
+        const usdVal = prompt("Enter USD Balance ($):", currentMode === 'demo' ? (localStorage.getItem('demo_usd_balance') || "500.00") : (localStorage.getItem('real_usd_balance') || "0.00"));
         const zigVal = prompt("Enter ZiG Balance (ZiG):", localStorage.getItem('ecocash_zig_balance') || "0.00");
 
+        if (currentMode === 'demo') {
+          localStorage.setItem('demo_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
+        } else {
+          localStorage.setItem('real_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
+        }
+
         localStorage.setItem('ecocash_phone', phone.trim());
-        localStorage.setItem('ecocash_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
         localStorage.setItem('ecocash_zig_balance', parseFloat(zigVal || '0.00').toFixed(2));
 
         renderWalletData();
-        alert("VERIFIED: Account details updated securely!");
+        alert("VERIFIED: Account details updated successfully!");
       }
     }
 
-    // STRICT LOGOUT FUNCTION
     function handleLogout() {
       sessionStorage.removeItem("isLoggedIn");
       sessionStorage.clear();
