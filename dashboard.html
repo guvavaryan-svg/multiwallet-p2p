@@ -388,23 +388,13 @@
   </div>
 
   <script>
-    // --- 20 SECONDS INACTIVITY AUTO-LOGOUT TIMER ---
-    let inactivityTimer;
-
-    function resetInactivityTimer() {
-      clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(() => {
+    // --- BACKGROUND-SWITCH AUTO-LOCK SECURITY (Hachivhare kana munhu ari muapp) ---
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) {
+        // Kana munhu abva paapp kana kuisa app mubackground, inokiwa
         sessionStorage.removeItem("isLoggedIn");
-        alert("SECURITY TIMEOUT: App was inactive for 20 seconds. Please log in again.");
-        window.location.href = "index.html";
-      }, 20000);
-    }
-
-    window.onload = resetInactivityTimer;
-    window.onmousemove = resetInactivityTimer;
-    window.onkeypress = resetInactivityTimer;
-    window.onclick = resetInactivityTimer;
-    window.onscroll = resetInactivityTimer;
+      }
+    });
 
     let currentMode = localStorage.getItem('account_mode') || 'demo';
 
@@ -518,7 +508,6 @@
       document.getElementById('agentDetailsDisplay').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> ' + agentDetails;
     }
 
-    // --- LIVE CURRENCY MARKET TREND CHECKER FOR ALL CURRENCIES ---
     function checkCurrencyTrend(currency) {
       let analysisText = "";
       if (currency === 'ZiG') {
@@ -606,7 +595,7 @@
 
         if (currentMode === 'demo') {
           localStorage.setItem('demo_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
-          localStorage.setItem('demo_usdt_balance', parseFloat(usdtVal || '0.00').toFixed(2));
+          localStorage.setItem('demo_usdt_balance', parseFloat(usdtVal || '0.00').deflated ? parseFloat(usdtVal || '0.00').toFixed(2) : parseFloat(usdtVal || '0.00').toFixed(2));
         } else {
           localStorage.setItem('real_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
           localStorage.setItem('real_usdt_balance', parseFloat(usdtVal || '0.00').toFixed(2));
