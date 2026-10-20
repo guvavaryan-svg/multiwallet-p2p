@@ -460,6 +460,7 @@
       <div class="card-title">
         <span><i class="fa-solid fa-list-check"></i> Active & Past Orders</span>
       </div>
+      <div id="disputeNotificationArea"></div>
       <div class="alert-card" id="activeOrderCard" style="background: rgba(255, 59, 48, 0.1); border: 1px solid #ff3b30; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
         <strong style="font-size:13px; color:#fff;">Order #P2P-8842 (Escrow Match)</strong><br>
         <small style="color:#ff3b30;">Time Elapsed: 20+ Mins (Unpaid)</small>
@@ -638,6 +639,7 @@
       }
       renderWalletData();
       checkIdVerificationUI();
+      checkDisputeNotifications();
     }
 
     function toggleAccountMode() {
@@ -658,6 +660,18 @@
 
       updateModeUI();
     });
+
+    function checkDisputeNotifications() {
+      const report = localStorage.getItem('active_dispute_report');
+      const area = document.getElementById('disputeNotificationArea');
+      if (report && area) {
+        area.innerHTML = `
+          <div style="background: rgba(255,59,48,0.2); border: 1px solid #ff3b30; color: #ff3b30; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-weight: bold; font-size: 13px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> ${report}
+          </div>
+        `;
+      }
+    }
 
     function checkIdVerificationUI() {
       const statusText = document.getElementById('verificationStatusText');
@@ -833,8 +847,10 @@
     function closeCurrencyChart() { document.getElementById('chartModal').style.display = 'none'; }
 
     function reportActiveOrder() {
-      if (confirm("Report Order #P2P-8842 for non-payment?")) {
+      if (confirm("Report Order #P2P-8842 for non-payment / dispute?")) {
+        localStorage.setItem('active_dispute_report', 'ALERT: Buyer reported Order #P2P-8842 against Agent Tupay_Online');
         document.getElementById('activeOrderCard').style.display = 'none';
+        checkDisputeNotifications();
         alert("Report submitted to Admin.");
       }
     }
