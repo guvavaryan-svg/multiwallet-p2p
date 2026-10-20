@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- PREVENT MOBILE VIEWPORT ZOOM -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>MultiwalletP2P - Escrow Room</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    * {
+      touch-action: manipulation; /* Prevent double-tap zoom on buttons and text */
+    }
     body {
       font-family: Arial, sans-serif;
       background-color: #121212;
@@ -13,6 +17,7 @@
       margin: 0;
       padding: 15px;
       padding-bottom: 50px;
+      user-select: none; /* Prevent accidental text selection and layout dragging */
     }
     .navbar {
       display: flex;
@@ -98,7 +103,40 @@
       max-width: 150px;
       border-radius: 6px;
       margin-top: 6px;
-      border: 1px solid #444;
+      border: 1px solid #00d2ff;
+      cursor: pointer;
+    }
+
+    /* FULLSCREEN IMAGE ZOOM MODAL */
+    .image-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .image-modal-content {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+    }
+    .btn-close-img-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ff3b30;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -146,8 +184,14 @@
     <div style="margin-top: 12px; border-top: 1px solid #333; padding-top: 10px;">
       <label style="font-size: 12px; color: #00d2ff; display: block; margin-bottom: 5px;"><i class="fa-solid fa-camera"></i> Upload Payment Screenshot:</label>
       <input type="file" id="proofImageInput" accept="image/*" class="form-input" style="padding: 8px; font-size: 12px;">
-      <button class="modal-btn" style="background:#00d2ff; color:#000; margin-top: 8px; padding: 10px; width: 100%; border:none; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="sendPaymentProof()">Send Proof to Chat</button>
+      <button style="background:#00d2ff; color:#000; margin-top: 8px; padding: 10px; width: 100%; border:none; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="sendPaymentProof()">Send Proof to Chat</button>
     </div>
+  </div>
+
+  <!-- FULLSCREEN IMAGE PREVIEW MODAL -->
+  <div id="imageModal" class="image-modal-overlay">
+    <button class="btn-close-img-modal" onclick="closeImageModal()"><i class="fa-solid fa-xmark"></i> Close</button>
+    <img id="modalPreviewImage" class="image-modal-content" src="" alt="Full Proof Image">
   </div>
 
   <script>
@@ -226,7 +270,8 @@
           chat.innerHTML += `
             <div>
               <span style="color:#00ff88;">[You - Payment Proof Sent]:</span><br>
-              <img src="${imageUrl}" class="chat-img" alt="Payment Screenshot">
+              <img src="${imageUrl}" class="chat-img" onclick="openImageModal('${imageUrl}')" alt="Payment Screenshot">
+              <br><small style="color:#00d2ff; font-size:10px;">(Tap image to expand)</small>
             </div>
           `;
           chat.scrollTop = chat.scrollHeight;
@@ -236,6 +281,15 @@
       } else {
         alert("Please select a screenshot image first.");
       }
+    }
+
+    function openImageModal(src) {
+      document.getElementById('modalPreviewImage').src = src;
+      document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    function closeImageModal() {
+      document.getElementById('imageModal').style.display = 'none';
     }
   </script>
 </body>
