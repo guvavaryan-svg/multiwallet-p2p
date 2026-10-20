@@ -78,7 +78,6 @@
       font-size: 15px;
       cursor: pointer;
       text-align: center;
-      z-index: 10;
     }
     .tab-btn.active {
       color: #00d2ff;
@@ -131,7 +130,7 @@
       font-weight: bold;
       cursor: pointer;
       margin-top: 10px;
-      display: none; 
+      display: none;
     }
     .feature-list {
       margin-top: 20px;
@@ -160,7 +159,6 @@
   </div>
 
   <div class="auth-card">
-    <!-- TABS -->
     <div class="tab-header">
       <button type="button" class="tab-btn active" id="loginTab" onclick="switchTab('login')">Login</button>
       <button type="button" class="tab-btn" id="registerTab" onclick="switchTab('register')">Create Account</button>
@@ -179,8 +177,7 @@
       </div>
 
       <button type="submit" class="btn-submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
-      
-      <!-- FORGOT PASSWORD BUTTON -->
+
       <button type="button" class="btn-forgot" id="forgotBtn" onclick="handleForgotPassword()">
         <i class="fa-solid fa-key"></i> Forgot Password? Click to Reset
       </button>
@@ -206,7 +203,6 @@
       <button type="submit" class="btn-submit" style="background: #00d2ff; color: #000;"><i class="fa-solid fa-user-plus"></i> Create Account</button>
     </form>
 
-    <!-- FEATURES LIST -->
     <div class="feature-list">
       <div class="feature-item"><i class="fa-solid fa-shield-halved"></i> Escrow Protected Trades</div>
       <div class="feature-item"><i class="fa-solid fa-coins"></i> Automatic 1% Commission Locking</div>
@@ -259,19 +255,20 @@
         const savedEmail = localStorage.getItem('user_email');
         const savedPass = localStorage.getItem('user_pass');
 
-        // Check kana email ne password zvakaenzana nezvakanyoreswa
+        // STRICT CHECKING: KANA ASATI AMBONYORESA
         if (!savedEmail || !savedPass) {
-          alert("ERROR: Hapana account yakanyoreswa pafoni ino! Ndapota tanga wadzvanya 'Create Account' kuti unyorese.");
+          alert("ACCESS DENIED: Hapana account yakanyoreswa mu system ino! Ndapota tanga wadzvanya 'Create Account'.");
           return;
         }
 
+        // STRICT CHECKING: KANA EMAIL KANA PASSWORD ZVISIZVO
         if (email !== savedEmail || pass !== savedPass) {
           incrementFailure();
-          alert("ERROR: Email kana Password yawaisa haina kururama! Ndapota edza zvakare.");
+          alert("ACCESS DENIED: Email kana Password yawaisa HAINA KURURAMA! Haukwanisi kupinda.");
           return;
         }
 
-        // Zvese zvakanyatrorurama
+        // Zvese zvarurama: Pinda zvakanaka
         localStorage.setItem('login_fails', '0');
         sessionStorage.setItem("isLoggedIn", "true");
         window.location.href = "dashboard.html";
@@ -282,11 +279,11 @@
         const pass = document.getElementById('regPassword').value.trim();
 
         if (name.length < 3) {
-          alert("ERROR: Zita rako ipfupi zvikuru!");
+          alert("ERROR: Zita rakipfupi zvikuru!");
           return;
         }
         if (!email.includes('@') || !email.includes('.')) {
-          alert("ERROR: Ndapota isa email chaiyo!");
+          alert("ERROR: Ndapota isa email kwayo!");
           return;
         }
         if (pass.length < 6) {
@@ -294,7 +291,6 @@
           return;
         }
 
-        // Save credentials zvine security
         localStorage.setItem('user_name', name);
         localStorage.setItem('user_email', email);
         localStorage.setItem('user_pass', pass);
