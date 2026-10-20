@@ -1,17 +1,12 @@
 {
   "short_name": "MultiwalletP2P",
-  "name": "MultiwalletP2P App",
+  "name": "MultiwalletP2P P2P App",
   "icons": [
     {
       "src": "icon.svg",
       "type": "image/svg+xml",
       "sizes": "512x512 192x192 128x128 64x64",
       "purpose": "any maskable"
-    },
-    {
-      "src": "https://cdn-icons-png.flaticon.com/512/888/888870.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": "./index.html",
