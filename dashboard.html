@@ -311,8 +311,8 @@
     </div>
 
     <div class="wallet-item">
-      <div><i class="fa-solid fa-coins" style="color:#00ff88;"></i> USDT Wallet <br><small style="color:#888;">Tether (TRC20 / BEP20)</small></div>
-      <div class="wallet-amount">1,000.00 USDT</div>
+      <div><i class="fa-solid fa-coins" style="color:#00ff88;"></i> <span id="usdtWalletTitle">USDT Wallet</span> <br><small style="color:#888;">Tether (TRC20 / BEP20)</small></div>
+      <div class="wallet-amount" id="usdtWalletBalance">0.00 USDT</div>
     </div>
 
     <div class="wallet-item">
@@ -432,6 +432,12 @@
       if (!localStorage.getItem('real_usd_balance')) {
         localStorage.setItem('real_usd_balance', '0.00');
       }
+      if (!localStorage.getItem('demo_usdt_balance')) {
+        localStorage.setItem('demo_usdt_balance', '1000.00');
+      }
+      if (!localStorage.getItem('real_usdt_balance')) {
+        localStorage.setItem('real_usdt_balance', '0.00');
+      }
 
       updateModeUI();
     });
@@ -440,14 +446,20 @@
       const cardComm = parseFloat(localStorage.getItem('masterCommissionLocked') || '3.50');
       
       let activeBal = 0.00;
+      let activeUsdt = 0.00;
+
       if (currentMode === 'demo') {
         activeBal = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
+        activeUsdt = parseFloat(localStorage.getItem('demo_usdt_balance') || '1000.00');
         document.getElementById('walletTypeLabel').innerText = 'Demo Wallet Balance';
         document.getElementById('usdWalletTitle').innerText = 'USD Wallet (Demo)';
+        document.getElementById('usdtWalletTitle').innerText = 'USDT Wallet (Demo)';
       } else {
         activeBal = parseFloat(localStorage.getItem('real_usd_balance') || '0.00');
+        activeUsdt = parseFloat(localStorage.getItem('real_usdt_balance') || '0.00');
         document.getElementById('walletTypeLabel').innerText = 'Real USD Wallet Balance';
         document.getElementById('usdWalletTitle').innerText = 'USD Wallet (Real)';
+        document.getElementById('usdtWalletTitle').innerText = 'USDT Wallet (Real)';
       }
 
       const ecoBal = parseFloat(localStorage.getItem('ecocash_usd_balance') || '0.00');
@@ -457,6 +469,7 @@
       document.getElementById('cardCommissionBalance').innerText = '$' + cardComm.toFixed(2) + ' USD';
       document.getElementById('demoUsdDisplay').innerText = '$' + activeBal.toFixed(2) + ' USD';
       document.getElementById('usdWalletBalance').innerText = '$' + activeBal.toFixed(2) + ' USD';
+      document.getElementById('usdtWalletBalance').innerText = activeUsdt.toFixed(2) + ' USDT';
       document.getElementById('ecoCashWalletDisplay').innerText = '$' + ecoBal.toFixed(2) + ' USD';
       document.getElementById('zigWalletDisplay').innerText = 'ZiG ' + zigBal.toFixed(2);
       document.getElementById('userEcoPhone').innerText = 'EcoCash: ' + phone;
@@ -498,14 +511,17 @@
 
       const phone = prompt("Enter EcoCash Phone Number (e.g., 0771234567):", localStorage.getItem('ecocash_phone') || "");
       if (phone !== null && phone.trim() !== "") {
-        const modeLabelText = currentMode === 'demo' ? "Demo USD Balance ($)" : "Real USD Balance ($)";
-        const usdVal = prompt("Enter " + modeLabelText + ":", currentMode === 'demo' ? (localStorage.getItem('demo_usd_balance') || "500.00") : (localStorage.getItem('real_usd_balance') || "0.00"));
+        const modeLabelText = currentMode === 'demo' ? "Demo" : "Real";
+        const usdVal = prompt("Enter " + modeLabelText + " USD Balance ($):", currentMode === 'demo' ? (localStorage.getItem('demo_usd_balance') || "500.00") : (localStorage.getItem('real_usd_balance') || "0.00"));
+        const usdtVal = prompt("Enter " + modeLabelText + " USDT Balance (USDT):", currentMode === 'demo' ? (localStorage.getItem('demo_usdt_balance') || "1000.00") : (localStorage.getItem('real_usdt_balance') || "0.00"));
         const zigVal = prompt("Enter ZiG Balance (ZiG):", localStorage.getItem('ecocash_zig_balance') || "0.00");
 
         if (currentMode === 'demo') {
           localStorage.setItem('demo_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
+          localStorage.setItem('demo_usdt_balance', parseFloat(usdtVal || '0.00').toFixed(2));
         } else {
           localStorage.setItem('real_usd_balance', parseFloat(usdVal || '0.00').toFixed(2));
+          localStorage.setItem('real_usdt_balance', parseFloat(usdtVal || '0.00').toFixed(2));
         }
 
         localStorage.setItem('ecocash_phone', phone.trim());
