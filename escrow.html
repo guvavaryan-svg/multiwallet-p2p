@@ -3,18 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MultiwalletP2P - Escrow Trading Room</title>
-
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#00d2ff">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <!-- Custom MW Icon -->
-  <link rel="icon" type="image/svg+xml" href="icon.svg">
-  <link rel="apple-touch-icon" href="icon.svg">
+  <title>MultiwalletP2P - Escrow Room</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -24,254 +14,206 @@
       padding: 15px;
       padding-bottom: 50px;
     }
-    .header {
+    .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: #1e1e1e;
-      padding: 15px 20px;
+      padding: 12px 15px;
       border-radius: 12px;
       margin-bottom: 20px;
       border: 1px solid #333;
     }
-    .header h2 {
-      margin: 0;
-      color: #00d2ff;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .mw-icon-badge {
-      background: linear-gradient(135deg, #00d2ff, #0088cc);
-      color: #000000;
-      font-weight: 900;
-      font-size: 13px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      display: inline-block;
-    }
-    .btn-back {
-      background: #2b2b2b;
-      color: #00d2ff;
-      border: 1px solid #00d2ff;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
+    .brand-title {
+      font-size: 16px;
       font-weight: bold;
-      font-size: 13px;
-      text-decoration: none;
+      color: #00d2ff;
+    }
+    /* DEMO / REAL SWITCHER PA CORNER */
+    .mode-switch-btn {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .mode-switch-btn.real {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
     }
     .card {
       background: #1e1e1e;
-      padding: 20px;
+      padding: 18px;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       border: 1px solid #2a2a2a;
     }
-    .status-badge {
-      background: rgba(0, 210, 255, 0.15);
+    .btn-dashboard {
+      background: transparent;
       color: #00d2ff;
       border: 1px solid #00d2ff;
       padding: 6px 12px;
-      border-radius: 20px;
+      border-radius: 6px;
       font-size: 12px;
       font-weight: bold;
-      display: inline-block;
-      margin-bottom: 15px;
+      text-decoration: none;
     }
-    .input-field {
+    .form-input {
       width: 100%;
       padding: 12px;
-      margin-top: 8px;
-      margin-bottom: 12px;
-      background: #2b2b2b;
-      border: 1px solid #444;
-      color: white;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-size: 14px;
-    }
-    .btn-action {
-      background: #00ff88;
-      color: #000000;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-    .btn-complete {
-      background: #00d2ff;
-      color: #000000;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-    .chat-box {
-      background: #2b2b2b;
+      background: #282828;
       border: 1px solid #3d3d3d;
       border-radius: 8px;
-      padding: 12px;
-      height: 150px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-      font-size: 13px;
+      color: #fff;
+      font-size: 14px;
+      box-sizing: border-box;
+      margin-top: 8px;
+      outline: none;
     }
-    .chat-msg {
-      margin-bottom: 8px;
-      line-height: 1.4;
-    }
-    .chat-msg span {
-      color: #00d2ff;
+    .btn-deposit {
+      width: 100%;
+      padding: 14px;
+      background: #00ff88;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
       font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .chat-box {
+      background: #181818;
+      border: 1px solid #333;
+      padding: 12px;
+      border-radius: 8px;
+      height: 120px;
+      overflow-y: auto;
+      font-size: 13px;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <div class="header">
-    <h2><span class="mw-icon-badge">MW</span> Escrow Room</h2>
-    <a href="dashboard.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
-  </div>
-
-  <!-- Demo System Status -->
-  <div class="card" style="border-left: 4px solid #00ff88;">
-    <div class="status-badge"><i class="fa-solid fa-flask"></i> DEMO / TEST MODE ACTIVE</div>
-    <h3 style="margin-top:0; color:#ffffff;" id="tradeTitle">USDT / ZiG P2P Trade</h3>
-    <p style="font-size:12px; color:#aaa; margin:0 0 10px 0;">Agent: <strong id="agentNameDisplay" style="color:#00d2ff;">John Doe (Demo Agent)</strong></p>
+  <!-- NAVBAR INE DEMO/REAL SWITCHER PA CORNER -->
+  <div class="navbar">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="background:#00d2ff; color:#000; font-weight:bold; padding:4px 8px; border-radius:6px; font-size:12px;">MW</div>
+      <div class="brand-title">Escrow Room</div>
+    </div>
     
-    <div style="background:#2b2b2b; padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-      <div>
-        <small style="color:#b0b0b0;">Demo Test Balance</small><br>
-        <strong id="demoBalance" style="color:#00ff88; font-size:16px;">$500.00 USD</strong>
-      </div>
-      <div>
-        <small style="color:#b0b0b0;">Escrow Protection</small><br>
-        <strong style="color:#00d2ff; font-size:13px;"><i class="fa-solid fa-lock"></i> Locked</strong>
-      </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <!-- SWITCH BUTTON -->
+      <button id="modeBtn" class="mode-switch-btn" onclick="toggleAccountMode()">Demo Mode</button>
+      <a href="dashboard.html" class="btn-dashboard">Dashboard</a>
     </div>
   </div>
 
-  <!-- Trade Execution Card -->
+  <div class="card" id="modeBannerCard" style="border-left: 4px solid #f59e0b;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong id="modeTitle" style="color: #f59e0b; font-size: 14px;"><i class="fa-solid fa-flask"></i> DEMO / TEST MODE ACTIVE</strong>
+      <span style="font-size: 12px; color: #aaa;" id="balanceDisplay">Test Bal: $0.00 USD</span>
+    </div>
+    <p style="font-size: 12px; color: #ccc; margin: 8px 0 0 0;" id="modeDesc">You are currently testing P2P escrow trading safely.</p>
+  </div>
+
   <div class="card">
-    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-right-left"></i> Initiate Demo Trade</h3>
+    <h3 style="margin:0 0 10px 0; font-size:15px; color:#00d2ff;"><i class="fa-solid fa-right-left"></i> Initiate Trade</h3>
+    <label style="font-size:13px; color:#ccc;">Trade Amount ($):</label>
+    <input type="number" class="form-input" id="tradeAmount" value="50">
     
-    <label style="font-size:12px; color:#ccc;">Trade Amount ($):</label>
-    <input type="number" id="tradeAmount" class="input-field" value="50" placeholder="Enter amount (e.g. 50)">
+    <label style="font-size:13px; color:#ccc; display:block; margin-top:12px;">Seller Payment Details:</label>
+    <input type="text" class="form-input" value="EcoCash: 0771234567 - John Doe" readonly>
 
-    <label style="font-size:12px; color:#ccc;">Seller Payment Details (Demo Account):</label>
-    <input type="text" id="sellerDetails" class="input-field" value="EcoCash: 0771234567 - John Doe" readonly style="color:#00ff88;">
-
-    <button class="btn-action" id="btnDepositEscrow" onclick="lockEscrowFunds()"><i class="fa-solid fa-lock"></i> Deposit Funds to Escrow</button>
+    <button class="btn-deposit" onclick="handleDeposit()"><i class="fa-solid fa-lock"></i> Deposit Funds to Escrow</button>
   </div>
 
-  <!-- Live Chat Simulation -->
   <div class="card">
-    <h3 style="margin-top:0; color:#00d2ff;"><i class="fa-solid fa-comments"></i> Escrow Trade Chat</h3>
-    
-    <div class="chat-box" id="chatBox">
-      <div class="chat-msg"><span>[System]:</span> Welcome to MultiwalletP2P Escrow Room.</div>
-      <div class="chat-msg"><span>[Demo Agent]:</span> Hello! Please deposit funds to escrow to begin the test trade.</div>
+    <h3 style="margin:0 0 10px 0; font-size:15px; color:#00d2ff;"><i class="fa-solid fa-comments"></i> Escrow Trade Chat</h3>
+    <div class="chat-box" id="chatContainer">
+      <div><span style="color:#00d2ff;">[System]:</span> Welcome to MultiwalletP2P Escrow Room.</div>
+      <div><span style="color:#f59e0b;">[Agent]:</span> Hello! Please deposit funds to escrow to begin.</div>
     </div>
-
-    <div style="display:flex; gap:8px;">
-      <input type="text" id="chatInput" class="input-field" placeholder="Type message..." style="margin:0;">
-      <button onclick="sendChatMessage()" style="background:#00d2ff; color:#000; border:none; padding:0 15px; border-radius:6px; font-weight:bold; cursor:pointer;">Send</button>
-    </div>
-
-    <button class="btn-complete" id="btnRelease" onclick="completeDemoTrade()" style="display:none;"><i class="fa-solid fa-circle-check"></i> Complete Trade & Route 1% Commission</button>
   </div>
 
   <script>
+    // --- 20 SECONDS INACTIVITY / BACKGROUND AUTO-LOGOUT TIMER ---
+    let inactivityTimer;
+
+    function resetTimer() {
+      clearTimeout(inactivityTimer);
+      // Kana munhu abva pa-app kana kuita 20 seconds asina kubata chinhu, anoita logout otumirwa ku login
+      inactivityTimer = setTimeout(() => {
+        sessionStorage.removeItem("isLoggedIn");
+        alert("SECURITY: App yakamboita 20 seconds isingashandiswe. Ndapota ita Login zvakare.");
+        window.location.href = "index.html";
+      }, 20000); // 20,000 milliseconds = 20 seconds
+    }
+
+    // Monitor ma actions emunhu (kudzvanya kana kufambisa foni)
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onkeypress = resetTimer;
+    window.onclick = resetTimer;
+    window.onscroll = resetTimer;
+
+    // --- DEMO / REAL ACCOUNT SWITCHER LOGIC ---
+    let currentMode = localStorage.getItem('account_mode') || 'demo';
+
+    function updateModeUI() {
+      const modeBtn = document.getElementById('modeBtn');
+      const modeBannerCard = document.getElementById('modeBannerCard');
+      const modeTitle = document.getElementById('modeTitle');
+      const modeDesc = document.getElementById('modeDesc');
+      const balanceDisplay = document.getElementById('balanceDisplay');
+
+      if (currentMode === 'demo') {
+        modeBtn.innerText = "Demo Mode";
+        modeBtn.className = "mode-switch-btn";
+        modeBannerCard.style.borderLeft = "4px solid #f59e0b";
+        modeTitle.innerHTML = '<i class="fa-solid fa-flask"></i> DEMO / TEST MODE ACTIVE';
+        modeTitle.style.color = "#f59e0b";
+        modeDesc.innerText = "You are currently testing P2P escrow trading safely with simulated funds.";
+        balanceDisplay.innerText = "Test Bal: $500.00 USD";
+      } else {
+        modeBtn.innerText = "Real Account";
+        modeBtn.className = "mode-switch-btn real";
+        modeBannerCard.style.borderLeft = "4px solid #10b981";
+        modeTitle.innerHTML = '<i class="fa-solid fa-circle-check"></i> REAL ACCOUNT ACTIVE';
+        modeTitle.style.color = "#10b981";
+        modeDesc.innerText = "You are trading with real funds and live market integration.";
+        balanceDisplay.innerText = "Real Bal: $0.00 USD";
+      }
+    }
+
+    function toggleAccountMode() {
+      if (currentMode === 'demo') {
+        currentMode = 'real';
+      } else {
+        currentMode = 'demo';
+      }
+      localStorage.setItem('account_mode', currentMode);
+      updateModeUI();
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const pair = urlParams.get('pair') || 'USDT / ZiG';
-      document.getElementById('tradeTitle').innerText = pair + " P2P Trade";
-
-      // Ensure Master Card is securely configured in system memory
-      if (!localStorage.getItem('masterCardNumber')) {
-        localStorage.setItem('masterCardNumber', '5321622512326754');
+      if (sessionStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "index.html";
+        return;
       }
-      if (!localStorage.getItem('masterCommissionLocked')) {
-        localStorage.setItem('masterCommissionLocked', '0.00');
-      }
-      if (!localStorage.getItem('demo_usd_balance')) {
-        localStorage.setItem('demo_usd_balance', '500.00');
-      }
-
-      document.getElementById('demoBalance').innerText = '$' + parseFloat(localStorage.getItem('demo_usd_balance')).toFixed(2) + ' USD';
+      updateModeUI();
     });
 
-    function lockEscrowFunds() {
-      const amount = parseFloat(document.getElementById('tradeAmount').value);
-      let currentBalance = parseFloat(localStorage.getItem('demo_usd_balance') || '500.00');
-
-      if (isNaN(amount) || amount <= 0) {
-        alert("Please enter a valid trade amount.");
-        return;
-      }
-
-      if (amount > currentBalance) {
-        alert("Insufficient demo balance for this trade.");
-        return;
-      }
-
-      currentBalance -= amount;
-      localStorage.setItem('demo_usd_balance', currentBalance.toFixed(2));
-      document.getElementById('demoBalance').innerText = '$' + currentBalance.toFixed(2) + ' USD';
-
-      addChatMessage("System", `$${amount.toFixed(2)} USD locked in Escrow. Waiting for seller/agent confirmation.`);
-      addChatMessage("Demo Agent", `Payment received in escrow! Please click 'Complete Trade' below to release funds and route 1% commission.`);
-
-      document.getElementById('btnDepositEscrow').style.display = 'none';
-      document.getElementById('btnRelease').style.display = 'block';
-    }
-
-    function completeDemoTrade() {
-      const amount = parseFloat(document.getElementById('tradeAmount').value);
-      // Backend retrieves full card number securely
-      const fullCardNo = localStorage.getItem('masterCardNumber') || "5321622512326754";
-      const maskedCardNo = "•••• •••• •••• " + fullCardNo.slice(-4);
-      
-      const commission = amount * 0.01;
-      let currentCommission = parseFloat(localStorage.getItem('masterCommissionLocked') || '0.00');
-      let newCommission = currentCommission + commission;
-
-      localStorage.setItem('masterCommissionLocked', newCommission.toFixed(2));
-
-      addChatMessage("System", `Trade successfully completed! 1% Commission ($${commission.toFixed(2)}) routed to Virtual Card (${maskedCardNo}).`);
-
-      alert(`TRADE SUCCESSFUL!\n\nTotal Amount: $${amount.toFixed(2)}\n1% Commission Routed: $${commission.toFixed(2)} USD\nLinked Card: ${maskedCardNo}\nTotal Card Balance: $${newCommission.toFixed(2)} USD`);
-
-      document.getElementById('btnRelease').style.display = 'none';
-      document.getElementById('btnDepositEscrow').style.display = 'block';
-    }
-
-    function addChatMessage(sender, text) {
-      const chatBox = document.getElementById('chatBox');
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'chat-msg';
-      msgDiv.innerHTML = `<span>[${sender}]:</span> ${text}`;
-      chatBox.appendChild(msgDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function sendChatMessage() {
-      const input = document.getElementById('chatInput');
-      if (input.value.trim() !== '') {
-        addChatMessage("You", input.value.trim());
-        input.value = '';
-      }
+    function handleDeposit() {
+      const amt = document.getElementById('tradeAmount').value;
+      const chat = document.getElementById('chatContainer');
+      chat.innerHTML += `<div><span style="color:#00ff88;">[You]:</span> Deposited $${amt} USD to Escrow (${currentMode.toUpperCase()} mode).</div>`;
+      chat.scrollTop = chat.scrollHeight;
+      alert("SUCCESS: Funds deposited to escrow (" + currentMode.toUpperCase() + ").");
     }
   </script>
 </body>
